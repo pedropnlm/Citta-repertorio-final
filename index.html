@@ -9,7 +9,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root{
@@ -31,9 +30,10 @@ font-family:'Montserrat',sans-serif;
 background:var(--stone);
 color:var(--text);
 overflow-x:hidden;
+max-width:100vw;
 }
 a{text-decoration:none;color:inherit}
-img{max-width:100%;display:block}
+img{max-width:100%;height:auto;display:block}
 .container{width:min(1200px,calc(100% - 32px));margin:auto}
 
 .stone-bg{
@@ -152,7 +152,7 @@ justify-content:center;
 gap:10px;
 }
 .hero-card{background:rgba(255,255,255,.08);padding:18px;border-radius:32px;backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.1)}
-.hero-card img{height:560px;width:100%;object-fit:cover;border-radius:24px}
+.hero-card img{width:100%;height:auto;max-height:560px;object-fit:cover;border-radius:24px;display:block}
 
 .section{padding:90px 0}
 .section-title{font-size:clamp(2rem,4vw,3.5rem);line-height:1;margin-bottom:18px;letter-spacing:-2px;color:var(--navy)}
@@ -182,9 +182,9 @@ color:var(--navy);
 border-color:transparent;
 }
 
-.properties-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:35px}
+.properties-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:24px;margin-top:35px}
 .property-card{background:#fff;border-radius:28px;overflow:hidden;box-shadow:var(--shadow);position:relative}
-.property-image{position:relative;overflow:hidden;height:280px}
+.property-image{position:relative;overflow:hidden;aspect-ratio:16/10;height:auto}
 .property-image img{width:100%;height:100%;object-fit:cover;transition:.4s}
 .overlay{position:absolute;inset:0;background:rgba(8,17,34,.72);display:flex;align-items:center;justify-content:center;opacity:0;transition:.3s;color:#fff;font-weight:800;text-align:center;padding:20px}
 .property-card:hover .overlay{opacity:1}
@@ -289,7 +289,7 @@ box-shadow:var(--shadow);
 .menu{position:fixed;top:82px;left:16px;right:16px;background:var(--navy);border-radius:24px;padding:20px;flex-direction:column;display:none;align-items:stretch}
 .menu.active{display:flex}
 .hero{padding-bottom:80px}
-.hero-card img{height:400px}
+.hero-card img{height:auto;max-height:400px}
 .properties-grid,.benefits-grid,.footer-grid,.gallery-grid{grid-template-columns:1fr}
 .property-info{grid-template-columns:repeat(2,1fr)}
 .details-features{grid-template-columns:1fr}
@@ -298,11 +298,12 @@ box-shadow:var(--shadow);
 }
 
 @media(max-width:540px){
+.container{width:calc(100% - 24px)}
 .hero-content h1{font-size:2.8rem}
 .section-title{font-size:2.3rem}
 .hero-actions,.contact-buttons{flex-direction:column}
 .btn-primary,.btn-secondary,.btn-whats{width:100%}
-.hero-card img{height:320px}
+.hero-card img{height:auto;max-height:320px}
 .financing{padding:36px 26px}
 .financing h3{font-size:2rem}
 .modal-content{padding:28px 22px}
@@ -315,6 +316,55 @@ box-shadow:var(--shadow);
 .brand-logo img{width:48px;height:36px}
 .brand-logo strong{font-size:1.05rem}
 }
+
+
+/* Ajustes finais de responsividade */
+@media(max-width:768px){
+body{width:100%;max-width:100vw;overflow-x:hidden}
+.navbar{padding:10px 0}
+.brand-logo{gap:10px;min-width:0}
+.brand-logo strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.menu a,.btn-whats{font-size:.95rem}
+.hero{min-height:auto;padding:120px 0 64px}
+.hero-grid{gap:28px}
+.hero-content h1{letter-spacing:-1.5px}
+.hero-content p{font-size:1rem}
+.section{padding:64px 0}
+.benefits-grid,.properties-grid,.footer-grid{gap:18px}
+.property-card{border-radius:24px}
+.property-content{padding:22px}
+.property-info{gap:8px}
+.info-box{padding:10px 6px;font-size:.78rem}
+.details-page{padding:110px 0 64px}
+.details-grid{gap:24px}
+}
+
+@media(max-width:420px){
+.container{width:calc(100% - 20px)}
+.brand-logo img{width:44px;height:34px}
+.brand-logo strong{font-size:.98rem;max-width:210px}
+.mobile-btn{font-size:1.35rem}
+.menu{top:68px;left:10px;right:10px}
+.hero-content h1{font-size:2.35rem;line-height:1.02}
+.hero-content p{font-size:.94rem;line-height:1.65}
+.btn-primary,.btn-secondary,.btn-whats{padding:14px 18px;font-size:.92rem}
+.hero-card{padding:10px;border-radius:22px}
+.hero-card img{border-radius:16px;max-height:280px}
+.section-title{font-size:2rem;letter-spacing:-1.4px}
+.section-text{font-size:.95rem}
+.benefit-card{padding:22px;border-radius:22px}
+.property-content h3{font-size:1.12rem}
+.price{font-size:1.42rem}
+.property-info{grid-template-columns:repeat(2,1fr)}
+.financing{border-radius:28px;padding:30px 18px}
+.about-image img{height:auto;max-height:360px}
+.map-card{padding:10px;border-radius:22px}
+.map-card iframe{height:300px;border-radius:16px}
+.cta-final{padding:84px 0}
+footer{padding:58px 0 24px}
+.whatsapp-float{width:56px;height:56px;font-size:1.75rem;right:14px;bottom:14px}
+}
+
 </style>
 </head>
 
@@ -573,13 +623,27 @@ box-shadow:var(--shadow);
 </a>
 
 <script>
-const SUPABASE_URL = "https://rnmifesvznyyrxhcxcic.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_d2HM-lPtJ45sXh135vPT_A_qsqh9kLB";
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const keys = {
+properties:"citta_admin_properties_v1",
+leads:"citta_admin_leads_v1",
+settings:"citta_admin_settings_v1"
+};
 
 const fallbackImage = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=900&auto=format&fit=crop";
 
-let settings = {
+const defaultProperties = [
+{
+id:1,title:"Residencial Alphaville",type:"Casa",purpose:"Venda",price:"R$ 2.490.000",neighborhood:"Alphaville",city:"Goiânia",state:"GO",address:"Condomínio fechado em localização premium",area:"420m²",bedrooms:"4",suites:"2",bathrooms:"5",parking:"4",description:"Casa de alto padrão com ambientes amplos, acabamento sofisticado, área gourmet e excelente potencial de valorização.",features:["Piscina","Área gourmet","Condomínio fechado","Alto padrão","Aceita financiamento"],images:["https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=900&auto=format&fit=crop"],coverIndex:0,status:"Disponível",featured:true
+},
+{
+id:2,title:"Apartamento Setor Bueno",type:"Apartamento",purpose:"Venda",price:"R$ 1.180.000",neighborhood:"Setor Bueno",city:"Goiânia",state:"GO",address:"Região nobre, próximo a comércios e serviços",area:"180m²",bedrooms:"3",suites:"1",bathrooms:"4",parking:"3",description:"Apartamento premium com planta inteligente, varanda ampla, excelente localização e acabamento moderno.",features:["Varanda","Elevador","Planejados","Próximo a comércios"],images:["https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=80&w=900&auto=format&fit=crop"],coverIndex:0,status:"Disponível",featured:true
+},
+{
+id:3,title:"Casa Moderna Jardins",type:"Casa",purpose:"Aluguel",price:"R$ 8.900/mês",neighborhood:"Jardins",city:"Goianésia",state:"GO",address:"Condomínio Jardins",area:"320m²",bedrooms:"4",suites:"2",bathrooms:"4",parking:"2",description:"Casa moderna em condomínio, ideal para quem busca conforto, privacidade e localização estratégica.",features:["Área gourmet","Condomínio fechado","Segurança 24h"],images:["https://images.unsplash.com/photo-1613977257363-707ba9348227?q=80&w=900&auto=format&fit=crop"],coverIndex:0,status:"Disponível",featured:true
+}
+];
+
+let settings = JSON.parse(localStorage.getItem(keys.settings) || "null") || {
 name:"Città Imobiliária",
 whatsapp:"+55 62 98328-0081",
 email:"comercial@cittaimobiliaria.com.br",
@@ -587,65 +651,18 @@ instagram:"https://www.instagram.com/cittaimob?igsh=dTM2eHA1c3lyMTVj",
 cj:"CJ: 47.645",
 region:"Goiânia | Goianésia e região",
 logo:"assets/citta-logos.png",
-hero_banner:fallbackImage
+heroBanner:fallbackImage
 };
 
-let properties = [];
+let properties = JSON.parse(localStorage.getItem(keys.properties) || "null") || defaultProperties;
 let currentFilter = "todos";
 let currentProperty = null;
 
-function onlyNumbers(v){
-return String(v || "").replace(/\D/g,"");
-}
-
+function onlyNumbers(v){return String(v||"").replace(/\D/g,"")}
 function whatsappLink(){
 const phone = onlyNumbers(settings.whatsapp || "5562983280081");
 const finalPhone = phone.startsWith("55") ? phone : "55" + phone;
 return "https://wa.me/" + finalPhone;
-}
-
-function normalizeProperty(p){
-return {
-...p,
-images:Array.isArray(p.images) && p.images.length ? p.images : [fallbackImage],
-cover_index:Number.isInteger(p.cover_index) ? p.cover_index : Number.isInteger(p.coverIndex) ? p.coverIndex : 0,
-features:Array.isArray(p.features) ? p.features : []
-};
-}
-
-async function loadSettings(){
-const { data, error } = await db
-.from("site_settings")
-.select("*")
-.eq("id",1)
-.maybeSingle();
-
-if(error){
-console.error("Erro ao carregar configurações:", error);
-return;
-}
-
-if(data){
-settings = {
-...settings,
-...data
-};
-}
-}
-
-async function loadProperties(){
-const { data, error } = await db
-.from("properties")
-.select("*")
-.order("created_at",{ascending:false});
-
-if(error){
-console.error("Erro ao carregar imóveis:", error);
-properties = [];
-return;
-}
-
-properties = (data || []).map(normalizeProperty);
 }
 
 function applySettings(){
@@ -653,48 +670,35 @@ const logo = settings.logo || "assets/citta-logos.png";
 siteLogo.src = logo;
 footerLogo.src = logo;
 
-if(settings.hero_banner){
-heroBanner.src = settings.hero_banner;
+if(settings.heroBanner){
+heroBanner.src = settings.heroBanner;
 }
 
 const whats = whatsappLink();
-
 [
-headerWhatsapp,
-heroWhatsapp,
-ctaWhatsapp,
-floatWhatsapp,
-contactPhone,
-footerWhatsapp
-].forEach(el => {
-if(el) el.href = whats;
-});
+headerWhatsapp,heroWhatsapp,ctaWhatsapp,floatWhatsapp,contactPhone,footerWhatsapp
+].forEach(el=>el.href = whats);
 
 contactPhone.textContent = settings.whatsapp || "(62) 98328-0081";
-
 contactEmail.textContent = settings.email || "comercial@cittaimobiliaria.com.br";
 contactEmail.href = "mailto:" + (settings.email || "comercial@cittaimobiliaria.com.br");
 footerEmail.href = contactEmail.href;
 
 contactInstagram.href = settings.instagram || "#";
 footerInstagram.href = settings.instagram || "#";
-
 contactRegion.textContent = settings.region || "Goiânia | Goianésia e região";
 }
 
 function renderProperties(){
 const grid = document.getElementById("propertiesGrid");
-
 const filtered = properties.filter(p => {
 const available = p.status === "Disponível";
 const purposeOk = currentFilter === "todos" || p.purpose === currentFilter;
 return available && purposeOk && p.featured;
 });
 
-grid.innerHTML = filtered.length ? filtered.map(p => {
-const coverIndex = Number.isInteger(p.cover_index) ? p.cover_index : 0;
-const img = p.images?.[coverIndex] || p.images?.[0] || fallbackImage;
-
+grid.innerHTML = filtered.length ? filtered.map(p=>{
+const img = p.images?.[p.coverIndex] || p.images?.[0] || fallbackImage;
 return `
 <div class="property-card" data-purpose="${p.purpose}">
 <div class="property-image">
@@ -702,15 +706,15 @@ return `
 <div class="overlay">Clique para acessar mais informações</div>
 </div>
 <div class="property-content">
-<div class="property-type">${p.type || "Imóvel"} • ${p.purpose || ""}</div>
-<h3>${p.title || "Imóvel Città"}</h3>
-<div class="location">${p.neighborhood || ""}, ${p.city || ""} - ${p.state || ""}</div>
-<div class="price">${p.price || "Consulte"}</div>
+<div class="property-type">${p.type} • ${p.purpose}</div>
+<h3>${p.title}</h3>
+<div class="location">${p.neighborhood}, ${p.city} - ${p.state}</div>
+<div class="price">${p.price}</div>
 <div class="property-info">
-<div class="info-box"><i class="fa-solid fa-ruler-combined"></i>${p.area || "-"}</div>
-<div class="info-box"><i class="fa-solid fa-bed"></i>${p.bedrooms || "0"} quartos</div>
-<div class="info-box"><i class="fa-solid fa-bath"></i>${p.bathrooms || "0"} banheiros</div>
-<div class="info-box"><i class="fa-solid fa-car"></i>${p.parking || "0"} vagas</div>
+<div class="info-box"><i class="fa-solid fa-ruler-combined"></i>${p.area}</div>
+<div class="info-box"><i class="fa-solid fa-bed"></i>${p.bedrooms} quartos</div>
+<div class="info-box"><i class="fa-solid fa-bath"></i>${p.bathrooms} banheiros</div>
+<div class="info-box"><i class="fa-solid fa-car"></i>${p.parking} vagas</div>
 </div>
 <button class="property-btn" onclick="openLeadModal(${p.id})">Tenho interesse</button>
 </div>
@@ -720,33 +724,32 @@ return `
 }
 
 function openLeadModal(id){
-currentProperty = properties.find(p => Number(p.id) === Number(id));
+currentProperty = properties.find(p=>p.id === id);
 selectedProperty.value = currentProperty?.title || "";
 leadModal.classList.add("active");
 }
 
 function renderDetails(p){
-const images = Array.isArray(p.images) && p.images.length ? p.images : [fallbackImage];
-
+const images = p.images?.length ? p.images : [fallbackImage];
 detailsContent.innerHTML = `
 <div>
 <div class="gallery-grid">
-${images.slice(0,4).map(img => `<img src="${img}" alt="${p.title}">`).join("")}
+${images.slice(0,4).map(img=>`<img src="${img}" alt="${p.title}">`).join("")}
 </div>
 </div>
 
 <div class="details-card">
-<h2>${p.title || "Imóvel Città"}</h2>
-<div class="location">${p.neighborhood || ""}, ${p.city || ""} - ${p.state || ""}</div>
-<div class="details-price">${p.price || "Consulte"}</div>
-<p class="details-desc">${p.description || "Entre em contato para mais informações sobre este imóvel."}</p>
+<h2>${p.title}</h2>
+<div class="location">${p.neighborhood}, ${p.city} - ${p.state}</div>
+<div class="details-price">${p.price}</div>
+<p class="details-desc">${p.description}</p>
 
 <div class="details-features">
-<div class="feature-box"><i class="fa-solid fa-ruler-combined"></i>${p.area || "-"}</div>
-<div class="feature-box"><i class="fa-solid fa-bed"></i>${p.bedrooms || "0"} quartos</div>
-<div class="feature-box"><i class="fa-solid fa-bath"></i>${p.bathrooms || "0"} banheiros</div>
-<div class="feature-box"><i class="fa-solid fa-car"></i>${p.parking || "0"} vagas</div>
-${(p.features || []).slice(0,4).map(f => `<div class="feature-box"><i class="fa-solid fa-check"></i>${f}</div>`).join("")}
+<div class="feature-box"><i class="fa-solid fa-ruler-combined"></i>${p.area}</div>
+<div class="feature-box"><i class="fa-solid fa-bed"></i>${p.bedrooms} quartos</div>
+<div class="feature-box"><i class="fa-solid fa-bath"></i>${p.bathrooms} banheiros</div>
+<div class="feature-box"><i class="fa-solid fa-car"></i>${p.parking} vagas</div>
+${(p.features||[]).slice(0,4).map(f=>`<div class="feature-box"><i class="fa-solid fa-check"></i>${f}</div>`).join("")}
 </div>
 
 <div class="contact-buttons">
@@ -755,53 +758,45 @@ ${(p.features || []).slice(0,4).map(f => `<div class="feature-box"><i class="fa-
 </div>
 </div>
 `;
-
 detailsPage.classList.add("active");
 window.scrollTo({top:detailsPage.offsetTop - 80,behavior:"smooth"});
 }
 
-mobileBtn.addEventListener("click",() => menu.classList.toggle("active"));
+mobileBtn.addEventListener("click",()=>menu.classList.toggle("active"));
 
-document.querySelectorAll(".faq-question").forEach(q => {
-q.addEventListener("click",() => q.closest(".faq-item").classList.toggle("active"));
+document.querySelectorAll(".faq-question").forEach(q=>{
+q.addEventListener("click",()=>q.closest(".faq-item").classList.toggle("active"));
 });
 
-document.querySelectorAll(".filter-btn").forEach(btn => {
-btn.addEventListener("click",() => {
-document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+document.querySelectorAll(".filter-btn").forEach(btn=>{
+btn.addEventListener("click",()=>{
+document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
 btn.classList.add("active");
 currentFilter = btn.dataset.filter;
 renderProperties();
 });
 });
 
-closeModal.addEventListener("click",() => leadModal.classList.remove("active"));
+closeModal.addEventListener("click",()=>leadModal.classList.remove("active"));
+window.addEventListener("click",(e)=>{if(e.target === leadModal)leadModal.classList.remove("active")});
 
-window.addEventListener("click",(e) => {
-if(e.target === leadModal) leadModal.classList.remove("active");
-});
-
-leadForm.addEventListener("submit", async (e) => {
+leadForm.addEventListener("submit",(e)=>{
 e.preventDefault();
 
-const leadPayload = {
+const leads = JSON.parse(localStorage.getItem(keys.leads) || "[]");
+leads.unshift({
+id:Date.now(),
 name:leadName.value,
 email:leadEmail.value,
 phone:leadPhone.value,
 property:selectedProperty.value,
 timeline:leadTimeline.value,
+date:new Date().toLocaleDateString("pt-BR"),
 status:"Novo",
 notes:"Lead capturado pela landing page."
-};
+});
 
-const { error } = await db.from("leads").insert(leadPayload);
-
-if(error){
-console.error("Erro ao salvar lead:", error);
-alert("Não foi possível salvar seu interesse agora. Tente novamente ou fale pelo WhatsApp.");
-return;
-}
-
+localStorage.setItem(keys.leads,JSON.stringify(leads));
 leadModal.classList.remove("active");
 
 if(currentProperty){
@@ -811,14 +806,8 @@ renderDetails(currentProperty);
 leadForm.reset();
 });
 
-async function init(){
-await loadSettings();
-await loadProperties();
 applySettings();
 renderProperties();
-}
-
-init();
 </script>
 
 </body>
