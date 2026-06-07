@@ -12,302 +12,861 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-:root{--navy:#081122;--navy2:#0d1b2a;--gold:#d4b483;--gold2:#b7925f;--text:#0d1b2a;--muted:#5d6673;--stone:#f4f1eb;--white:#fff;--shadow:0 18px 50px rgba(0,0,0,.08)}
+:root{
+--navy:#081122;
+--navy2:#0d1b2a;
+--gold:#d4b483;
+--gold2:#b7925f;
+--text:#0d1b2a;
+--muted:#5d6673;
+--stone:#f4f1eb;
+--white:#fff;
+--shadow:0 18px 50px rgba(0,0,0,.08);
+}
+
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth;overflow-x:hidden}
-body{font-family:'Montserrat',sans-serif;background:var(--stone);color:var(--text);overflow-x:hidden;max-width:100vw}
-a{text-decoration:none;color:inherit}img{max-width:100%;height:auto;display:block}.container{width:min(1200px,calc(100% - 32px));margin:auto}
-.stone-bg{position:relative;background-color:#f3eee5;background-image:linear-gradient(rgba(255,255,255,.66),rgba(255,255,255,.66)),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='600' viewBox='0 0 900 600'%3E%3Crect width='900' height='600' fill='%23efe7dc'/%3E%3Cg fill='none' stroke='%23cfc3b3' stroke-width='2' opacity='.45'%3E%3Cpath d='M0 85 C90 40 150 65 245 36 C345 5 405 36 500 22 C610 5 690 35 785 15 C840 4 880 18 900 25'/%3E%3Cpath d='M20 210 C100 160 165 190 240 150 C335 100 420 155 510 120 C610 82 675 145 760 105 C820 78 865 90 900 115'/%3E%3Cpath d='M0 360 C80 310 155 350 250 300 C350 250 445 315 540 270 C635 225 725 285 830 235 C860 220 885 215 900 218'/%3E%3Cpath d='M0 520 C80 470 160 515 250 455 C355 385 450 480 555 420 C670 355 760 435 900 360'/%3E%3Cpath d='M120 0 C80 90 120 165 80 250 C35 345 105 410 55 520'/%3E%3Cpath d='M310 0 C270 75 310 150 265 245 C220 340 300 405 245 600'/%3E%3Cpath d='M520 0 C475 95 535 170 490 270 C450 360 540 440 500 600'/%3E%3Cpath d='M760 0 C700 100 780 185 725 290 C670 400 775 480 710 600'/%3E%3C/g%3E%3Cg fill='%23e7ded1' opacity='.55'%3E%3Cpath d='M45 35 155 20 230 75 200 145 95 160 20 100Z'/%3E%3Cpath d='M340 45 450 18 570 70 545 155 410 170 320 115Z'/%3E%3Cpath d='M650 45 780 25 875 95 840 178 700 165 610 105Z'/%3E%3Cpath d='M70 245 210 220 285 300 230 390 95 375 20 310Z'/%3E%3Cpath d='M360 245 515 220 610 300 560 405 405 380 315 310Z'/%3E%3Cpath d='M670 250 830 225 900 285 880 395 715 380 630 315Z'/%3E%3Cpath d='M80 440 230 425 310 505 255 590 110 575 25 510Z'/%3E%3Cpath d='M410 440 570 420 650 505 590 590 430 575 345 505Z'/%3E%3Cpath d='M700 430 870 415 900 470 860 590 710 575 630 505Z'/%3E%3C/g%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='5' opacity='.28'%3E%3Cpath d='M25 110 95 160 200 145'/%3E%3Cpath d='M320 115 410 170 545 155'/%3E%3Cpath d='M20 310 95 375 230 390'/%3E%3Cpath d='M315 310 405 380 560 405'/%3E%3Cpath d='M25 510 110 575 255 590'/%3E%3C/g%3E%3C/svg%3E");background-size:cover,760px 520px;background-repeat:repeat;overflow:hidden}.stone-bg:before,.stone-bg:after{content:"";position:absolute;pointer-events:none;z-index:0;opacity:.22}.stone-bg:before{width:360px;height:520px;left:-220px;top:40px;border:4px solid rgba(183,146,95,.42);border-right:none;border-radius:0 80% 80% 0;transform:rotate(-10deg)}.stone-bg:after{width:360px;height:520px;right:-220px;bottom:25px;border:4px solid rgba(183,146,95,.42);border-left:none;border-radius:80% 0 0 80%;transform:rotate(9deg)}.stone-bg .container{position:relative;z-index:2}
-header{position:fixed;width:100%;top:0;z-index:999;background:rgba(8,17,34,.96);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08)}.navbar{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:22px}.brand-logo{display:flex;align-items:center;gap:18px;color:var(--gold);min-width:0}.brand-logo img{width:78px;height:54px;object-fit:contain;flex:0 0 auto}.brand-logo strong{font-family:Arial,sans-serif;font-size:2rem;letter-spacing:-.045em;font-weight:800;color:var(--gold);line-height:1;white-space:nowrap}.menu{display:flex;gap:24px;align-items:center}.menu a{color:#fff;font-weight:700;font-size:.98rem;transition:.3s}.menu a:hover{color:var(--gold)}.btn-whats{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy)!important;padding:14px 24px;border-radius:999px;font-weight:900;display:flex;align-items:center;justify-content:center;gap:10px;transition:.3s}.mobile-btn{display:none;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer}
-.hero{min-height:100vh;background:linear-gradient(rgba(8,17,34,.78),rgba(8,17,34,.78)),url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;display:flex;align-items:center;padding-top:100px}.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center}.hero-content h1{font-size:clamp(2.8rem,6vw,5.3rem);line-height:.95;color:#fff;margin-bottom:24px;letter-spacing:-3px}.hero-content h1 span{color:var(--gold)}.hero-content p{color:rgba(255,255,255,.85);font-size:1.05rem;line-height:1.8;margin-bottom:32px;max-width:650px}.hero-actions{display:flex;flex-wrap:wrap;gap:16px}.btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);padding:16px 28px;border-radius:999px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:10px;border:none;cursor:pointer}.btn-secondary{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;padding:16px 28px;border-radius:999px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:10px}.hero-card{background:rgba(255,255,255,.08);padding:18px;border-radius:32px;backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.1)}.hero-card img{width:100%;height:auto;max-height:560px;object-fit:cover;border-radius:24px;display:block}
-.section{padding:90px 0}.section-title{font-size:clamp(2rem,4vw,3.5rem);line-height:1;margin-bottom:18px;letter-spacing:-2px;color:var(--navy)}.section-title span{color:var(--gold2)}.section-text{color:var(--muted);line-height:1.8;max-width:760px}.benefits-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:50px}.benefit-card{background:#fff;padding:30px;border-radius:26px;box-shadow:var(--shadow);transition:.3s}.benefit-card:hover{transform:translateY(-6px)}.benefit-card i{font-size:2rem;color:var(--gold2);margin-bottom:18px}.benefit-card h3{margin-bottom:12px;font-size:1.1rem}.benefit-card p{color:var(--muted);line-height:1.7;font-size:.95rem}.property-filters{display:flex;flex-wrap:wrap;gap:12px;margin-top:35px}.filter-btn{border:1px solid rgba(183,146,95,.28);background:#fff;color:var(--navy);padding:13px 22px;border-radius:999px;font-weight:800;cursor:pointer}.filter-btn.active{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border-color:transparent}.properties-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:24px;margin-top:35px}.property-card{background:#fff;border-radius:28px;overflow:hidden;box-shadow:var(--shadow);position:relative}.property-image{position:relative;overflow:hidden;aspect-ratio:16/10;height:auto}.property-image img{width:100%;height:100%;object-fit:cover;transition:.4s}.overlay{position:absolute;inset:0;background:rgba(8,17,34,.72);display:flex;align-items:center;justify-content:center;opacity:0;transition:.3s;color:#fff;font-weight:800;text-align:center;padding:20px}.property-card:hover .overlay{opacity:1}.property-card:hover img{transform:scale(1.08)}.property-content{padding:26px}.property-type{font-size:.82rem;font-weight:800;color:var(--gold2);margin-bottom:10px;text-transform:uppercase}.property-content h3{font-size:1.3rem;margin-bottom:12px}.location{color:var(--muted);font-size:.95rem;margin-bottom:18px}.price{font-size:1.7rem;font-weight:900;color:var(--navy);margin-bottom:18px}.property-info{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}.info-box{background:#f4f4f4;padding:12px;border-radius:14px;text-align:center;font-size:.82rem;font-weight:700;color:var(--navy)}.info-box i{display:block;margin-bottom:8px;color:var(--gold2);font-size:1rem}.property-btn{width:100%;border:none;background:linear-gradient(135deg,var(--gold),var(--gold2));padding:16px;border-radius:16px;font-weight:800;cursor:pointer;font-size:1rem}.financing{background:var(--navy);color:#fff;border-radius:40px;padding:60px;display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center;margin-top:40px}.financing h3{font-size:2.4rem;margin-bottom:18px}.financing p{color:rgba(255,255,255,.8);line-height:1.8}.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}.about-image img{border-radius:30px;height:550px;object-fit:cover;width:100%}.about-list{margin-top:30px;display:grid;gap:16px}.about-list div{display:flex;gap:14px;align-items:flex-start;font-weight:700;color:var(--navy)}.about-list i{color:var(--gold2);margin-top:3px}.map-card{margin-top:50px;background:#fff;padding:18px;border-radius:32px;box-shadow:var(--shadow)}.map-card iframe{width:100%;height:450px;border:none;border-radius:24px}.faq-grid{display:grid;gap:18px;margin-top:50px}.faq-item{background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.05)}.faq-question{width:100%;border:none;background:#fff;padding:24px;display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:1rem;cursor:pointer}.faq-answer{max-height:0;overflow:hidden;transition:.3s}.faq-answer p{padding:0 24px 24px;color:var(--muted);line-height:1.8}.faq-item.active .faq-answer{max-height:220px}.cta-final{background:linear-gradient(rgba(8,17,34,.68),rgba(8,17,34,.68)),url('assets/cta-final-citta.jpeg') center/cover no-repeat;text-align:center;color:#fff;padding:120px 0}.cta-final h2{font-size:clamp(2.3rem,5vw,4.5rem);line-height:1;margin-bottom:22px;letter-spacing:-3px}.cta-final p{max-width:760px;margin:auto;line-height:1.8;color:rgba(255,255,255,.82);margin-bottom:34px}footer{background:var(--navy);color:#fff;padding:80px 0 30px}.footer-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:40px;margin-bottom:50px}.footer-title{font-size:1.2rem;margin-bottom:20px}.footer-grid p,.footer-grid li,.footer-grid a{color:rgba(255,255,255,.75);line-height:1.8;font-size:.95rem}.footer-grid ul{list-style:none;display:grid;gap:12px}.footer-bottom{padding-top:30px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;font-size:.9rem}.whatsapp-float{position:fixed;right:20px;bottom:20px;width:65px;height:65px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#fff;z-index:999;box-shadow:0 15px 40px rgba(37,211,102,.4)}.modal{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;padding:20px;z-index:9999}.modal.active{display:flex}.modal-content{background:#fff;width:100%;max-width:520px;border-radius:30px;padding:34px;position:relative;max-height:90vh;overflow:auto}.close-modal{position:absolute;right:20px;top:18px;background:none;border:none;font-size:1.5rem;cursor:pointer}.modal h3{font-size:2rem;margin-bottom:12px;color:var(--navy)}.modal p{color:var(--muted);line-height:1.7;margin-bottom:24px}.form-group{margin-bottom:18px}.form-group label{display:block;margin-bottom:8px;font-weight:700}.form-group input,.form-group select{width:100%;padding:16px;border-radius:14px;border:1px solid #ddd;font-size:1rem}.modal-submit{width:100%;border:none;padding:18px;border-radius:16px;background:linear-gradient(135deg,var(--gold),var(--gold2));font-size:1rem;font-weight:800;cursor:pointer;margin-top:10px}.details-page{display:none;padding:140px 0 80px}.details-page.active{display:block}.details-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px}.gallery-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.gallery-grid img{height:260px;width:100%;object-fit:cover;border-radius:20px}.details-card{background:#fff;padding:34px;border-radius:30px;box-shadow:var(--shadow)}.details-card h2{font-size:2.3rem;margin-bottom:12px}.details-price{font-size:2.2rem;font-weight:900;margin-bottom:24px;color:var(--navy)}.details-desc{color:var(--muted);line-height:1.9;margin-bottom:28px}.details-features{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:28px}.feature-box{background:#f4f4f4;padding:16px;border-radius:16px;font-weight:700}.feature-box i{color:var(--gold2);margin-right:8px}.contact-buttons{display:flex;flex-wrap:wrap;gap:14px}.empty-properties{grid-column:1/-1;background:#fff;border-radius:24px;padding:34px;text-align:center;color:var(--muted);box-shadow:var(--shadow)}
-@media(max-width:1100px){.hero-grid,.about-grid,.details-grid{grid-template-columns:1fr}.benefits-grid{grid-template-columns:repeat(2,1fr)}.properties-grid{grid-template-columns:repeat(2,1fr)}.footer-grid{grid-template-columns:repeat(2,1fr)}.financing{grid-template-columns:1fr;text-align:center}.brand-logo img{width:68px;height:48px}.brand-logo strong{font-size:1.65rem}}
-@media(max-width:860px){.mobile-btn{display:block}.menu{position:fixed;top:82px;left:16px;right:16px;background:var(--navy);border-radius:24px;padding:20px;flex-direction:column;display:none;align-items:stretch}.menu.active{display:flex}.hero{padding-bottom:80px}.hero-card img{height:auto;max-height:400px}.properties-grid,.benefits-grid,.footer-grid,.gallery-grid{grid-template-columns:1fr}.property-info{grid-template-columns:repeat(2,1fr)}.details-features{grid-template-columns:1fr}.brand-logo img{width:60px;height:42px}.brand-logo strong{font-size:1.35rem}}
-@media(max-width:540px){.container{width:calc(100% - 24px)}.hero-content h1{font-size:2.8rem}.section-title{font-size:2.3rem}.hero-actions,.contact-buttons{flex-direction:column}.btn-primary,.btn-secondary,.btn-whats{width:100%}.hero-card img{height:auto;max-height:320px}.financing{padding:36px 26px}.financing h3{font-size:2rem}.modal-content{padding:28px 22px}.details-card{padding:26px}.details-card h2{font-size:1.9rem}.details-price{font-size:1.8rem}.gallery-grid img{height:220px}.map-card iframe{height:320px}.brand-logo{gap:10px}.brand-logo img{width:48px;height:36px}.brand-logo strong{font-size:1.05rem}}
-@media(max-width:768px){body{width:100%;max-width:100vw;overflow-x:hidden}.navbar{padding:10px 0}.brand-logo{gap:10px;min-width:0}.brand-logo strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.menu a,.btn-whats{font-size:.95rem}.hero{min-height:auto;padding:120px 0 64px}.hero-grid{gap:28px}.hero-content h1{letter-spacing:-1.5px}.hero-content p{font-size:1rem}.section{padding:64px 0}.benefits-grid,.properties-grid,.footer-grid{gap:18px}.property-card{border-radius:24px}.property-content{padding:22px}.property-info{gap:8px}.info-box{padding:10px 6px;font-size:.78rem}.details-page{padding:110px 0 64px}.details-grid{gap:24px}}
-@media(max-width:420px){.container{width:calc(100% - 20px)}.brand-logo img{width:44px;height:34px}.brand-logo strong{font-size:.98rem;max-width:210px}.mobile-btn{font-size:1.35rem}.menu{top:68px;left:10px;right:10px}.hero-content h1{font-size:2.35rem;line-height:1.02}.hero-content p{font-size:.94rem;line-height:1.65}.btn-primary,.btn-secondary,.btn-whats{padding:14px 18px;font-size:.92rem}.hero-card{padding:10px;border-radius:22px}.hero-card img{border-radius:16px;max-height:280px}.section-title{font-size:2rem;letter-spacing:-1.4px}.section-text{font-size:.95rem}.benefit-card{padding:22px;border-radius:22px}.property-content h3{font-size:1.12rem}.price{font-size:1.42rem}.property-info{grid-template-columns:repeat(2,1fr)}.financing{border-radius:28px;padding:30px 18px}.about-image img{height:auto;max-height:360px}.map-card{padding:10px;border-radius:22px}.map-card iframe{height:300px;border-radius:16px}.cta-final{padding:84px 0}footer{padding:58px 0 24px}.whatsapp-float{width:56px;height:56px;font-size:1.75rem;right:14px;bottom:14px}}
+body{
+font-family:'Montserrat',sans-serif;
+background:var(--stone);
+color:var(--text);
+overflow-x:hidden;
+}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+.container{width:min(1200px,calc(100% - 32px));margin:auto}
+
+.stone-bg{
+position:relative;
+background:
+linear-gradient(135deg,rgba(255,255,255,.72),rgba(244,241,235,.86)),
+radial-gradient(circle at 20% 18%,rgba(191,184,171,.28),transparent 18%),
+radial-gradient(circle at 82% 62%,rgba(176,162,144,.20),transparent 22%),
+linear-gradient(120deg,rgba(130,120,105,.09) 0 1px,transparent 1px 100%),
+linear-gradient(30deg,rgba(130,120,105,.055) 0 1px,transparent 1px 100%);
+background-size:auto,680px 680px,720px 720px,140px 140px,180px 180px;
+overflow:hidden;
+}
+.stone-bg:before,
+.stone-bg:after{
+content:"";
+position:absolute;
+width:430px;
+height:430px;
+border:2px solid rgba(183,146,95,.14);
+border-radius:45% 55% 48% 52%;
+pointer-events:none;
+z-index:0;
+}
+.stone-bg:before{left:-310px;top:70px;transform:rotate(-22deg)}
+.stone-bg:after{right:-300px;bottom:60px;transform:rotate(25deg)}
+.stone-bg .container{position:relative;z-index:2}
+
+header{
+position:fixed;
+width:100%;
+top:0;
+z-index:999;
+background:rgba(8,17,34,.94);
+backdrop-filter:blur(10px);
+border-bottom:1px solid rgba(255,255,255,.08);
+}
+.navbar{display:flex;align-items:center;justify-content:space-between;padding:16px 0;gap:20px}
+.brand-logo{display:flex;align-items:center;gap:12px;color:#fff}
+.brand-logo img{width:46px;height:46px;object-fit:contain}
+.brand-logo strong{
+font-family:"Arial MT Pro",Arial,sans-serif;
+font-size:1.35rem;
+letter-spacing:-.04em;
+font-weight:700;
+}
+.menu{display:flex;gap:24px;align-items:center}
+.menu a{color:#fff;font-weight:600;font-size:.95rem;transition:.3s}
+.menu a:hover{color:var(--gold)}
+.btn-whats{
+background:linear-gradient(135deg,var(--gold),var(--gold2));
+color:var(--navy);
+padding:14px 24px;
+border-radius:999px;
+font-weight:800;
+display:flex;
+align-items:center;
+gap:10px;
+transition:.3s;
+}
+.mobile-btn{display:none;background:none;border:none;color:#fff;font-size:1.5rem}
+
+.hero{
+min-height:100vh;
+background:
+linear-gradient(rgba(8,17,34,.78),rgba(8,17,34,.78)),
+url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+display:flex;
+align-items:center;
+padding-top:100px;
+}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center}
+.hero-content h1{font-size:clamp(2.8rem,6vw,5.3rem);line-height:.95;color:#fff;margin-bottom:24px;letter-spacing:-3px}
+.hero-content h1 span{color:var(--gold)}
+.hero-content p{color:rgba(255,255,255,.85);font-size:1.05rem;line-height:1.8;margin-bottom:32px;max-width:650px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:16px}
+.btn-primary{
+background:linear-gradient(135deg,var(--gold),var(--gold2));
+color:var(--navy);
+padding:16px 28px;
+border-radius:999px;
+font-weight:800;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+border:none;
+cursor:pointer;
+}
+.btn-secondary{
+border:1px solid rgba(255,255,255,.2);
+background:rgba(255,255,255,.08);
+color:#fff;
+padding:16px 28px;
+border-radius:999px;
+font-weight:700;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+}
+.hero-card{background:rgba(255,255,255,.08);padding:18px;border-radius:32px;backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.1)}
+.hero-card img{height:560px;width:100%;object-fit:cover;border-radius:24px}
+
+.section{padding:90px 0}
+.section-title{font-size:clamp(2rem,4vw,3.5rem);line-height:1;margin-bottom:18px;letter-spacing:-2px;color:var(--navy)}
+.section-title span{color:var(--gold2)}
+.section-text{color:var(--muted);line-height:1.8;max-width:760px}
+
+.benefits-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:50px}
+.benefit-card{background:#fff;padding:30px;border-radius:26px;box-shadow:var(--shadow);transition:.3s}
+.benefit-card:hover{transform:translateY(-6px)}
+.benefit-card i{font-size:2rem;color:var(--gold2);margin-bottom:18px}
+.benefit-card h3{margin-bottom:12px;font-size:1.1rem}
+.benefit-card p{color:var(--muted);line-height:1.7;font-size:.95rem}
+
+.property-filters{display:flex;flex-wrap:wrap;gap:12px;margin-top:35px}
+.filter-btn{
+border:1px solid rgba(183,146,95,.28);
+background:#fff;
+color:var(--navy);
+padding:13px 22px;
+border-radius:999px;
+font-weight:800;
+cursor:pointer;
+}
+.filter-btn.active{
+background:linear-gradient(135deg,var(--gold),var(--gold2));
+color:var(--navy);
+border-color:transparent;
+}
+
+.properties-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:35px}
+.property-card{background:#fff;border-radius:28px;overflow:hidden;box-shadow:var(--shadow);position:relative}
+.property-image{position:relative;overflow:hidden;height:280px}
+.property-image img{width:100%;height:100%;object-fit:cover;transition:.4s}
+.overlay{position:absolute;inset:0;background:rgba(8,17,34,.72);display:flex;align-items:center;justify-content:center;opacity:0;transition:.3s;color:#fff;font-weight:800;text-align:center;padding:20px}
+.property-card:hover .overlay{opacity:1}
+.property-card:hover img{transform:scale(1.08)}
+.property-content{padding:26px}
+.property-type{font-size:.82rem;font-weight:800;color:var(--gold2);margin-bottom:10px;text-transform:uppercase}
+.property-content h3{font-size:1.3rem;margin-bottom:12px}
+.location{color:var(--muted);font-size:.95rem;margin-bottom:18px}
+.price{font-size:1.7rem;font-weight:900;color:var(--navy);margin-bottom:18px}
+.property-info{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.info-box{background:#f4f4f4;padding:12px;border-radius:14px;text-align:center;font-size:.82rem;font-weight:700;color:var(--navy)}
+.info-box i{display:block;margin-bottom:8px;color:var(--gold2);font-size:1rem}
+.property-btn{width:100%;border:none;background:linear-gradient(135deg,var(--gold),var(--gold2));padding:16px;border-radius:16px;font-weight:800;cursor:pointer;font-size:1rem}
+
+.financing{background:var(--navy);color:#fff;border-radius:40px;padding:60px;display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center;margin-top:40px}
+.financing h3{font-size:2.4rem;margin-bottom:18px}
+.financing p{color:rgba(255,255,255,.8);line-height:1.8}
+
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+.about-image img{border-radius:30px;height:550px;object-fit:cover;width:100%}
+.about-list{margin-top:30px;display:grid;gap:16px}
+.about-list div{display:flex;gap:14px;align-items:flex-start;font-weight:700;color:var(--navy)}
+.about-list i{color:var(--gold2);margin-top:3px}
+
+.map-card{margin-top:50px;background:#fff;padding:18px;border-radius:32px;box-shadow:var(--shadow)}
+.map-card iframe{width:100%;height:450px;border:none;border-radius:24px}
+
+.faq-grid{display:grid;gap:18px;margin-top:50px}
+.faq-item{background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.05)}
+.faq-question{width:100%;border:none;background:#fff;padding:24px;display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:1rem;cursor:pointer}
+.faq-answer{max-height:0;overflow:hidden;transition:.3s}
+.faq-answer p{padding:0 24px 24px;color:var(--muted);line-height:1.8}
+.faq-item.active .faq-answer{max-height:220px}
+
+.cta-final{
+background:
+linear-gradient(rgba(8,17,34,.68),rgba(8,17,34,.68)),
+url('assets/cta-final-citta.jpeg') center/cover no-repeat;
+text-align:center;
+color:#fff;
+padding:120px 0;
+}
+.cta-final h2{font-size:clamp(2.3rem,5vw,4.5rem);line-height:1;margin-bottom:22px;letter-spacing:-3px}
+.cta-final p{max-width:760px;margin:auto;line-height:1.8;color:rgba(255,255,255,.82);margin-bottom:34px}
+
+footer{background:var(--navy);color:#fff;padding:80px 0 30px}
+.footer-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:40px;margin-bottom:50px}
+.footer-title{font-size:1.2rem;margin-bottom:20px}
+.footer-grid p,.footer-grid li,.footer-grid a{color:rgba(255,255,255,.75);line-height:1.8;font-size:.95rem}
+.footer-grid ul{list-style:none;display:grid;gap:12px}
+.footer-bottom{padding-top:30px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;font-size:.9rem}
+
+.whatsapp-float{position:fixed;right:20px;bottom:20px;width:65px;height:65px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#fff;z-index:999;box-shadow:0 15px 40px rgba(37,211,102,.4)}
+
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;padding:20px;z-index:9999}
+.modal.active{display:flex}
+.modal-content{background:#fff;width:100%;max-width:520px;border-radius:30px;padding:34px;position:relative;max-height:90vh;overflow:auto}
+.close-modal{position:absolute;right:20px;top:18px;background:none;border:none;font-size:1.5rem;cursor:pointer}
+.modal h3{font-size:2rem;margin-bottom:12px;color:var(--navy)}
+.modal p{color:var(--muted);line-height:1.7;margin-bottom:24px}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;margin-bottom:8px;font-weight:700}
+.form-group input,.form-group select{width:100%;padding:16px;border-radius:14px;border:1px solid #ddd;font-size:1rem}
+.modal-submit{width:100%;border:none;padding:18px;border-radius:16px;background:linear-gradient(135deg,var(--gold),var(--gold2));font-size:1rem;font-weight:800;cursor:pointer;margin-top:10px}
+
+.details-page{display:none;padding:140px 0 80px}
+.details-page.active{display:block}
+.details-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px}
+.gallery-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.gallery-grid img{height:260px;width:100%;object-fit:cover;border-radius:20px}
+.details-card{background:#fff;padding:34px;border-radius:30px;box-shadow:var(--shadow)}
+.details-card h2{font-size:2.3rem;margin-bottom:12px}
+.details-price{font-size:2.2rem;font-weight:900;margin-bottom:24px;color:var(--navy)}
+.details-desc{color:var(--muted);line-height:1.9;margin-bottom:28px}
+.details-features{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:28px}
+.feature-box{background:#f4f4f4;padding:16px;border-radius:16px;font-weight:700}
+.feature-box i{color:var(--gold2);margin-right:8px}
+.contact-buttons{display:flex;flex-wrap:wrap;gap:14px}
+
+.empty-properties{
+grid-column:1/-1;
+background:#fff;
+border-radius:24px;
+padding:34px;
+text-align:center;
+color:var(--muted);
+box-shadow:var(--shadow);
+}
+
+@media(max-width:1100px){
+.hero-grid,.about-grid,.details-grid{grid-template-columns:1fr}
+.benefits-grid{grid-template-columns:repeat(2,1fr)}
+.properties-grid{grid-template-columns:repeat(2,1fr)}
+.footer-grid{grid-template-columns:repeat(2,1fr)}
+.financing{grid-template-columns:1fr;text-align:center}
+}
+@media(max-width:860px){
+.mobile-btn{display:block}
+.menu{position:fixed;top:82px;left:16px;right:16px;background:var(--navy);border-radius:24px;padding:20px;flex-direction:column;display:none;align-items:stretch}
+.menu.active{display:flex}
+.hero{padding-bottom:80px}
+.hero-card img{height:400px}
+.properties-grid,.benefits-grid,.footer-grid,.gallery-grid{grid-template-columns:1fr}
+.property-info{grid-template-columns:repeat(2,1fr)}
+.details-features{grid-template-columns:1fr}
+}
+@media(max-width:540px){
+.hero-content h1{font-size:2.8rem}
+.section-title{font-size:2.3rem}
+.hero-actions,.contact-buttons{flex-direction:column}
+.btn-primary,.btn-secondary,.btn-whats{width:100%}
+.hero-card img{height:320px}
+.financing{padding:36px 26px}
+.financing h3{font-size:2rem}
+.modal-content{padding:28px 22px}
+.details-card{padding:26px}
+.details-card h2{font-size:1.9rem}
+.details-price{font-size:1.8rem}
+.gallery-grid img{height:220px}
+.map-card iframe{height:320px}
+.brand-logo strong{font-size:1.1rem}
+}
+
+
+/* Correções finais de responsividade preservando o layout original */
+body{max-width:100vw;overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+.properties-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))}
+.property-image{aspect-ratio:16/10;height:auto}
+.property-image img{height:100%}
+.hero-card img{height:auto;max-height:560px}
+.loading-properties{grid-column:1/-1;background:#fff;border-radius:24px;padding:34px;text-align:center;color:var(--muted);box-shadow:var(--shadow)}
+@media(max-width:768px){
+  .navbar{padding:10px 0}
+  .brand-logo{min-width:0;gap:10px}
+  .brand-logo strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:230px}
+  .hero{min-height:auto;padding:120px 0 64px}
+  .hero-grid{gap:28px}
+  .hero-content h1{letter-spacing:-1.5px}
+  .section{padding:64px 0}
+  .property-content{padding:22px}
+  .info-box{padding:10px 6px;font-size:.78rem}
+}
+@media(max-width:540px){
+  .container{width:calc(100% - 24px)}
+  .hero-card img{height:auto;max-height:320px}
+  .brand-logo img{width:48px;height:36px}
+  .brand-logo strong{font-size:1.05rem;max-width:210px}
+}
+@media(max-width:420px){
+  .container{width:calc(100% - 20px)}
+  .hero-content h1{font-size:2.35rem;line-height:1.02}
+  .hero-content p{font-size:.94rem;line-height:1.65}
+  .btn-primary,.btn-secondary,.btn-whats{padding:14px 18px;font-size:.92rem}
+  .hero-card{padding:10px;border-radius:22px}
+  .hero-card img{border-radius:16px;max-height:280px}
+  .section-title{font-size:2rem;letter-spacing:-1.4px}
+  .benefit-card{padding:22px;border-radius:22px}
+  .whatsapp-float{width:56px;height:56px;font-size:1.75rem;right:14px;bottom:14px}
+}
+
 </style>
 </head>
+
 <body>
-<header><div class="container navbar"><a href="#inicio" class="brand-logo"><img id="siteLogo" src="assets/citta-logos.png" alt="Città Imobiliária"><strong>Città Imobiliária</strong></a><nav class="menu" id="menu"><a href="#inicio">Início</a><a href="#imoveis">Imóveis</a><a href="#sobre">Sobre</a><a href="#financiamento">Financiamento</a><a href="#contato">Contato</a><a id="headerWhatsapp" href="https://wa.me/5562983280081" target="_blank" class="btn-whats"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a></nav><button class="mobile-btn" id="mobileBtn"><i class="fa-solid fa-bars"></i></button></div></header>
-<section class="hero" id="inicio"><div class="container hero-grid"><div class="hero-content"><h1>Imóveis selecionados com <span>análise e inteligência</span></h1><p>A Città Imobiliária conecta sofisticação, estratégia e atendimento personalizado para encontrar o imóvel ideal em Goiânia, Goianésia e região.</p><div class="hero-actions"><a href="#imoveis" class="btn-primary"><i class="fa-solid fa-building"></i> Ver imóveis</a><a id="heroWhatsapp" href="https://wa.me/5562983280081" target="_blank" class="btn-secondary"><i class="fa-brands fa-whatsapp"></i> Falar com a equipe</a></div></div><div class="hero-card"><img id="heroBanner" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop" alt="Banner principal Città"></div></div></section>
-<section class="section stone-bg"><div class="container"><h2 class="section-title">Por que escolher a <span>Città</span></h2><p class="section-text">Atendimento humanizado, imóveis selecionados e estratégia imobiliária pensada para valorizar seu investimento.</p><div class="benefits-grid"><div class="benefit-card"><i class="fa-solid fa-chart-line"></i><h3>Valorização imobiliária</h3><p>Imóveis com alto potencial de valorização e análise estratégica.</p></div><div class="benefit-card"><i class="fa-solid fa-location-dot"></i><h3>Regiões selecionadas</h3><p>Goiânia, Goianésia e regiões com oportunidades premium.</p></div><div class="benefit-card"><i class="fa-solid fa-user-tie"></i><h3>Consultoria personalizada</h3><p>Atendimento exclusivo para entender seu perfil e necessidade.</p></div><div class="benefit-card"><i class="fa-solid fa-house"></i><h3>Imóveis sofisticados</h3><p>Casas, apartamentos e empreendimentos de alto padrão.</p></div></div></div></section>
-<section class="section stone-bg" id="imoveis"><div class="container"><h2 class="section-title">Imóveis em <span>destaque</span></h2><p class="section-text">Selecionamos imóveis estratégicos para quem busca sofisticação, conforto e valorização.</p><div class="property-filters"><button class="filter-btn active" data-filter="todos">Todos</button><button class="filter-btn" data-filter="Venda">Venda</button><button class="filter-btn" data-filter="Aluguel">Aluguel</button></div><div class="properties-grid" id="propertiesGrid"></div></div></section>
-<section class="section stone-bg" id="financiamento"><div class="container"><div class="financing"><div><h3>Consulte seu financiamento</h3><p>Simule possibilidades de financiamento e refinanciamento imobiliário de forma prática e segura.</p></div><a href="https://imovelcashme.com.br/tk-seguros/" target="_blank" class="btn-primary"><i class="fa-solid fa-calculator"></i> Consultar financiamento</a></div></div></section>
-<section class="section stone-bg" id="sobre"><div class="container about-grid"><div><h2 class="section-title">Sobre a <span>Città Imobiliária</span></h2><p class="section-text">A Città Imobiliária atua com foco em imóveis selecionados, análise estratégica e atendimento sofisticado para clientes que buscam qualidade, valorização e segurança.<br><br>Com atuação em Goiânia, Goianésia e região, trabalhamos com consultoria personalizada e oportunidades imobiliárias alinhadas ao seu perfil.</p><div class="about-list"><div><i class="fa-solid fa-check"></i> Estratégia e valorização imobiliária</div><div><i class="fa-solid fa-check"></i> Imóveis selecionados com análise e inteligência</div><div><i class="fa-solid fa-check"></i> Goiânia | Goianésia e região</div><div><i class="fa-solid fa-check"></i> Consultoria personalizada</div><div><i class="fa-solid fa-check"></i> CJ: 47.645</div></div></div><div class="about-image"><img src="https://images.unsplash.com/photo-1600585154084-4e5fe7c39198?q=80&w=1200&auto=format&fit=crop" alt="Sobre a Città"></div></div></section>
-<section class="section stone-bg" id="contato"><div class="container"><h2 class="section-title">Entre em <span>contato</span></h2><p class="section-text">Fale diretamente com a equipe da Città Imobiliária.</p><div class="benefits-grid"><div class="benefit-card"><i class="fa-brands fa-whatsapp"></i><h3>WhatsApp</h3><p><a id="contactPhone" href="https://wa.me/5562983280081" target="_blank">(62) 98328-0081</a></p></div><div class="benefit-card"><i class="fa-solid fa-envelope"></i><h3>E-mail</h3><p><a id="contactEmail" href="mailto:comercial@cittaimobiliaria.com.br">comercial@cittaimobiliaria.com.br</a></p></div><div class="benefit-card"><i class="fa-brands fa-instagram"></i><h3>Instagram</h3><p><a id="contactInstagram" href="https://www.instagram.com/cittaimob?igsh=dTM2eHA1c3lyMTVj" target="_blank">@cittaimob</a></p></div><div class="benefit-card"><i class="fa-solid fa-location-dot"></i><h3>Atendimento</h3><p id="contactRegion">Goiânia | Goianésia e região</p></div></div><div class="map-card"><iframe src="https://www.google.com/maps?q=Goi%C3%A2nia,GO&output=embed"></iframe></div></div></section>
-<section class="section stone-bg"><div class="container"><h2 class="section-title">Perguntas <span>frequentes</span></h2><div class="faq-grid"><div class="faq-item active"><button class="faq-question">Como funciona o atendimento da Città?<i class="fa-solid fa-plus"></i></button><div class="faq-answer"><p>Nosso atendimento é personalizado para entender seu perfil e indicar imóveis alinhados aos seus objetivos.</p></div></div><div class="faq-item"><button class="faq-question">Vocês auxiliam no financiamento?<i class="fa-solid fa-plus"></i></button><div class="faq-answer"><p>Sim. Também oferecemos direcionamento para consulta de financiamento e refinanciamento imobiliário.</p></div></div><div class="faq-item"><button class="faq-question">Atendem apenas Goiânia?<i class="fa-solid fa-plus"></i></button><div class="faq-answer"><p>Atendemos Goiânia, Goianésia e região com consultoria personalizada.</p></div></div></div></div></section>
-<section class="cta-final"><div class="container"><h2>Encontre seu próximo imóvel com estratégia e sofisticação.</h2><p>A Città Imobiliária conecta você aos melhores imóveis com análise inteligente e atendimento personalizado.</p><a id="ctaWhatsapp" href="https://wa.me/5562983280081" target="_blank" class="btn-primary"><i class="fa-brands fa-whatsapp"></i> Falar com a imobiliária</a></div></section>
-<footer><div class="container"><div class="footer-grid"><div><a href="#inicio" class="brand-logo"><img id="footerLogo" src="assets/citta-logos.png" alt="Città Imobiliária"><strong>Città Imobiliária</strong></a><p>Estratégia e valorização imobiliária.<br>Imóveis selecionados com análise e inteligência.<br>Consultoria personalizada.<br>CJ: 47.645</p></div><div><h3 class="footer-title">Contato</h3><ul><li><a id="footerWhatsapp" href="https://wa.me/5562983280081" target="_blank">WhatsApp</a></li><li><a id="footerEmail" href="mailto:comercial@cittaimobiliaria.com.br">E-mail</a></li><li><a id="footerInstagram" href="https://www.instagram.com/cittaimob?igsh=dTM2eHA1c3lyMTVj" target="_blank">Instagram</a></li></ul></div><div><h3 class="footer-title">Regiões</h3><ul><li>Goiânia</li><li>Goianésia</li><li>Região metropolitana</li></ul></div><div><h3 class="footer-title">Links rápidos</h3><ul><li><a href="#inicio">Início</a></li><li><a href="#imoveis">Imóveis</a></li><li><a href="#sobre">Sobre</a></li><li><a href="#contato">Contato</a></li></ul></div></div><div class="footer-bottom"><span>© 2026 Città Imobiliária. Todos os direitos reservados.</span><span>Desenvolvido por Pedro Paulo.</span></div></div></footer>
-<div class="modal" id="leadModal"><div class="modal-content"><button class="close-modal" id="closeModal"><i class="fa-solid fa-xmark"></i></button><h3>Tenho interesse</h3><p>Preencha seus dados para acessar mais informações do imóvel.</p><form id="leadForm"><input type="hidden" id="selectedProperty"><div class="form-group"><label>Nome completo</label><input id="leadName" type="text" required></div><div class="form-group"><label>E-mail</label><input id="leadEmail" type="email" required></div><div class="form-group"><label>Telefone / WhatsApp</label><input id="leadPhone" type="tel" required></div><div class="form-group"><label>Em quanto tempo pretende adquirir um imóvel?</label><select id="leadTimeline" required><option value="">Selecione</option><option>Imediatamente</option><option>Daqui 3 meses</option><option>Daqui 6 meses</option><option>Estou apenas avaliando</option></select></div><button type="submit" class="modal-submit">Acessar detalhes do imóvel</button></form></div></div>
-<section class="details-page stone-bg" id="detailsPage"><div class="container details-grid" id="detailsContent"></div></section><a id="floatWhatsapp" href="https://wa.me/5562983280081" target="_blank" class="whatsapp-float"><i class="fa-brands fa-whatsapp"></i></a>
+
+<header>
+<div class="container navbar">
+<a href="#inicio" class="brand-logo">
+<img id="siteLogo" src="assets/citta-logos.png" alt="Città Imobiliária">
+<strong>Città Imobiliária</strong>
+</a>
+
+<nav class="menu" id="menu">
+<a href="#inicio">Início</a>
+<a href="#imoveis">Imóveis</a>
+<a href="#sobre">Sobre</a>
+<a href="#financiamento">Financiamento</a>
+<a href="#contato">Contato</a>
+<a id="headerWhatsapp" href="https://wa.me/5562983280081" target="_blank" class="btn-whats">
+<i class="fa-brands fa-whatsapp"></i> WhatsApp
+</a>
+</nav>
+
+<button class="mobile-btn" id="mobileBtn"><i class="fa-solid fa-bars"></i></button>
+</div>
+</header>
+
+<section class="hero" id="inicio">
+<div class="container hero-grid">
+<div class="hero-content">
+<h1>Imóveis selecionados com <span>análise e inteligência</span></h1>
+<p>A Città Imobiliária conecta sofisticação, estratégia e atendimento personalizado para encontrar o imóvel ideal em Goiânia, Goianésia e região.</p>
+<div class="hero-actions">
+<a href="#imoveis" class="btn-primary"><i class="fa-solid fa-building"></i> Ver imóveis</a>
+<a id="heroWhatsapp" href="https://wa.me/5562983280081" target="_blank" class="btn-secondary"><i class="fa-brands fa-whatsapp"></i> Falar com a equipe</a>
+</div>
+</div>
+
+<div class="hero-card">
+<img id="heroBanner" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop" alt="Banner principal Città">
+</div>
+</div>
+</section>
+
+<section class="section stone-bg">
+<div class="container">
+<h2 class="section-title">Por que escolher a <span>Città</span></h2>
+<p class="section-text">Atendimento humanizado, imóveis selecionados e estratégia imobiliária pensada para valorizar seu investimento.</p>
+
+<div class="benefits-grid">
+<div class="benefit-card"><i class="fa-solid fa-chart-line"></i><h3>Valorização imobiliária</h3><p>Imóveis com alto potencial de valorização e análise estratégica.</p></div>
+<div class="benefit-card"><i class="fa-solid fa-location-dot"></i><h3>Regiões selecionadas</h3><p>Goiânia, Goianésia e regiões com oportunidades premium.</p></div>
+<div class="benefit-card"><i class="fa-solid fa-user-tie"></i><h3>Consultoria personalizada</h3><p>Atendimento exclusivo para entender seu perfil e necessidade.</p></div>
+<div class="benefit-card"><i class="fa-solid fa-house"></i><h3>Imóveis sofisticados</h3><p>Casas, apartamentos e empreendimentos de alto padrão.</p></div>
+</div>
+</div>
+</section>
+
+<section class="section stone-bg" id="imoveis">
+<div class="container">
+<h2 class="section-title">Imóveis em <span>destaque</span></h2>
+<p class="section-text">Selecionamos imóveis estratégicos para quem busca sofisticação, conforto e valorização.</p>
+
+<div class="property-filters">
+<button class="filter-btn active" data-filter="todos">Todos</button>
+<button class="filter-btn" data-filter="Venda">Venda</button>
+<button class="filter-btn" data-filter="Aluguel">Aluguel</button>
+</div>
+
+<div class="properties-grid" id="propertiesGrid"></div>
+</div>
+</section>
+
+<section class="section stone-bg" id="financiamento">
+<div class="container">
+<div class="financing">
+<div>
+<h3>Consulte seu financiamento</h3>
+<p>Simule possibilidades de financiamento e refinanciamento imobiliário de forma prática e segura.</p>
+</div>
+<a href="https://imovelcashme.com.br/tk-seguros/" target="_blank" class="btn-primary">
+<i class="fa-solid fa-calculator"></i> Consultar financiamento
+</a>
+</div>
+</div>
+</section>
+
+<section class="section stone-bg" id="sobre">
+<div class="container about-grid">
+<div>
+<h2 class="section-title">Sobre a <span>Città Imobiliária</span></h2>
+<p class="section-text">A Città Imobiliária atua com foco em imóveis selecionados, análise estratégica e atendimento sofisticado para clientes que buscam qualidade, valorização e segurança.<br><br>Com atuação em Goiânia, Goianésia e região, trabalhamos com consultoria personalizada e oportunidades imobiliárias alinhadas ao seu perfil.</p>
+
+<div class="about-list">
+<div><i class="fa-solid fa-check"></i> Estratégia e valorização imobiliária</div>
+<div><i class="fa-solid fa-check"></i> Imóveis selecionados com análise e inteligência</div>
+<div><i class="fa-solid fa-check"></i> Goiânia | Goianésia e região</div>
+<div><i class="fa-solid fa-check"></i> Consultoria personalizada</div>
+<div><i class="fa-solid fa-check"></i> CJ: 47.645</div>
+</div>
+</div>
+
+<div class="about-image">
+<img src="https://images.unsplash.com/photo-1600585154084-4e5fe7c39198?q=80&w=1200&auto=format&fit=crop" alt="Sobre a Città">
+</div>
+</div>
+</section>
+
+<section class="section stone-bg" id="contato">
+<div class="container">
+<h2 class="section-title">Entre em <span>contato</span></h2>
+<p class="section-text">Fale diretamente com a equipe da Città Imobiliária.</p>
+
+<div class="benefits-grid">
+<div class="benefit-card">
+<i class="fa-brands fa-whatsapp"></i>
+<h3>WhatsApp</h3>
+<p><a id="contactPhone" href="https://wa.me/5562983280081" target="_blank">(62) 98328-0081</a></p>
+</div>
+
+<div class="benefit-card">
+<i class="fa-solid fa-envelope"></i>
+<h3>E-mail</h3>
+<p><a id="contactEmail" href="mailto:comercial@cittaimobiliaria.com.br">comercial@cittaimobiliaria.com.br</a></p>
+</div>
+
+<div class="benefit-card">
+<i class="fa-brands fa-instagram"></i>
+<h3>Instagram</h3>
+<p><a id="contactInstagram" href="https://www.instagram.com/cittaimob?igsh=dTM2eHA1c3lyMTVj" target="_blank">@cittaimob</a></p>
+</div>
+
+<div class="benefit-card">
+<i class="fa-solid fa-location-dot"></i>
+<h3>Atendimento</h3>
+<p id="contactRegion">Goiânia | Goianésia e região</p>
+</div>
+</div>
+
+<div class="map-card">
+<iframe src="https://www.google.com/maps?q=Goi%C3%A2nia,GO&output=embed"></iframe>
+</div>
+</div>
+</section>
+
+<section class="section stone-bg">
+<div class="container">
+<h2 class="section-title">Perguntas <span>frequentes</span></h2>
+
+<div class="faq-grid">
+<div class="faq-item active">
+<button class="faq-question">Como funciona o atendimento da Città?<i class="fa-solid fa-plus"></i></button>
+<div class="faq-answer"><p>Nosso atendimento é personalizado para entender seu perfil e indicar imóveis alinhados aos seus objetivos.</p></div>
+</div>
+
+<div class="faq-item">
+<button class="faq-question">Vocês auxiliam no financiamento?<i class="fa-solid fa-plus"></i></button>
+<div class="faq-answer"><p>Sim. Também oferecemos direcionamento para consulta de financiamento e refinanciamento imobiliário.</p></div>
+</div>
+
+<div class="faq-item">
+<button class="faq-question">Atendem apenas Goiânia?<i class="fa-solid fa-plus"></i></button>
+<div class="faq-answer"><p>Atendemos Goiânia, Goianésia e região com consultoria personalizada.</p></div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="cta-final">
+<div class="container">
+<h2>Encontre seu próximo imóvel com estratégia e sofisticação.</h2>
+<p>A Città Imobiliária conecta você aos melhores imóveis com análise inteligente e atendimento personalizado.</p>
+<a id="ctaWhatsapp" href="https://wa.me/5562983280081" target="_blank" class="btn-primary"><i class="fa-brands fa-whatsapp"></i> Falar com a imobiliária</a>
+</div>
+</section>
+
+<footer>
+<div class="container">
+<div class="footer-grid">
+<div>
+<a href="#inicio" class="brand-logo">
+<img id="footerLogo" src="assets/citta-logos.png" alt="Città Imobiliária">
+<strong>Città Imobiliária</strong>
+</a>
+<p>Estratégia e valorização imobiliária.<br>Imóveis selecionados com análise e inteligência.<br>Consultoria personalizada.<br>CJ: 47.645</p>
+</div>
+
+<div>
+<h3 class="footer-title">Contato</h3>
+<ul>
+<li><a id="footerWhatsapp" href="https://wa.me/5562983280081" target="_blank">WhatsApp</a></li>
+<li><a id="footerEmail" href="mailto:comercial@cittaimobiliaria.com.br">E-mail</a></li>
+<li><a id="footerInstagram" href="https://www.instagram.com/cittaimob?igsh=dTM2eHA1c3lyMTVj" target="_blank">Instagram</a></li>
+</ul>
+</div>
+
+<div>
+<h3 class="footer-title">Regiões</h3>
+<ul>
+<li>Goiânia</li>
+<li>Goianésia</li>
+<li>Região metropolitana</li>
+</ul>
+</div>
+
+<div>
+<h3 class="footer-title">Links rápidos</h3>
+<ul>
+<li><a href="#inicio">Início</a></li>
+<li><a href="#imoveis">Imóveis</a></li>
+<li><a href="#sobre">Sobre</a></li>
+<li><a href="#contato">Contato</a></li>
+</ul>
+</div>
+</div>
+
+<div class="footer-bottom">
+<span>© 2026 Città Imobiliária. Todos os direitos reservados.</span>
+<span>Desenvolvido por Pedro Paulo.</span>
+</div>
+</div>
+</footer>
+
+<div class="modal" id="leadModal">
+<div class="modal-content">
+<button class="close-modal" id="closeModal"><i class="fa-solid fa-xmark"></i></button>
+<h3>Tenho interesse</h3>
+<p>Preencha seus dados para acessar mais informações do imóvel.</p>
+
+<form id="leadForm">
+<input type="hidden" id="selectedProperty">
+<div class="form-group"><label>Nome completo</label><input id="leadName" type="text" required></div>
+<div class="form-group"><label>E-mail</label><input id="leadEmail" type="email" required></div>
+<div class="form-group"><label>Telefone / WhatsApp</label><input id="leadPhone" type="tel" required></div>
+<div class="form-group">
+<label>Em quanto tempo pretende adquirir um imóvel?</label>
+<select id="leadTimeline" required>
+<option value="">Selecione</option>
+<option>Imediatamente</option>
+<option>Daqui 3 meses</option>
+<option>Daqui 6 meses</option>
+<option>Estou apenas avaliando</option>
+</select>
+</div>
+<button type="submit" class="modal-submit">Acessar detalhes do imóvel</button>
+</form>
+</div>
+</div>
+
+<section class="details-page stone-bg" id="detailsPage">
+<div class="container details-grid" id="detailsContent"></div>
+</section>
+
+<a id="floatWhatsapp" href="https://wa.me/5562983280081" target="_blank" class="whatsapp-float">
+<i class="fa-brands fa-whatsapp"></i>
+</a>
+
 <script>
 const SUPABASE_URL = "https://rnmifesvznyyrxhcxcic.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_d2HM-lPtJ45sXh135vPT_A_qsqh9kLB";
-const fallbackImage = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=900&auto=format&fit=crop";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-let db = null;
+const fallbackImage = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=900&auto=format&fit=crop";
+const defaultLogo = "assets/citta-logos.png";
+
 let settings = {
-  name: "Città Imobiliária",
-  whatsapp: "+55 62 98328-0081",
-  email: "comercial@cittaimobiliaria.com.br",
-  instagram: "https://www.instagram.com/cittaimob?igsh=dTM2eHA1c3lyMTVj",
-  cj: "CJ: 47.645",
-  region: "Goiânia | Goianésia e região",
-  logo: "assets/citta-logos.png",
-  hero_banner: fallbackImage
+  name:"Città Imobiliária",
+  whatsapp:"+55 62 98328-0081",
+  email:"comercial@cittaimobiliaria.com.br",
+  instagram:"https://www.instagram.com/cittaimob?igsh=dTM2eHA1c3lyMTVj",
+  cj:"CJ: 47.645",
+  region:"Goiânia | Goianésia e região",
+  logo:defaultLogo,
+  hero_banner:fallbackImage
 };
+
 let properties = [];
 let currentFilter = "todos";
 let currentProperty = null;
 
-function $(id){ return document.getElementById(id); }
-function onlyNumbers(v){ return String(v || "").replace(/\D/g, ""); }
+function onlyNumbers(v){
+  return String(v || "").replace(/\D/g,"");
+}
+
 function whatsappLink(){
   const phone = onlyNumbers(settings.whatsapp || "5562983280081");
   const finalPhone = phone.startsWith("55") ? phone : "55" + phone;
   return "https://wa.me/" + finalPhone;
 }
-function normalizeArray(value){
-  if (Array.isArray(value)) return value;
-  if (typeof value === "string" && value.trim()) {
-    try {
+
+function safeJsonArray(value){
+  if(Array.isArray(value)) return value;
+  if(typeof value === "string" && value.trim()){
+    try{
       const parsed = JSON.parse(value);
       return Array.isArray(parsed) ? parsed : [];
-    } catch (_) {
-      return [value];
+    }catch(e){
+      return value.startsWith("http") ? [value] : [];
     }
   }
   return [];
 }
+
 function normalizeProperty(p){
-  const images = normalizeArray(p.images).filter(Boolean);
-  const features = normalizeArray(p.features).filter(Boolean);
-  const cover = Number.isInteger(p.cover_index) ? p.cover_index : Number.isInteger(p.coverIndex) ? p.coverIndex : 0;
+  const images = safeJsonArray(p.images).filter(Boolean);
+  const features = safeJsonArray(p.features).filter(Boolean);
+  const coverIndex = Number.isFinite(Number(p.cover_index)) ? Number(p.cover_index) : 0;
   return {
     ...p,
     images: images.length ? images : [fallbackImage],
     features,
-    cover_index: Math.max(0, cover)
+    cover_index: coverIndex
   };
 }
-function showLandingError(message){
-  console.error(message);
-  const grid = $("propertiesGrid");
-  if (grid && !grid.innerHTML.trim()) {
-    grid.innerHTML = `<div class="empty-properties">${message}</div>`;
-  }
-}
-function initSupabase(){
-  if (!window.supabase || !window.supabase.createClient) {
-    showLandingError("Não foi possível carregar a conexão com o Supabase. Atualize a página e tente novamente.");
-    return false;
-  }
-  db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  window.CITTA_SUPABASE_URL = SUPABASE_URL;
-  return true;
-}
+
 async function loadSettings(){
-  if (!db) return;
   const { data, error } = await db
     .from("site_settings")
     .select("*")
-    .eq("id", 1)
+    .order("id", { ascending:true })
+    .limit(1)
     .maybeSingle();
-  if (error) {
-    console.error("Erro ao carregar configurações:", error);
+
+  if(error){
+    console.warn("Configurações não carregadas, usando padrão:", error.message);
     return;
   }
-  if (data) settings = { ...settings, ...data };
+
+  if(data){
+    settings = {
+      ...settings,
+      ...data,
+      logo: data.logo || defaultLogo,
+      hero_banner: data.hero_banner || data.heroBanner || settings.hero_banner
+    };
+  }
 }
+
 async function loadProperties(){
-  if (!db) return;
+  const grid = document.getElementById("propertiesGrid");
+  if(grid){
+    grid.innerHTML = `<div class="loading-properties">Carregando imóveis...</div>`;
+  }
+
   const { data, error } = await db
     .from("properties")
     .select("*")
-    .order("created_at", { ascending: false });
-  if (error) {
+    .order("created_at", { ascending:false });
+
+  if(error){
     console.error("Erro ao carregar imóveis:", error);
     properties = [];
-    showLandingError("Não foi possível carregar os imóveis agora. Tente atualizar a página.");
+    if(grid){
+      grid.innerHTML = `<div class="empty-properties">Não foi possível carregar os imóveis agora. Tente novamente em alguns instantes.</div>`;
+    }
     return;
   }
+
   properties = (data || []).map(normalizeProperty);
-  console.log("Città: imóveis carregados do Supabase", properties);
 }
+
 function applySettings(){
-  const logo = settings.logo || "assets/citta-logos.png";
-  const siteLogo = $("siteLogo");
-  const footerLogo = $("footerLogo");
-  const heroBanner = $("heroBanner");
-  if (siteLogo) siteLogo.src = logo;
-  if (footerLogo) footerLogo.src = logo;
-  if (heroBanner && settings.hero_banner) heroBanner.src = settings.hero_banner;
+  const logo = settings.logo || defaultLogo;
+  if(window.siteLogo) siteLogo.src = logo;
+  if(window.footerLogo) footerLogo.src = logo;
+  if(window.heroBanner && settings.hero_banner) heroBanner.src = settings.hero_banner;
+
   const whats = whatsappLink();
-  ["headerWhatsapp", "heroWhatsapp", "ctaWhatsapp", "floatWhatsapp", "contactPhone", "footerWhatsapp"].forEach(id => {
-    const el = $(id);
-    if (el) el.href = whats;
+  [headerWhatsapp, heroWhatsapp, ctaWhatsapp, floatWhatsapp, contactPhone, footerWhatsapp].forEach(el => {
+    if(el) el.href = whats;
   });
-  const contactPhone = $("contactPhone");
-  const contactEmail = $("contactEmail");
-  const footerEmail = $("footerEmail");
-  const contactInstagram = $("contactInstagram");
-  const footerInstagram = $("footerInstagram");
-  const contactRegion = $("contactRegion");
-  if (contactPhone) contactPhone.textContent = settings.whatsapp || "(62) 98328-0081";
-  if (contactEmail) {
+
+  if(window.contactPhone) contactPhone.textContent = settings.whatsapp || "(62) 98328-0081";
+  if(window.contactEmail){
     contactEmail.textContent = settings.email || "comercial@cittaimobiliaria.com.br";
     contactEmail.href = "mailto:" + (settings.email || "comercial@cittaimobiliaria.com.br");
   }
-  if (footerEmail && contactEmail) footerEmail.href = contactEmail.href;
-  if (contactInstagram) contactInstagram.href = settings.instagram || "#";
-  if (footerInstagram) footerInstagram.href = settings.instagram || "#";
-  if (contactRegion) contactRegion.textContent = settings.region || "Goiânia | Goianésia e região";
+  if(window.footerEmail) footerEmail.href = contactEmail?.href || "mailto:comercial@cittaimobiliaria.com.br";
+  if(window.contactInstagram) contactInstagram.href = settings.instagram || "#";
+  if(window.footerInstagram) footerInstagram.href = settings.instagram || "#";
+  if(window.contactRegion) contactRegion.textContent = settings.region || "Goiânia | Goianésia e região";
 }
+
+function isAvailable(p){
+  const status = String(p.status || "Disponível").toLowerCase();
+  return status === "disponível" || status === "disponivel" || status === "available" || status === "ativo";
+}
+
 function renderProperties(){
-  const grid = $("propertiesGrid");
-  if (!grid) return;
-  const filtered = properties.filter(p => {
-    const isAvailable = (p.status || "Disponível") === "Disponível";
+  const grid = document.getElementById("propertiesGrid");
+  if(!grid) return;
+
+  const availableByFilter = properties.filter(p => {
     const purposeOk = currentFilter === "todos" || p.purpose === currentFilter;
-    return isAvailable && purposeOk && !!p.featured;
+    return isAvailable(p) && purposeOk;
   });
+
+  const featured = availableByFilter.filter(p => p.featured === true);
+  const filtered = featured.length ? featured : availableByFilter;
+
   grid.innerHTML = filtered.length ? filtered.map(p => {
     const coverIndex = Number.isInteger(p.cover_index) ? p.cover_index : 0;
     const img = p.images?.[coverIndex] || p.images?.[0] || fallbackImage;
     return `
-      <div class="property-card" data-purpose="${p.purpose || ""}">
-        <div class="property-image">
-          <img src="${img}" alt="${p.title || "Imóvel Città"}" loading="lazy">
-          <div class="overlay">Clique para acessar mais informações</div>
-        </div>
-        <div class="property-content">
-          <div class="property-type">${p.type || "Imóvel"} • ${p.purpose || ""}</div>
-          <h3>${p.title || "Imóvel Città"}</h3>
-          <div class="location">${p.neighborhood || ""}, ${p.city || ""} - ${p.state || ""}</div>
-          <div class="price">${p.price || "Consulte"}</div>
-          <div class="property-info">
-            <div class="info-box"><i class="fa-solid fa-ruler-combined"></i>${p.area || "-"}</div>
-            <div class="info-box"><i class="fa-solid fa-bed"></i>${p.bedrooms || "0"} quartos</div>
-            <div class="info-box"><i class="fa-solid fa-bath"></i>${p.bathrooms || "0"} banheiros</div>
-            <div class="info-box"><i class="fa-solid fa-car"></i>${p.parking || "0"} vagas</div>
-          </div>
-          <button class="property-btn" type="button" onclick="openLeadModal(${Number(p.id)})">Tenho interesse</button>
-        </div>
-      </div>`;
+<div class="property-card" data-purpose="${p.purpose || ''}">
+  <div class="property-image">
+    <img src="${img}" alt="${p.title || 'Imóvel Città'}" loading="lazy">
+    <div class="overlay">Clique para acessar mais informações</div>
+  </div>
+  <div class="property-content">
+    <div class="property-type">${p.type || 'Imóvel'} • ${p.purpose || ''}</div>
+    <h3>${p.title || 'Imóvel Città'}</h3>
+    <div class="location">${p.neighborhood || ''}${p.neighborhood ? ', ' : ''}${p.city || ''}${p.state ? ' - ' + p.state : ''}</div>
+    <div class="price">${p.price || 'Consulte'}</div>
+    <div class="property-info">
+      <div class="info-box"><i class="fa-solid fa-ruler-combined"></i>${p.area || '-'}</div>
+      <div class="info-box"><i class="fa-solid fa-bed"></i>${p.bedrooms || '0'} quartos</div>
+      <div class="info-box"><i class="fa-solid fa-bath"></i>${p.bathrooms || '0'} banheiros</div>
+      <div class="info-box"><i class="fa-solid fa-car"></i>${p.parking || '0'} vagas</div>
+    </div>
+    <button class="property-btn" type="button" onclick="openLeadModal(${Number(p.id)})">Tenho interesse</button>
+  </div>
+</div>`;
   }).join("") : `<div class="empty-properties">Nenhum imóvel disponível nessa categoria no momento.</div>`;
 }
-window.openLeadModal = function(id){
+
+function openLeadModal(id){
   currentProperty = properties.find(p => Number(p.id) === Number(id));
-  const selectedProperty = $("selectedProperty");
-  const leadModal = $("leadModal");
-  if (selectedProperty) selectedProperty.value = currentProperty?.title || "Imóvel não informado";
-  if (leadModal) leadModal.classList.add("active");
-};
+  if(window.selectedProperty) selectedProperty.value = currentProperty?.title || "Imóvel não informado";
+  if(window.leadModal) leadModal.classList.add("active");
+}
+
 function renderDetails(p){
-  const detailsContent = $("detailsContent");
-  const detailsPage = $("detailsPage");
-  if (!detailsContent || !detailsPage) return;
   const images = Array.isArray(p.images) && p.images.length ? p.images : [fallbackImage];
   detailsContent.innerHTML = `
-    <div><div class="gallery-grid">${images.slice(0,4).map(img => `<img src="${img}" alt="${p.title || "Imóvel Città"}">`).join("")}</div></div>
-    <div class="details-card">
-      <h2>${p.title || "Imóvel Città"}</h2>
-      <div class="location">${p.neighborhood || ""}, ${p.city || ""} - ${p.state || ""}</div>
-      <div class="details-price">${p.price || "Consulte"}</div>
-      <p class="details-desc">${p.description || "Entre em contato para mais informações sobre este imóvel."}</p>
-      <div class="details-features">
-        <div class="feature-box"><i class="fa-solid fa-ruler-combined"></i>${p.area || "-"}</div>
-        <div class="feature-box"><i class="fa-solid fa-bed"></i>${p.bedrooms || "0"} quartos</div>
-        <div class="feature-box"><i class="fa-solid fa-bath"></i>${p.bathrooms || "0"} banheiros</div>
-        <div class="feature-box"><i class="fa-solid fa-car"></i>${p.parking || "0"} vagas</div>
-        ${(p.features || []).slice(0,4).map(f => `<div class="feature-box"><i class="fa-solid fa-check"></i>${f}</div>`).join("")}
-      </div>
-      <div class="contact-buttons">
-        <a href="${whatsappLink()}" target="_blank" class="btn-primary"><i class="fa-brands fa-whatsapp"></i>Falar no WhatsApp</a>
-        <a href="#contato" class="btn-secondary" style="color:#081122;border-color:#ccc;">Entrar em contato</a>
-      </div>
-    </div>`;
+<div>
+  <div class="gallery-grid">
+    ${images.slice(0,4).map(img => `<img src="${img}" alt="${p.title || 'Imóvel Città'}" loading="lazy">`).join("")}
+  </div>
+</div>
+<div class="details-card">
+  <h2>${p.title || 'Imóvel Città'}</h2>
+  <div class="location">${p.neighborhood || ''}${p.neighborhood ? ', ' : ''}${p.city || ''}${p.state ? ' - ' + p.state : ''}</div>
+  <div class="details-price">${p.price || 'Consulte'}</div>
+  <p class="details-desc">${p.description || 'Entre em contato para mais informações sobre este imóvel.'}</p>
+  <div class="details-features">
+    <div class="feature-box"><i class="fa-solid fa-ruler-combined"></i>${p.area || '-'}</div>
+    <div class="feature-box"><i class="fa-solid fa-bed"></i>${p.bedrooms || '0'} quartos</div>
+    <div class="feature-box"><i class="fa-solid fa-bath"></i>${p.bathrooms || '0'} banheiros</div>
+    <div class="feature-box"><i class="fa-solid fa-car"></i>${p.parking || '0'} vagas</div>
+    ${(p.features || []).slice(0,4).map(f => `<div class="feature-box"><i class="fa-solid fa-check"></i>${f}</div>`).join("")}
+  </div>
+  <div class="contact-buttons">
+    <a href="${whatsappLink()}" target="_blank" class="btn-primary"><i class="fa-brands fa-whatsapp"></i>Falar no WhatsApp</a>
+    <a href="#contato" class="btn-secondary" style="color:#081122;border-color:#ccc;">Entrar em contato</a>
+  </div>
+</div>`;
   detailsPage.classList.add("active");
-  window.scrollTo({ top: detailsPage.offsetTop - 80, behavior: "smooth" });
+  window.scrollTo({ top: detailsPage.offsetTop - 80, behavior:"smooth" });
 }
-function bindEvents(){
-  const mobileBtn = $("mobileBtn");
-  const menu = $("menu");
-  const closeModal = $("closeModal");
-  const leadModal = $("leadModal");
-  const leadForm = $("leadForm");
-  if (mobileBtn && menu) mobileBtn.addEventListener("click", () => menu.classList.toggle("active"));
-  document.querySelectorAll(".faq-question").forEach(q => {
-    q.addEventListener("click", () => q.closest(".faq-item")?.classList.toggle("active"));
+
+if(window.mobileBtn){
+  mobileBtn.addEventListener("click", () => menu.classList.toggle("active"));
+}
+
+document.querySelectorAll(".faq-question").forEach(q => {
+  q.addEventListener("click", () => q.closest(".faq-item").classList.toggle("active"));
+});
+
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentFilter = btn.dataset.filter;
+    renderProperties();
   });
-  document.querySelectorAll(".filter-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      currentFilter = btn.dataset.filter || "todos";
-      renderProperties();
-    });
-  });
-  if (closeModal && leadModal) closeModal.addEventListener("click", () => leadModal.classList.remove("active"));
-  window.addEventListener("click", e => {
-    if (e.target === leadModal) leadModal.classList.remove("active");
-  });
-  if (leadForm) {
-    leadForm.addEventListener("submit", async e => {
-      e.preventDefault();
-      if (!db) {
-        alert("Conexão com o banco indisponível. Atualize a página e tente novamente.");
-        return;
-      }
-      const leadName = $("leadName");
-      const leadEmail = $("leadEmail");
-      const leadPhone = $("leadPhone");
-      const leadTimeline = $("leadTimeline");
-      const selectedProperty = $("selectedProperty");
-      const btn = leadForm.querySelector("button[type='submit']");
-      if (btn) {
-        btn.disabled = true;
-        btn.textContent = "Enviando...";
-      }
-      const leadPayload = {
-        name: leadName?.value?.trim() || "",
-        email: leadEmail?.value?.trim() || "",
-        phone: leadPhone?.value?.trim() || "",
-        property: selectedProperty?.value || currentProperty?.title || "Imóvel não informado",
-        timeline: leadTimeline?.value || "Não informado",
-        status: "Novo",
-        notes: "Lead capturado pela landing page."
-      };
-      const { data, error } = await db
-        .from("leads")
-        .insert([leadPayload])
-        .select();
-      console.log("Città: retorno do envio de lead", { data, error, leadPayload });
-      if (btn) {
-        btn.disabled = false;
-        btn.textContent = "Acessar detalhes do imóvel";
-      }
-      if (error) {
-        alert("Erro ao salvar lead: " + (error.message || "erro desconhecido"));
-        console.error("Erro ao salvar lead:", error);
-        return;
-      }
-      if (leadModal) leadModal.classList.remove("active");
-      if (currentProperty) renderDetails(currentProperty);
-      leadForm.reset();
-    });
+});
+
+if(window.closeModal){
+  closeModal.addEventListener("click", () => leadModal.classList.remove("active"));
+}
+
+window.addEventListener("click", (e) => {
+  if(e.target === leadModal) leadModal.classList.remove("active");
+});
+
+leadForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const btn = leadForm.querySelector("button[type='submit']");
+  const originalText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = "Enviando...";
+
+  const leadPayload = {
+    name: leadName.value.trim(),
+    email: leadEmail.value.trim(),
+    phone: leadPhone.value.trim(),
+    property: selectedProperty.value || currentProperty?.title || "Imóvel não informado",
+    timeline: leadTimeline.value,
+    status: "Novo",
+    notes: "Lead capturado pela landing page."
+  };
+
+  const { data, error } = await db
+    .from("leads")
+    .insert([leadPayload])
+    .select();
+
+  btn.disabled = false;
+  btn.textContent = originalText;
+
+  if(error){
+    console.error("Erro ao salvar lead:", error);
+    alert("Erro ao salvar lead: " + (error.message || "verifique a conexão com o banco."));
+    return;
   }
-}
+
+  console.log("Lead salvo com sucesso:", data);
+  leadModal.classList.remove("active");
+
+  if(currentProperty){
+    renderDetails(currentProperty);
+  }
+
+  leadForm.reset();
+});
+
 async function init(){
-  bindEvents();
-  if (!initSupabase()) return;
   await loadSettings();
   await loadProperties();
   applySettings();
   renderProperties();
 }
-document.addEventListener("DOMContentLoaded", init);
+
+init();
 </script>
+
 </body>
 </html>
