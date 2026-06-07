@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root{
@@ -572,27 +573,13 @@ box-shadow:var(--shadow);
 </a>
 
 <script>
-const keys = {
-properties:"citta_admin_properties_v1",
-leads:"citta_admin_leads_v1",
-settings:"citta_admin_settings_v1"
-};
+const SUPABASE_URL = "https://rnmifesvznyyrxhcxcic.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_d2HM-lPtJ45sXh135vPT_A_qsqh9kLB";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const fallbackImage = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=900&auto=format&fit=crop";
 
-const defaultProperties = [
-{
-id:1,title:"Residencial Alphaville",type:"Casa",purpose:"Venda",price:"R$ 2.490.000",neighborhood:"Alphaville",city:"Goiânia",state:"GO",address:"Condomínio fechado em localização premium",area:"420m²",bedrooms:"4",suites:"2",bathrooms:"5",parking:"4",description:"Casa de alto padrão com ambientes amplos, acabamento sofisticado, área gourmet e excelente potencial de valorização.",features:["Piscina","Área gourmet","Condomínio fechado","Alto padrão","Aceita financiamento"],images:["https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=900&auto=format&fit=crop"],coverIndex:0,status:"Disponível",featured:true
-},
-{
-id:2,title:"Apartamento Setor Bueno",type:"Apartamento",purpose:"Venda",price:"R$ 1.180.000",neighborhood:"Setor Bueno",city:"Goiânia",state:"GO",address:"Região nobre, próximo a comércios e serviços",area:"180m²",bedrooms:"3",suites:"1",bathrooms:"4",parking:"3",description:"Apartamento premium com planta inteligente, varanda ampla, excelente localização e acabamento moderno.",features:["Varanda","Elevador","Planejados","Próximo a comércios"],images:["https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=80&w=900&auto=format&fit=crop"],coverIndex:0,status:"Disponível",featured:true
-},
-{
-id:3,title:"Casa Moderna Jardins",type:"Casa",purpose:"Aluguel",price:"R$ 8.900/mês",neighborhood:"Jardins",city:"Goianésia",state:"GO",address:"Condomínio Jardins",area:"320m²",bedrooms:"4",suites:"2",bathrooms:"4",parking:"2",description:"Casa moderna em condomínio, ideal para quem busca conforto, privacidade e localização estratégica.",features:["Área gourmet","Condomínio fechado","Segurança 24h"],images:["https://images.unsplash.com/photo-1613977257363-707ba9348227?q=80&w=900&auto=format&fit=crop"],coverIndex:0,status:"Disponível",featured:true
-}
-];
-
-let settings = JSON.parse(localStorage.getItem(keys.settings) || "null") || {
+let settings = {
 name:"Città Imobiliária",
 whatsapp:"+55 62 98328-0081",
 email:"comercial@cittaimobiliaria.com.br",
@@ -600,18 +587,65 @@ instagram:"https://www.instagram.com/cittaimob?igsh=dTM2eHA1c3lyMTVj",
 cj:"CJ: 47.645",
 region:"Goiânia | Goianésia e região",
 logo:"assets/citta-logos.png",
-heroBanner:fallbackImage
+hero_banner:fallbackImage
 };
 
-let properties = JSON.parse(localStorage.getItem(keys.properties) || "null") || defaultProperties;
+let properties = [];
 let currentFilter = "todos";
 let currentProperty = null;
 
-function onlyNumbers(v){return String(v||"").replace(/\D/g,"")}
+function onlyNumbers(v){
+return String(v || "").replace(/\D/g,"");
+}
+
 function whatsappLink(){
 const phone = onlyNumbers(settings.whatsapp || "5562983280081");
 const finalPhone = phone.startsWith("55") ? phone : "55" + phone;
 return "https://wa.me/" + finalPhone;
+}
+
+function normalizeProperty(p){
+return {
+...p,
+images:Array.isArray(p.images) && p.images.length ? p.images : [fallbackImage],
+cover_index:Number.isInteger(p.cover_index) ? p.cover_index : Number.isInteger(p.coverIndex) ? p.coverIndex : 0,
+features:Array.isArray(p.features) ? p.features : []
+};
+}
+
+async function loadSettings(){
+const { data, error } = await db
+.from("site_settings")
+.select("*")
+.eq("id",1)
+.maybeSingle();
+
+if(error){
+console.error("Erro ao carregar configurações:", error);
+return;
+}
+
+if(data){
+settings = {
+...settings,
+...data
+};
+}
+}
+
+async function loadProperties(){
+const { data, error } = await db
+.from("properties")
+.select("*")
+.order("created_at",{ascending:false});
+
+if(error){
+console.error("Erro ao carregar imóveis:", error);
+properties = [];
+return;
+}
+
+properties = (data || []).map(normalizeProperty);
 }
 
 function applySettings(){
@@ -619,35 +653,48 @@ const logo = settings.logo || "assets/citta-logos.png";
 siteLogo.src = logo;
 footerLogo.src = logo;
 
-if(settings.heroBanner){
-heroBanner.src = settings.heroBanner;
+if(settings.hero_banner){
+heroBanner.src = settings.hero_banner;
 }
 
 const whats = whatsappLink();
+
 [
-headerWhatsapp,heroWhatsapp,ctaWhatsapp,floatWhatsapp,contactPhone,footerWhatsapp
-].forEach(el=>el.href = whats);
+headerWhatsapp,
+heroWhatsapp,
+ctaWhatsapp,
+floatWhatsapp,
+contactPhone,
+footerWhatsapp
+].forEach(el => {
+if(el) el.href = whats;
+});
 
 contactPhone.textContent = settings.whatsapp || "(62) 98328-0081";
+
 contactEmail.textContent = settings.email || "comercial@cittaimobiliaria.com.br";
 contactEmail.href = "mailto:" + (settings.email || "comercial@cittaimobiliaria.com.br");
 footerEmail.href = contactEmail.href;
 
 contactInstagram.href = settings.instagram || "#";
 footerInstagram.href = settings.instagram || "#";
+
 contactRegion.textContent = settings.region || "Goiânia | Goianésia e região";
 }
 
 function renderProperties(){
 const grid = document.getElementById("propertiesGrid");
+
 const filtered = properties.filter(p => {
 const available = p.status === "Disponível";
 const purposeOk = currentFilter === "todos" || p.purpose === currentFilter;
 return available && purposeOk && p.featured;
 });
 
-grid.innerHTML = filtered.length ? filtered.map(p=>{
-const img = p.images?.[p.coverIndex] || p.images?.[0] || fallbackImage;
+grid.innerHTML = filtered.length ? filtered.map(p => {
+const coverIndex = Number.isInteger(p.cover_index) ? p.cover_index : 0;
+const img = p.images?.[coverIndex] || p.images?.[0] || fallbackImage;
+
 return `
 <div class="property-card" data-purpose="${p.purpose}">
 <div class="property-image">
@@ -655,15 +702,15 @@ return `
 <div class="overlay">Clique para acessar mais informações</div>
 </div>
 <div class="property-content">
-<div class="property-type">${p.type} • ${p.purpose}</div>
-<h3>${p.title}</h3>
-<div class="location">${p.neighborhood}, ${p.city} - ${p.state}</div>
-<div class="price">${p.price}</div>
+<div class="property-type">${p.type || "Imóvel"} • ${p.purpose || ""}</div>
+<h3>${p.title || "Imóvel Città"}</h3>
+<div class="location">${p.neighborhood || ""}, ${p.city || ""} - ${p.state || ""}</div>
+<div class="price">${p.price || "Consulte"}</div>
 <div class="property-info">
-<div class="info-box"><i class="fa-solid fa-ruler-combined"></i>${p.area}</div>
-<div class="info-box"><i class="fa-solid fa-bed"></i>${p.bedrooms} quartos</div>
-<div class="info-box"><i class="fa-solid fa-bath"></i>${p.bathrooms} banheiros</div>
-<div class="info-box"><i class="fa-solid fa-car"></i>${p.parking} vagas</div>
+<div class="info-box"><i class="fa-solid fa-ruler-combined"></i>${p.area || "-"}</div>
+<div class="info-box"><i class="fa-solid fa-bed"></i>${p.bedrooms || "0"} quartos</div>
+<div class="info-box"><i class="fa-solid fa-bath"></i>${p.bathrooms || "0"} banheiros</div>
+<div class="info-box"><i class="fa-solid fa-car"></i>${p.parking || "0"} vagas</div>
 </div>
 <button class="property-btn" onclick="openLeadModal(${p.id})">Tenho interesse</button>
 </div>
@@ -673,32 +720,33 @@ return `
 }
 
 function openLeadModal(id){
-currentProperty = properties.find(p=>p.id === id);
+currentProperty = properties.find(p => Number(p.id) === Number(id));
 selectedProperty.value = currentProperty?.title || "";
 leadModal.classList.add("active");
 }
 
 function renderDetails(p){
-const images = p.images?.length ? p.images : [fallbackImage];
+const images = Array.isArray(p.images) && p.images.length ? p.images : [fallbackImage];
+
 detailsContent.innerHTML = `
 <div>
 <div class="gallery-grid">
-${images.slice(0,4).map(img=>`<img src="${img}" alt="${p.title}">`).join("")}
+${images.slice(0,4).map(img => `<img src="${img}" alt="${p.title}">`).join("")}
 </div>
 </div>
 
 <div class="details-card">
-<h2>${p.title}</h2>
-<div class="location">${p.neighborhood}, ${p.city} - ${p.state}</div>
-<div class="details-price">${p.price}</div>
-<p class="details-desc">${p.description}</p>
+<h2>${p.title || "Imóvel Città"}</h2>
+<div class="location">${p.neighborhood || ""}, ${p.city || ""} - ${p.state || ""}</div>
+<div class="details-price">${p.price || "Consulte"}</div>
+<p class="details-desc">${p.description || "Entre em contato para mais informações sobre este imóvel."}</p>
 
 <div class="details-features">
-<div class="feature-box"><i class="fa-solid fa-ruler-combined"></i>${p.area}</div>
-<div class="feature-box"><i class="fa-solid fa-bed"></i>${p.bedrooms} quartos</div>
-<div class="feature-box"><i class="fa-solid fa-bath"></i>${p.bathrooms} banheiros</div>
-<div class="feature-box"><i class="fa-solid fa-car"></i>${p.parking} vagas</div>
-${(p.features||[]).slice(0,4).map(f=>`<div class="feature-box"><i class="fa-solid fa-check"></i>${f}</div>`).join("")}
+<div class="feature-box"><i class="fa-solid fa-ruler-combined"></i>${p.area || "-"}</div>
+<div class="feature-box"><i class="fa-solid fa-bed"></i>${p.bedrooms || "0"} quartos</div>
+<div class="feature-box"><i class="fa-solid fa-bath"></i>${p.bathrooms || "0"} banheiros</div>
+<div class="feature-box"><i class="fa-solid fa-car"></i>${p.parking || "0"} vagas</div>
+${(p.features || []).slice(0,4).map(f => `<div class="feature-box"><i class="fa-solid fa-check"></i>${f}</div>`).join("")}
 </div>
 
 <div class="contact-buttons">
@@ -707,45 +755,53 @@ ${(p.features||[]).slice(0,4).map(f=>`<div class="feature-box"><i class="fa-soli
 </div>
 </div>
 `;
+
 detailsPage.classList.add("active");
 window.scrollTo({top:detailsPage.offsetTop - 80,behavior:"smooth"});
 }
 
-mobileBtn.addEventListener("click",()=>menu.classList.toggle("active"));
+mobileBtn.addEventListener("click",() => menu.classList.toggle("active"));
 
-document.querySelectorAll(".faq-question").forEach(q=>{
-q.addEventListener("click",()=>q.closest(".faq-item").classList.toggle("active"));
+document.querySelectorAll(".faq-question").forEach(q => {
+q.addEventListener("click",() => q.closest(".faq-item").classList.toggle("active"));
 });
 
-document.querySelectorAll(".filter-btn").forEach(btn=>{
-btn.addEventListener("click",()=>{
-document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+document.querySelectorAll(".filter-btn").forEach(btn => {
+btn.addEventListener("click",() => {
+document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
 btn.classList.add("active");
 currentFilter = btn.dataset.filter;
 renderProperties();
 });
 });
 
-closeModal.addEventListener("click",()=>leadModal.classList.remove("active"));
-window.addEventListener("click",(e)=>{if(e.target === leadModal)leadModal.classList.remove("active")});
+closeModal.addEventListener("click",() => leadModal.classList.remove("active"));
 
-leadForm.addEventListener("submit",(e)=>{
+window.addEventListener("click",(e) => {
+if(e.target === leadModal) leadModal.classList.remove("active");
+});
+
+leadForm.addEventListener("submit", async (e) => {
 e.preventDefault();
 
-const leads = JSON.parse(localStorage.getItem(keys.leads) || "[]");
-leads.unshift({
-id:Date.now(),
+const leadPayload = {
 name:leadName.value,
 email:leadEmail.value,
 phone:leadPhone.value,
 property:selectedProperty.value,
 timeline:leadTimeline.value,
-date:new Date().toLocaleDateString("pt-BR"),
 status:"Novo",
 notes:"Lead capturado pela landing page."
-});
+};
 
-localStorage.setItem(keys.leads,JSON.stringify(leads));
+const { error } = await db.from("leads").insert(leadPayload);
+
+if(error){
+console.error("Erro ao salvar lead:", error);
+alert("Não foi possível salvar seu interesse agora. Tente novamente ou fale pelo WhatsApp.");
+return;
+}
+
 leadModal.classList.remove("active");
 
 if(currentProperty){
@@ -755,8 +811,14 @@ renderDetails(currentProperty);
 leadForm.reset();
 });
 
+async function init(){
+await loadSettings();
+await loadProperties();
 applySettings();
 renderProperties();
+}
+
+init();
 </script>
 
 </body>
