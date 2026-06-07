@@ -38,28 +38,40 @@ img{max-width:100%;display:block}
 
 .stone-bg{
 position:relative;
-background:
-linear-gradient(135deg,rgba(255,255,255,.72),rgba(244,241,235,.86)),
-radial-gradient(circle at 20% 18%,rgba(191,184,171,.28),transparent 18%),
-radial-gradient(circle at 82% 62%,rgba(176,162,144,.20),transparent 22%),
-linear-gradient(120deg,rgba(130,120,105,.09) 0 1px,transparent 1px 100%),
-linear-gradient(30deg,rgba(130,120,105,.055) 0 1px,transparent 1px 100%);
-background-size:auto,680px 680px,720px 720px,140px 140px,180px 180px;
+background-color:#efe7dc;
+background-image:
+linear-gradient(rgba(255,255,255,.70),rgba(255,255,255,.70)),
+url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='920' height='620' viewBox='0 0 920 620'%3E%3Crect width='920' height='620' fill='%23e9dfd1'/%3E%3Cg fill='%23d8cdbd' opacity='.72' stroke='%23b7aa98' stroke-width='2.2'%3E%3Cpath d='M0 0h115l26 66-44 72H0z'/%3E%3Cpath d='M115 0h155l-18 84-111-18z'/%3E%3Cpath d='M270 0h170l20 78-122 56-86-50z'/%3E%3Cpath d='M440 0h168l-35 104-113-26z'/%3E%3Cpath d='M608 0h150l42 75-86 88-141-59z'/%3E%3Cpath d='M758 0h162v130l-120-55z'/%3E%3Cpath d='M0 138l97 0 62 92-82 84H0z'/%3E%3Cpath d='M97 138l141-54 100 50-24 126-155-30z'/%3E%3Cpath d='M338 134l122-56 113 26 38 118-111 78-186-40z'/%3E%3Cpath d='M611 222l103-59 86-88 120 55v118l-150 70z'/%3E%3Cpath d='M0 314h77l124 60-38 132H0z'/%3E%3Cpath d='M77 314l82-84 155 30 62 118-175-4z'/%3E%3Cpath d='M314 260l186 40 76 110-118 95-82-127z'/%3E%3Cpath d='M500 300l111-78 159 96-43 148-151-56z'/%3E%3Cpath d='M770 318l150-70v178l-193 40z'/%3E%3Cpath d='M0 506h163l88 114H0z'/%3E%3Cpath d='M163 506l38-132 175 4 82 127-92 115H251z'/%3E%3Cpath d='M458 505l118-95 151 56 27 154H366z'/%3E%3Cpath d='M727 466l193-40v194H754z'/%3E%3C/g%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='4' opacity='.20'%3E%3Cpath d='M0 138h97l62 92-82 84'/%3E%3Cpath d='M338 134l122-56 113 26 38 118'/%3E%3Cpath d='M201 374l175 4 82 127'/%3E%3Cpath d='M576 410l151 56 27 154'/%3E%3C/g%3E%3C/svg%3E");
+background-size:cover,760px 520px;
+background-repeat:repeat;
 overflow:hidden;
 }
 .stone-bg:before,
 .stone-bg:after{
 content:"";
 position:absolute;
-width:430px;
-height:430px;
-border:2px solid rgba(183,146,95,.14);
-border-radius:45% 55% 48% 52%;
 pointer-events:none;
 z-index:0;
+opacity:.25;
+background-repeat:no-repeat;
+background-size:contain;
+filter:drop-shadow(0 18px 24px rgba(183,146,95,.08));
 }
-.stone-bg:before{left:-310px;top:70px;transform:rotate(-22deg)}
-.stone-bg:after{right:-300px;bottom:60px;transform:rotate(25deg)}
+.stone-bg:before{
+width:260px;
+height:520px;
+left:-58px;
+top:40px;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='520' viewBox='0 0 260 520'%3E%3Cg fill='none' stroke='%23b7925f' stroke-width='5' stroke-linecap='round' stroke-linejoin='round' opacity='.55'%3E%3Cpath d='M18 36 C130 98 190 168 230 252 C152 272 87 334 35 480'/%3E%3Cpath d='M18 36 C45 160 50 300 35 480'/%3E%3Cpath d='M85 105 C115 200 106 306 80 420'/%3E%3Cpath d='M145 168 C153 254 136 330 110 388'/%3E%3C/g%3E%3C/svg%3E");
+}
+.stone-bg:after{
+width:260px;
+height:520px;
+right:-58px;
+bottom:30px;
+transform:scaleX(-1);
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='520' viewBox='0 0 260 520'%3E%3Cg fill='none' stroke='%23b7925f' stroke-width='5' stroke-linecap='round' stroke-linejoin='round' opacity='.55'%3E%3Cpath d='M18 36 C130 98 190 168 230 252 C152 272 87 334 35 480'/%3E%3Cpath d='M18 36 C45 160 50 300 35 480'/%3E%3Cpath d='M85 105 C115 200 106 306 80 420'/%3E%3Cpath d='M145 168 C153 254 136 330 110 388'/%3E%3C/g%3E%3C/svg%3E");
+}
 .stone-bg .container{position:relative;z-index:2}
 
 header{
@@ -67,21 +79,22 @@ position:fixed;
 width:100%;
 top:0;
 z-index:999;
-background:rgba(8,17,34,.94);
+background:rgba(8,17,34,.97);
 backdrop-filter:blur(10px);
 border-bottom:1px solid rgba(255,255,255,.08);
 }
-.navbar{display:flex;align-items:center;justify-content:space-between;padding:16px 0;gap:20px}
-.brand-logo{display:flex;align-items:center;gap:12px;color:#fff}
-.brand-logo img{width:46px;height:46px;object-fit:contain}
+.navbar{display:flex;align-items:center;justify-content:space-between;padding:18px 0;gap:26px}
+.brand-logo{display:flex;align-items:center;gap:18px;color:var(--gold);min-width:0}
+.brand-logo img{width:86px;height:58px;object-fit:contain;flex:0 0 auto}
 .brand-logo strong{
 font-family:"Arial MT Pro",Arial,sans-serif;
-font-size:1.35rem;
-letter-spacing:-.04em;
-font-weight:700;
+font-size:2.05rem;
+letter-spacing:-.045em;
+font-weight:800;
+color:var(--gold);
 }
 .menu{display:flex;gap:24px;align-items:center}
-.menu a{color:#fff;font-weight:600;font-size:.95rem;transition:.3s}
+.menu a{color:#fff;font-weight:700;font-size:1rem;transition:.3s}
 .menu a:hover{color:var(--gold)}
 .btn-whats{
 background:linear-gradient(135deg,var(--gold),var(--gold2));
@@ -328,6 +341,30 @@ img{max-width:100%;height:auto;display:block}
   .section-title{font-size:2rem;letter-spacing:-1.4px}
   .benefit-card{padding:22px;border-radius:22px}
   .whatsapp-float{width:56px;height:56px;font-size:1.75rem;right:14px;bottom:14px}
+}
+
+/* Ajustes visuais finais Città: textura de pedra + header premium */
+footer .brand-logo img{width:72px;height:52px}
+footer .brand-logo strong{font-size:1.55rem;color:var(--gold)}
+@media(max-width:1100px){
+  .brand-logo img{width:72px;height:52px}
+  .brand-logo strong{font-size:1.62rem}
+  .menu{gap:18px}
+  .menu a{font-size:.95rem}
+}
+@media(max-width:860px){
+  .brand-logo img{width:64px;height:46px}
+  .brand-logo strong{font-size:1.42rem;max-width:230px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .navbar{padding:12px 0}
+  .menu{top:82px}
+}
+@media(max-width:540px){
+  .brand-logo img{width:54px;height:40px}
+  .brand-logo strong{font-size:1.15rem;max-width:190px}
+  footer .brand-logo img{width:58px;height:42px}
+  footer .brand-logo strong{font-size:1.18rem}
+  .stone-bg:before{left:-105px;opacity:.18}
+  .stone-bg:after{right:-105px;opacity:.18}
 }
 
 </style>
