@@ -98,7 +98,9 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold2);box-shadow:0 0
 .preview-item{position:relative;border-radius:16px;overflow:hidden;background:#eee;min-height:110px;border:2px solid transparent}
 .preview-item.cover{border-color:var(--gold2)}
 .preview-item img{width:100%;height:120px;object-fit:cover}
-.preview-actions{position:absolute;left:8px;right:8px;bottom:8px;display:flex;gap:6px}
+.preview-actions{position:absolute;left:8px;right:8px;bottom:8px;display:flex;gap:6px;flex-wrap:wrap}
+.position-select{position:absolute;left:8px;right:8px;top:8px;border:0;border-radius:999px;padding:8px 10px;font-size:.72rem;font-weight:900;background:rgba(255,255,255,.92);color:var(--navy);box-shadow:0 8px 22px rgba(8,17,34,.16)}
+.position-label{position:absolute;left:8px;top:48px;background:rgba(8,17,34,.82);color:#fff;border-radius:999px;padding:6px 9px;font-size:.7rem;font-weight:900}
 .mini{min-height:31px;padding:0 9px;border:0;border-radius:999px;color:#fff;background:rgba(8,17,34,.82);font-weight:800;font-size:.72rem}
 .mini.remove{background:rgba(220,38,38,.84)}
 .settings-preview{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:12px}
@@ -236,7 +238,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold2);box-shadow:0 0
 <div class="field col-12"><label>Diferenciais do imóvel</label><div class="checks" id="featuresGrid">
 <label class="check"><input type="checkbox" value="Piscina">Piscina</label><label class="check"><input type="checkbox" value="Área gourmet">Área gourmet</label><label class="check"><input type="checkbox" value="Churrasqueira">Churrasqueira</label><label class="check"><input type="checkbox" value="Condomínio fechado">Condomínio fechado</label><label class="check"><input type="checkbox" value="Varanda">Varanda</label><label class="check"><input type="checkbox" value="Elevador">Elevador</label><label class="check"><input type="checkbox" value="Planejados">Planejados</label><label class="check"><input type="checkbox" value="Segurança 24h">Segurança 24h</label><label class="check"><input type="checkbox" value="Academia">Academia</label><label class="check"><input type="checkbox" value="Aceita financiamento">Aceita financiamento</label><label class="check"><input type="checkbox" value="Próximo a comércios">Próximo a comércios</label><label class="check"><input type="checkbox" value="Alto padrão">Alto padrão</label>
 </div></div>
-<div class="field col-12"><label>Imagens do imóvel</label><div class="upload"><i class="fa-solid fa-cloud-arrow-up"></i><strong>Enviar fotos do imóvel</strong><p>As imagens serão enviadas para o bucket imoveis da Supabase.</p><label class="btn btn-dark" for="imageUpload"><i class="fa-solid fa-images"></i>Escolher imagens</label><input class="file-input" id="imageUpload" type="file" multiple accept="image/*"></div><div class="preview" id="imagePreview"></div></div>
+<div class="field col-12"><label>Imagens do imóvel</label><div class="upload"><i class="fa-solid fa-cloud-arrow-up"></i><strong>Enviar fotos do imóvel</strong><p>As imagens serão enviadas para o bucket imoveis da Supabase. Depois do upload, escolha a ordem: Capa, Imagem 2, Imagem 3 e assim por diante.</p><label class="btn btn-dark" for="imageUpload"><i class="fa-solid fa-images"></i>Escolher imagens</label><input class="file-input" id="imageUpload" type="file" multiple accept="image/*"></div><div class="preview" id="imagePreview"></div></div>
 <div class="field col-12"><label class="check"><input type="checkbox" id="featured">Exibir como imóvel em destaque na landing page</label></div>
 </div>
 <div class="form-actions"><button class="btn btn-light" type="button" id="clearForm"><i class="fa-solid fa-eraser"></i>Limpar formulário</button><button class="btn btn-primary" type="submit"><i class="fa-solid fa-floppy-disk"></i>Salvar imóvel</button></div>
@@ -457,19 +459,42 @@ imageUpload.value="";
 };
 
 function renderPreview(){
-imagePreview.innerHTML = uploadedImages.map((img,i)=>`
-<div class="preview-item ${coverIndex===i ? "cover" : ""}">
+imagePreview.innerHTML = uploadedImages.map((img,i)=>{
+const label = i === 0 ? "Capa" : `Imagem ${i + 1}`;
+const options = uploadedImages.map((_,pos)=>`<option value="${pos}" ${pos===i ? "selected" : ""}>${pos===0 ? "Capa" : "Imagem " + (pos + 1)}</option>`).join("");
+
+return `
+<div class="preview-item ${i===0 ? "cover" : ""}">
 <img src="${img}">
+<select class="position-select" onchange="changeImagePosition(${i},Number(this.value))">
+${options}
+</select>
+<div class="position-label">${label}</div>
 <div class="preview-actions">
 <button type="button" class="mini" onclick="setCover(${i})">Capa</button>
 <button type="button" class="mini remove" onclick="removeImage(${i})">Remover</button>
 </div>
 </div>
-`).join("");
+`;
+}).join("");
+coverIndex = 0;
 }
 
-window.setCover = i => {coverIndex=i;renderPreview()};
-window.removeImage = i => {uploadedImages.splice(i,1);if(coverIndex>=uploadedImages.length)coverIndex=0;renderPreview()};
+function reorderImage(from,to){
+if(from === to) return;
+const item = uploadedImages.splice(from,1)[0];
+uploadedImages.splice(to,0,item);
+coverIndex = 0;
+renderPreview();
+}
+
+window.changeImagePosition = (from,to) => reorderImage(from,to);
+window.setCover = i => reorderImage(i,0);
+window.removeImage = i => {
+uploadedImages.splice(i,1);
+coverIndex=0;
+renderPreview();
+};
 
 propertyForm.onsubmit = async e => {
 e.preventDefault();
@@ -494,7 +519,7 @@ parking:parking.value,
 description:description.value,
 features,
 images:uploadedImages.length ? uploadedImages : [fallback],
-cover_index:coverIndex,
+cover_index:0,
 status:status.value,
 featured:featured.checked
 };
@@ -600,8 +625,13 @@ status.value=p.status || "Disponível";
 featured.checked=!!p.featured;
 
 document.querySelectorAll("#featuresGrid input").forEach(input=>input.checked=p.features?.includes(input.value));
-uploadedImages=p.images || [];
-coverIndex=p.cover_index || 0;
+uploadedImages=[...(p.images || [])];
+coverIndex=Number(p.cover_index || 0);
+if(coverIndex > 0 && uploadedImages[coverIndex]){
+const coverImage = uploadedImages.splice(coverIndex,1)[0];
+uploadedImages.unshift(coverImage);
+}
+coverIndex=0;
 renderPreview();
 };
 
