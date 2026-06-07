@@ -44,70 +44,270 @@ header{position:fixed;width:100%;top:0;z-index:999;background:rgba(8,17,34,.96);
 <script>
 const SUPABASE_URL = "https://rnmifesvznyyrxhcxcic.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_d2HM-lPtJ45sXh135vPT_A_qsqh9kLB";
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const fallbackImage = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=900&auto=format&fit=crop";
-let settings = {name:"Città Imobiliária",whatsapp:"+55 62 98328-0081",email:"comercial@cittaimobiliaria.com.br",instagram:"https://www.instagram.com/cittaimob?igsh=dTM2eHA1c3lyMTVj",cj:"CJ: 47.645",region:"Goiânia | Goianésia e região",logo:"assets/citta-logos.png",hero_banner:fallbackImage};
-let properties = [];let currentFilter = "todos";let currentProperty = null;
-function onlyNumbers(v){return String(v || "").replace(/\D/g,"")}
-function whatsappLink(){const phone=onlyNumbers(settings.whatsapp||"5562983280081");const finalPhone=phone.startsWith("55")?phone:"55"+phone;return "https://wa.me/"+finalPhone}
-function normalizeProperty(p){return {...p,images:Array.isArray(p.images)&&p.images.length?p.images:[fallbackImage],cover_index:Number.isInteger(p.cover_index)?p.cover_index:Number.isInteger(p.coverIndex)?p.coverIndex:0,features:Array.isArray(p.features)?p.features:[]}}
-async function loadSettings(){const {data,error}=await db.from("site_settings").select("*").eq("id",1).maybeSingle();if(error){console.error("Erro ao carregar configurações:",error);return}if(data){settings={...settings,...data}}}
-async function loadProperties(){const {data,error}=await db.from("properties").select("*").order("created_at",{ascending:false});if(error){console.error("Erro ao carregar imóveis:",error);properties=[];return}properties=(data||[]).map(normalizeProperty)}
-function applySettings(){const logo=settings.logo||"assets/citta-logos.png";siteLogo.src=logo;footerLogo.src=logo;if(settings.hero_banner){heroBanner.src=settings.hero_banner}const whats=whatsappLink();[headerWhatsapp,heroWhatsapp,ctaWhatsapp,floatWhatsapp,contactPhone,footerWhatsapp].forEach(el=>{if(el)el.href=whats});contactPhone.textContent=settings.whatsapp||"(62) 98328-0081";contactEmail.textContent=settings.email||"comercial@cittaimobiliaria.com.br";contactEmail.href="mailto:"+(settings.email||"comercial@cittaimobiliaria.com.br");footerEmail.href=contactEmail.href;contactInstagram.href=settings.instagram||"#";footerInstagram.href=settings.instagram||"#";contactRegion.textContent=settings.region||"Goiânia | Goianésia e região"}
-function renderProperties(){const grid=document.getElementById("propertiesGrid");const filtered=properties.filter(p=>{const available=p.status==="Disponível";const purposeOk=currentFilter==="todos"||p.purpose===currentFilter;return available&&purposeOk&&p.featured});grid.innerHTML=filtered.length?filtered.map(p=>{const coverIndex=Number.isInteger(p.cover_index)?p.cover_index:0;const img=p.images?.[coverIndex]||p.images?.[0]||fallbackImage;return `<div class="property-card" data-purpose="${p.purpose}"><div class="property-image"><img src="${img}" alt="${p.title||'Imóvel Città'}"><div class="overlay">Clique para acessar mais informações</div></div><div class="property-content"><div class="property-type">${p.type||'Imóvel'} • ${p.purpose||''}</div><h3>${p.title||'Imóvel Città'}</h3><div class="location">${p.neighborhood||''}, ${p.city||''} - ${p.state||''}</div><div class="price">${p.price||'Consulte'}</div><div class="property-info"><div class="info-box"><i class="fa-solid fa-ruler-combined"></i>${p.area||'-'}</div><div class="info-box"><i class="fa-solid fa-bed"></i>${p.bedrooms||'0'} quartos</div><div class="info-box"><i class="fa-solid fa-bath"></i>${p.bathrooms||'0'} banheiros</div><div class="info-box"><i class="fa-solid fa-car"></i>${p.parking||'0'} vagas</div></div><button class="property-btn" onclick="openLeadModal(${p.id})">Tenho interesse</button></div></div>`}).join(""):`<div class="empty-properties">Nenhum imóvel disponível nessa categoria no momento.</div>`}
-function openLeadModal(id){currentProperty=properties.find(p=>Number(p.id)===Number(id));selectedProperty.value=currentProperty?.title||"";leadModal.classList.add("active")}
-function renderDetails(p){const images=Array.isArray(p.images)&&p.images.length?p.images:[fallbackImage];detailsContent.innerHTML=`<div><div class="gallery-grid">${images.slice(0,4).map(img=>`<img src="${img}" alt="${p.title||'Imóvel Città'}">`).join("")}</div></div><div class="details-card"><h2>${p.title||'Imóvel Città'}</h2><div class="location">${p.neighborhood||''}, ${p.city||''} - ${p.state||''}</div><div class="details-price">${p.price||'Consulte'}</div><p class="details-desc">${p.description||'Entre em contato para mais informações sobre este imóvel.'}</p><div class="details-features"><div class="feature-box"><i class="fa-solid fa-ruler-combined"></i>${p.area||'-'}</div><div class="feature-box"><i class="fa-solid fa-bed"></i>${p.bedrooms||'0'} quartos</div><div class="feature-box"><i class="fa-solid fa-bath"></i>${p.bathrooms||'0'} banheiros</div><div class="feature-box"><i class="fa-solid fa-car"></i>${p.parking||'0'} vagas</div>${(p.features||[]).slice(0,4).map(f=>`<div class="feature-box"><i class="fa-solid fa-check"></i>${f}</div>`).join("")}</div><div class="contact-buttons"><a href="${whatsappLink()}" target="_blank" class="btn-primary"><i class="fa-brands fa-whatsapp"></i>Falar no WhatsApp</a><a href="#contato" class="btn-secondary" style="color:#081122;border-color:#ccc;">Entrar em contato</a></div></div>`;detailsPage.classList.add("active");window.scrollTo({top:detailsPage.offsetTop-80,behavior:"smooth"})}
-mobileBtn.addEventListener("click",()=>menu.classList.toggle("active"));document.querySelectorAll(".faq-question").forEach(q=>{q.addEventListener("click",()=>q.closest(".faq-item").classList.toggle("active"))});document.querySelectorAll(".filter-btn").forEach(btn=>{btn.addEventListener("click",()=>{document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");currentFilter=btn.dataset.filter;renderProperties()})});closeModal.addEventListener("click",()=>leadModal.classList.remove("active"));window.addEventListener("click",e=>{if(e.target===leadModal)leadModal.classList.remove("active")});
-leadForm.addEventListener("submit", async (e) => {
-e.preventDefault();
 
-const btn = leadForm.querySelector("button[type='submit']");
-const originalText = btn.textContent;
-
-btn.disabled = true;
-btn.textContent = "Enviando...";
-
-const leadPayload = {
-name: leadName.value.trim(),
-email: leadEmail.value.trim(),
-phone: leadPhone.value.trim(),
-property: selectedProperty.value || currentProperty?.title || "Imóvel não informado",
-timeline: leadTimeline.value,
-status: "Novo",
-notes: "Lead capturado pela landing page."
+let db = null;
+let settings = {
+  name: "Città Imobiliária",
+  whatsapp: "+55 62 98328-0081",
+  email: "comercial@cittaimobiliaria.com.br",
+  instagram: "https://www.instagram.com/cittaimob?igsh=dTM2eHA1c3lyMTVj",
+  cj: "CJ: 47.645",
+  region: "Goiânia | Goianésia e região",
+  logo: "assets/citta-logos.png",
+  hero_banner: fallbackImage
 };
+let properties = [];
+let currentFilter = "todos";
+let currentProperty = null;
 
-try {
-const { data, error } = await db
-.from("leads")
-.insert([leadPayload])
-.select()
-.single();
-
-if (error) {
-console.error("Erro ao salvar lead no Supabase:", error);
-alert("Erro ao salvar lead: " + (error.message || "erro desconhecido"));
-return;
+function $(id){ return document.getElementById(id); }
+function onlyNumbers(v){ return String(v || "").replace(/\D/g, ""); }
+function whatsappLink(){
+  const phone = onlyNumbers(settings.whatsapp || "5562983280081");
+  const finalPhone = phone.startsWith("55") ? phone : "55" + phone;
+  return "https://wa.me/" + finalPhone;
 }
-
-console.log("Lead salvo com sucesso:", data);
-
-leadModal.classList.remove("active");
-
-if (currentProperty) {
-renderDetails(currentProperty);
+function normalizeArray(value){
+  if (Array.isArray(value)) return value;
+  if (typeof value === "string" && value.trim()) {
+    try {
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (_) {
+      return [value];
+    }
+  }
+  return [];
 }
-
-leadForm.reset();
-} catch (err) {
-console.error("Erro inesperado ao enviar lead:", err);
-alert("Erro inesperado ao enviar lead. Verifique o Console/F12 para detalhes.");
-} finally {
-btn.disabled = false;
-btn.textContent = originalText;
+function normalizeProperty(p){
+  const images = normalizeArray(p.images).filter(Boolean);
+  const features = normalizeArray(p.features).filter(Boolean);
+  const cover = Number.isInteger(p.cover_index) ? p.cover_index : Number.isInteger(p.coverIndex) ? p.coverIndex : 0;
+  return {
+    ...p,
+    images: images.length ? images : [fallbackImage],
+    features,
+    cover_index: Math.max(0, cover)
+  };
 }
-});
-async function init(){await loadSettings();await loadProperties();applySettings();renderProperties()}init();
+function showLandingError(message){
+  console.error(message);
+  const grid = $("propertiesGrid");
+  if (grid && !grid.innerHTML.trim()) {
+    grid.innerHTML = `<div class="empty-properties">${message}</div>`;
+  }
+}
+function initSupabase(){
+  if (!window.supabase || !window.supabase.createClient) {
+    showLandingError("Não foi possível carregar a conexão com o Supabase. Atualize a página e tente novamente.");
+    return false;
+  }
+  db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  window.CITTA_SUPABASE_URL = SUPABASE_URL;
+  return true;
+}
+async function loadSettings(){
+  if (!db) return;
+  const { data, error } = await db
+    .from("site_settings")
+    .select("*")
+    .eq("id", 1)
+    .maybeSingle();
+  if (error) {
+    console.error("Erro ao carregar configurações:", error);
+    return;
+  }
+  if (data) settings = { ...settings, ...data };
+}
+async function loadProperties(){
+  if (!db) return;
+  const { data, error } = await db
+    .from("properties")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) {
+    console.error("Erro ao carregar imóveis:", error);
+    properties = [];
+    showLandingError("Não foi possível carregar os imóveis agora. Tente atualizar a página.");
+    return;
+  }
+  properties = (data || []).map(normalizeProperty);
+  console.log("Città: imóveis carregados do Supabase", properties);
+}
+function applySettings(){
+  const logo = settings.logo || "assets/citta-logos.png";
+  const siteLogo = $("siteLogo");
+  const footerLogo = $("footerLogo");
+  const heroBanner = $("heroBanner");
+  if (siteLogo) siteLogo.src = logo;
+  if (footerLogo) footerLogo.src = logo;
+  if (heroBanner && settings.hero_banner) heroBanner.src = settings.hero_banner;
+  const whats = whatsappLink();
+  ["headerWhatsapp", "heroWhatsapp", "ctaWhatsapp", "floatWhatsapp", "contactPhone", "footerWhatsapp"].forEach(id => {
+    const el = $(id);
+    if (el) el.href = whats;
+  });
+  const contactPhone = $("contactPhone");
+  const contactEmail = $("contactEmail");
+  const footerEmail = $("footerEmail");
+  const contactInstagram = $("contactInstagram");
+  const footerInstagram = $("footerInstagram");
+  const contactRegion = $("contactRegion");
+  if (contactPhone) contactPhone.textContent = settings.whatsapp || "(62) 98328-0081";
+  if (contactEmail) {
+    contactEmail.textContent = settings.email || "comercial@cittaimobiliaria.com.br";
+    contactEmail.href = "mailto:" + (settings.email || "comercial@cittaimobiliaria.com.br");
+  }
+  if (footerEmail && contactEmail) footerEmail.href = contactEmail.href;
+  if (contactInstagram) contactInstagram.href = settings.instagram || "#";
+  if (footerInstagram) footerInstagram.href = settings.instagram || "#";
+  if (contactRegion) contactRegion.textContent = settings.region || "Goiânia | Goianésia e região";
+}
+function renderProperties(){
+  const grid = $("propertiesGrid");
+  if (!grid) return;
+  const filtered = properties.filter(p => {
+    const isAvailable = (p.status || "Disponível") === "Disponível";
+    const purposeOk = currentFilter === "todos" || p.purpose === currentFilter;
+    return isAvailable && purposeOk && !!p.featured;
+  });
+  grid.innerHTML = filtered.length ? filtered.map(p => {
+    const coverIndex = Number.isInteger(p.cover_index) ? p.cover_index : 0;
+    const img = p.images?.[coverIndex] || p.images?.[0] || fallbackImage;
+    return `
+      <div class="property-card" data-purpose="${p.purpose || ""}">
+        <div class="property-image">
+          <img src="${img}" alt="${p.title || "Imóvel Città"}" loading="lazy">
+          <div class="overlay">Clique para acessar mais informações</div>
+        </div>
+        <div class="property-content">
+          <div class="property-type">${p.type || "Imóvel"} • ${p.purpose || ""}</div>
+          <h3>${p.title || "Imóvel Città"}</h3>
+          <div class="location">${p.neighborhood || ""}, ${p.city || ""} - ${p.state || ""}</div>
+          <div class="price">${p.price || "Consulte"}</div>
+          <div class="property-info">
+            <div class="info-box"><i class="fa-solid fa-ruler-combined"></i>${p.area || "-"}</div>
+            <div class="info-box"><i class="fa-solid fa-bed"></i>${p.bedrooms || "0"} quartos</div>
+            <div class="info-box"><i class="fa-solid fa-bath"></i>${p.bathrooms || "0"} banheiros</div>
+            <div class="info-box"><i class="fa-solid fa-car"></i>${p.parking || "0"} vagas</div>
+          </div>
+          <button class="property-btn" type="button" onclick="openLeadModal(${Number(p.id)})">Tenho interesse</button>
+        </div>
+      </div>`;
+  }).join("") : `<div class="empty-properties">Nenhum imóvel disponível nessa categoria no momento.</div>`;
+}
+window.openLeadModal = function(id){
+  currentProperty = properties.find(p => Number(p.id) === Number(id));
+  const selectedProperty = $("selectedProperty");
+  const leadModal = $("leadModal");
+  if (selectedProperty) selectedProperty.value = currentProperty?.title || "Imóvel não informado";
+  if (leadModal) leadModal.classList.add("active");
+};
+function renderDetails(p){
+  const detailsContent = $("detailsContent");
+  const detailsPage = $("detailsPage");
+  if (!detailsContent || !detailsPage) return;
+  const images = Array.isArray(p.images) && p.images.length ? p.images : [fallbackImage];
+  detailsContent.innerHTML = `
+    <div><div class="gallery-grid">${images.slice(0,4).map(img => `<img src="${img}" alt="${p.title || "Imóvel Città"}">`).join("")}</div></div>
+    <div class="details-card">
+      <h2>${p.title || "Imóvel Città"}</h2>
+      <div class="location">${p.neighborhood || ""}, ${p.city || ""} - ${p.state || ""}</div>
+      <div class="details-price">${p.price || "Consulte"}</div>
+      <p class="details-desc">${p.description || "Entre em contato para mais informações sobre este imóvel."}</p>
+      <div class="details-features">
+        <div class="feature-box"><i class="fa-solid fa-ruler-combined"></i>${p.area || "-"}</div>
+        <div class="feature-box"><i class="fa-solid fa-bed"></i>${p.bedrooms || "0"} quartos</div>
+        <div class="feature-box"><i class="fa-solid fa-bath"></i>${p.bathrooms || "0"} banheiros</div>
+        <div class="feature-box"><i class="fa-solid fa-car"></i>${p.parking || "0"} vagas</div>
+        ${(p.features || []).slice(0,4).map(f => `<div class="feature-box"><i class="fa-solid fa-check"></i>${f}</div>`).join("")}
+      </div>
+      <div class="contact-buttons">
+        <a href="${whatsappLink()}" target="_blank" class="btn-primary"><i class="fa-brands fa-whatsapp"></i>Falar no WhatsApp</a>
+        <a href="#contato" class="btn-secondary" style="color:#081122;border-color:#ccc;">Entrar em contato</a>
+      </div>
+    </div>`;
+  detailsPage.classList.add("active");
+  window.scrollTo({ top: detailsPage.offsetTop - 80, behavior: "smooth" });
+}
+function bindEvents(){
+  const mobileBtn = $("mobileBtn");
+  const menu = $("menu");
+  const closeModal = $("closeModal");
+  const leadModal = $("leadModal");
+  const leadForm = $("leadForm");
+  if (mobileBtn && menu) mobileBtn.addEventListener("click", () => menu.classList.toggle("active"));
+  document.querySelectorAll(".faq-question").forEach(q => {
+    q.addEventListener("click", () => q.closest(".faq-item")?.classList.toggle("active"));
+  });
+  document.querySelectorAll(".filter-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      currentFilter = btn.dataset.filter || "todos";
+      renderProperties();
+    });
+  });
+  if (closeModal && leadModal) closeModal.addEventListener("click", () => leadModal.classList.remove("active"));
+  window.addEventListener("click", e => {
+    if (e.target === leadModal) leadModal.classList.remove("active");
+  });
+  if (leadForm) {
+    leadForm.addEventListener("submit", async e => {
+      e.preventDefault();
+      if (!db) {
+        alert("Conexão com o banco indisponível. Atualize a página e tente novamente.");
+        return;
+      }
+      const leadName = $("leadName");
+      const leadEmail = $("leadEmail");
+      const leadPhone = $("leadPhone");
+      const leadTimeline = $("leadTimeline");
+      const selectedProperty = $("selectedProperty");
+      const btn = leadForm.querySelector("button[type='submit']");
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "Enviando...";
+      }
+      const leadPayload = {
+        name: leadName?.value?.trim() || "",
+        email: leadEmail?.value?.trim() || "",
+        phone: leadPhone?.value?.trim() || "",
+        property: selectedProperty?.value || currentProperty?.title || "Imóvel não informado",
+        timeline: leadTimeline?.value || "Não informado",
+        status: "Novo",
+        notes: "Lead capturado pela landing page."
+      };
+      const { data, error } = await db
+        .from("leads")
+        .insert([leadPayload])
+        .select();
+      console.log("Città: retorno do envio de lead", { data, error, leadPayload });
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = "Acessar detalhes do imóvel";
+      }
+      if (error) {
+        alert("Erro ao salvar lead: " + (error.message || "erro desconhecido"));
+        console.error("Erro ao salvar lead:", error);
+        return;
+      }
+      if (leadModal) leadModal.classList.remove("active");
+      if (currentProperty) renderDetails(currentProperty);
+      leadForm.reset();
+    });
+  }
+}
+async function init(){
+  bindEvents();
+  if (!initSupabase()) return;
+  await loadSettings();
+  await loadProperties();
+  applySettings();
+  renderProperties();
+}
+document.addEventListener("DOMContentLoaded", init);
 </script>
 </body>
 </html>
