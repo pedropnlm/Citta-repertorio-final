@@ -380,16 +380,51 @@ sideCj.textContent = settings.cj || "CJ: 47.645";
 sideRegion.textContent = settings.region || "Goiânia | Goianésia e região";
 }
 
-loginForm.addEventListener("submit",async e=>{
-e.preventDefault();
-const u = username.value.trim();
-const p = password.value.trim();
-if(!u || !p){loginAlert.classList.add("show");return}
+async function openAdminPanel(){
 loginAlert.classList.remove("show");
 loginScreen.classList.add("hidden");
 app.classList.add("active");
 await load();
 renderAll();
+}
+
+function showLoginError(message){
+loginAlert.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${message}`;
+loginAlert.classList.add("show");
+}
+
+loginForm.addEventListener("submit",async e=>{
+e.preventDefault();
+const email = username.value.trim();
+const pass = password.value;
+const submitBtn = loginForm.querySelector("button[type='submit']");
+
+if(!email || !pass){
+showLoginError("Preencha usuário e senha para acessar.");
+return;
+}
+
+loginAlert.classList.remove("show");
+submitBtn.disabled = true;
+submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>Validando acesso...`;
+
+const { data, error } = await db.auth.signInWithPassword({
+email,
+password: pass
+});
+
+submitBtn.disabled = false;
+submitBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i>Acessar painel`;
+
+if(error || !data?.session){
+console.error("Erro no login:", error);
+showLoginError("Usuário ou senha inválidos.");
+return;
+}
+
+username.value = "";
+password.value = "";
+await openAdminPanel();
 });
 
 function renderAll(){
@@ -421,7 +456,8 @@ mobileOverlay.classList.remove("active");
 openSidebar.onclick=()=>{sidebar.classList.add("active");mobileOverlay.classList.add("active")};
 mobileOverlay.onclick=closeSide;
 
-function logout(){
+async function logout(){
+await db.auth.signOut();
 app.classList.remove("active");
 loginScreen.classList.remove("hidden");
 username.value="";
@@ -810,7 +846,20 @@ function closeModal(){viewModal.classList.remove("active")}
 closeViewModal.onclick=closeModal;
 viewModal.onclick=e=>{if(e.target.id==="viewModal")closeModal()};
 
-load();
+async function bootstrapAuth(){
+const { data, error } = await db.auth.getSession();
+if(error){
+console.warn("Não foi possível verificar sessão:", error.message);
+}
+if(data?.session){
+await openAdminPanel();
+}else{
+loginScreen.classList.remove("hidden");
+app.classList.remove("active");
+}
+}
+
+bootstrapAuth();
 </script>
 </body>
 </html>
