@@ -58,7 +58,55 @@ function renderProperties(){const grid=document.getElementById("propertiesGrid")
 function openLeadModal(id){currentProperty=properties.find(p=>Number(p.id)===Number(id));selectedProperty.value=currentProperty?.title||"";leadModal.classList.add("active")}
 function renderDetails(p){const images=Array.isArray(p.images)&&p.images.length?p.images:[fallbackImage];detailsContent.innerHTML=`<div><div class="gallery-grid">${images.slice(0,4).map(img=>`<img src="${img}" alt="${p.title||'Imóvel Città'}">`).join("")}</div></div><div class="details-card"><h2>${p.title||'Imóvel Città'}</h2><div class="location">${p.neighborhood||''}, ${p.city||''} - ${p.state||''}</div><div class="details-price">${p.price||'Consulte'}</div><p class="details-desc">${p.description||'Entre em contato para mais informações sobre este imóvel.'}</p><div class="details-features"><div class="feature-box"><i class="fa-solid fa-ruler-combined"></i>${p.area||'-'}</div><div class="feature-box"><i class="fa-solid fa-bed"></i>${p.bedrooms||'0'} quartos</div><div class="feature-box"><i class="fa-solid fa-bath"></i>${p.bathrooms||'0'} banheiros</div><div class="feature-box"><i class="fa-solid fa-car"></i>${p.parking||'0'} vagas</div>${(p.features||[]).slice(0,4).map(f=>`<div class="feature-box"><i class="fa-solid fa-check"></i>${f}</div>`).join("")}</div><div class="contact-buttons"><a href="${whatsappLink()}" target="_blank" class="btn-primary"><i class="fa-brands fa-whatsapp"></i>Falar no WhatsApp</a><a href="#contato" class="btn-secondary" style="color:#081122;border-color:#ccc;">Entrar em contato</a></div></div>`;detailsPage.classList.add("active");window.scrollTo({top:detailsPage.offsetTop-80,behavior:"smooth"})}
 mobileBtn.addEventListener("click",()=>menu.classList.toggle("active"));document.querySelectorAll(".faq-question").forEach(q=>{q.addEventListener("click",()=>q.closest(".faq-item").classList.toggle("active"))});document.querySelectorAll(".filter-btn").forEach(btn=>{btn.addEventListener("click",()=>{document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");currentFilter=btn.dataset.filter;renderProperties()})});closeModal.addEventListener("click",()=>leadModal.classList.remove("active"));window.addEventListener("click",e=>{if(e.target===leadModal)leadModal.classList.remove("active")});
-leadForm.addEventListener("submit",async e=>{e.preventDefault();const btn=leadForm.querySelector("button[type='submit']");const originalText=btn.textContent;btn.disabled=true;btn.textContent="Enviando...";const leadPayload={name:leadName.value.trim(),email:leadEmail.value.trim(),phone:leadPhone.value.trim(),property:selectedProperty.value||currentProperty?.title||"Imóvel não informado",timeline:leadTimeline.value,status:"Novo",notes:"Lead capturado pela landing page."};try{const {error}=await db.from("leads").insert([leadPayload]);if(error){console.error("Erro ao salvar lead no Supabase:",error);alert("Erro ao salvar lead: "+(error.message||"erro desconhecido"));return}leadModal.classList.remove("active");if(currentProperty){renderDetails(currentProperty)}leadForm.reset();alert("Interesse enviado com sucesso. A equipe da Città entrará em contato.")}catch(err){console.error("Falha inesperada ao enviar lead:",err);alert("Falha inesperada ao enviar lead. Verifique a conexão e tente novamente.")}finally{btn.disabled=false;btn.textContent=originalText}});
+leadForm.addEventListener("submit", async (e) => {
+e.preventDefault();
+
+const btn = leadForm.querySelector("button[type='submit']");
+const originalText = btn.textContent;
+
+btn.disabled = true;
+btn.textContent = "Enviando...";
+
+const leadPayload = {
+name: leadName.value.trim(),
+email: leadEmail.value.trim(),
+phone: leadPhone.value.trim(),
+property: selectedProperty.value || currentProperty?.title || "Imóvel não informado",
+timeline: leadTimeline.value,
+status: "Novo",
+notes: "Lead capturado pela landing page."
+};
+
+try {
+const { data, error } = await db
+.from("leads")
+.insert([leadPayload])
+.select()
+.single();
+
+if (error) {
+console.error("Erro ao salvar lead no Supabase:", error);
+alert("Erro ao salvar lead: " + (error.message || "erro desconhecido"));
+return;
+}
+
+console.log("Lead salvo com sucesso:", data);
+
+leadModal.classList.remove("active");
+
+if (currentProperty) {
+renderDetails(currentProperty);
+}
+
+leadForm.reset();
+} catch (err) {
+console.error("Erro inesperado ao enviar lead:", err);
+alert("Erro inesperado ao enviar lead. Verifique o Console/F12 para detalhes.");
+} finally {
+btn.disabled = false;
+btn.textContent = originalText;
+}
+});
 async function init(){await loadSettings();await loadProperties();applySettings();renderProperties()}init();
 </script>
 </body>
