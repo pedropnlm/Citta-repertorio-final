@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Città Imobiliária | Estratégia e valorização imobiliária</title>
-<meta name="description" content="Imóveis selecionados com análise e inteligência em Goiânia, Goianésia e região. Consultoria personalizada e imóveis premium." />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Painel Administrativo | Città Imobiliária</title>
+<meta name="description" content="Painel administrativo da Città Imobiliária para imóveis, leads e configurações.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -12,1673 +12,954 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-:root{
---navy:#081122;
---navy2:#0d1b2a;
---gold:#d4b483;
---gold2:#b7925f;
---text:#0d1b2a;
---muted:#5d6673;
---stone:#f4f1eb;
---white:#fff;
---shadow:0 18px 50px rgba(0,0,0,.08);
-}
-
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;overflow-x:hidden}
-body{
-font-family:'Montserrat',sans-serif;
-background:var(--stone);
-color:var(--text);
-overflow-x:hidden;
-}
+:root{--navy:#081122;--navy2:#0d1b2a;--gold:#d4b483;--gold2:#b7925f;--bg:#f4f2ee;--text:#101828;--muted:#667085;--border:rgba(16,24,40,.1);--danger:#dc2626;--success:#16a34a;--shadow:0 18px 55px rgba(8,17,34,.12);--radius:22px;--side:290px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:hidden;scroll-behavior:smooth}
+body{font-family:Montserrat,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
 a{text-decoration:none;color:inherit}
+button,input,select,textarea{font-family:inherit}
+button{cursor:pointer}
 img{max-width:100%;display:block}
-.container{width:min(1200px,calc(100% - 32px));margin:auto}
-
-.stone-bg{
-position:relative;
-background-color:#efe7dc;
-background-image:
-linear-gradient(rgba(255,255,255,.70),rgba(255,255,255,.70)),
-url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='920' height='620' viewBox='0 0 920 620'%3E%3Crect width='920' height='620' fill='%23e9dfd1'/%3E%3Cg fill='%23d8cdbd' opacity='.72' stroke='%23b7aa98' stroke-width='2.2'%3E%3Cpath d='M0 0h115l26 66-44 72H0z'/%3E%3Cpath d='M115 0h155l-18 84-111-18z'/%3E%3Cpath d='M270 0h170l20 78-122 56-86-50z'/%3E%3Cpath d='M440 0h168l-35 104-113-26z'/%3E%3Cpath d='M608 0h150l42 75-86 88-141-59z'/%3E%3Cpath d='M758 0h162v130l-120-55z'/%3E%3Cpath d='M0 138l97 0 62 92-82 84H0z'/%3E%3Cpath d='M97 138l141-54 100 50-24 126-155-30z'/%3E%3Cpath d='M338 134l122-56 113 26 38 118-111 78-186-40z'/%3E%3Cpath d='M611 222l103-59 86-88 120 55v118l-150 70z'/%3E%3Cpath d='M0 314h77l124 60-38 132H0z'/%3E%3Cpath d='M77 314l82-84 155 30 62 118-175-4z'/%3E%3Cpath d='M314 260l186 40 76 110-118 95-82-127z'/%3E%3Cpath d='M500 300l111-78 159 96-43 148-151-56z'/%3E%3Cpath d='M770 318l150-70v178l-193 40z'/%3E%3Cpath d='M0 506h163l88 114H0z'/%3E%3Cpath d='M163 506l38-132 175 4 82 127-92 115H251z'/%3E%3Cpath d='M458 505l118-95 151 56 27 154H366z'/%3E%3Cpath d='M727 466l193-40v194H754z'/%3E%3C/g%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='4' opacity='.20'%3E%3Cpath d='M0 138h97l62 92-82 84'/%3E%3Cpath d='M338 134l122-56 113 26 38 118'/%3E%3Cpath d='M201 374l175 4 82 127'/%3E%3Cpath d='M576 410l151 56 27 154'/%3E%3C/g%3E%3C/svg%3E");
-background-size:cover,760px 520px;
-background-repeat:repeat;
-overflow:hidden;
-}
-.stone-bg:before,
-.stone-bg:after{
-content:"";
-position:absolute;
-pointer-events:none;
-z-index:0;
-opacity:.25;
-background-repeat:no-repeat;
-background-size:contain;
-filter:drop-shadow(0 18px 24px rgba(183,146,95,.08));
-}
-.stone-bg:before{
-width:260px;
-height:520px;
-left:-58px;
-top:40px;
-background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='520' viewBox='0 0 260 520'%3E%3Cg fill='none' stroke='%23b7925f' stroke-width='5' stroke-linecap='round' stroke-linejoin='round' opacity='.55'%3E%3Cpath d='M18 36 C130 98 190 168 230 252 C152 272 87 334 35 480'/%3E%3Cpath d='M18 36 C45 160 50 300 35 480'/%3E%3Cpath d='M85 105 C115 200 106 306 80 420'/%3E%3Cpath d='M145 168 C153 254 136 330 110 388'/%3E%3C/g%3E%3C/svg%3E");
-}
-.stone-bg:after{
-width:260px;
-height:520px;
-right:-58px;
-bottom:30px;
-transform:scaleX(-1);
-background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='520' viewBox='0 0 260 520'%3E%3Cg fill='none' stroke='%23b7925f' stroke-width='5' stroke-linecap='round' stroke-linejoin='round' opacity='.55'%3E%3Cpath d='M18 36 C130 98 190 168 230 252 C152 272 87 334 35 480'/%3E%3Cpath d='M18 36 C45 160 50 300 35 480'/%3E%3Cpath d='M85 105 C115 200 106 306 80 420'/%3E%3Cpath d='M145 168 C153 254 136 330 110 388'/%3E%3C/g%3E%3C/svg%3E");
-}
-.stone-bg .container{position:relative;z-index:2}
-
-header{
-position:fixed;
-width:100%;
-top:0;
-z-index:999;
-background:rgba(8,17,34,.97);
-backdrop-filter:blur(10px);
-border-bottom:1px solid rgba(255,255,255,.08);
-}
-.navbar{display:flex;align-items:center;justify-content:space-between;padding:18px 0;gap:26px}
-.brand-logo{display:flex;align-items:center;gap:18px;color:var(--gold);min-width:0}
-.brand-logo img{width:86px;height:58px;object-fit:contain;flex:0 0 auto}
-.brand-logo strong{
-font-family:"Arial MT Pro",Arial,sans-serif;
-font-size:2.05rem;
-letter-spacing:-.045em;
-font-weight:800;
-color:var(--gold);
-}
-.menu{display:flex;gap:24px;align-items:center}
-.menu a{color:#fff;font-weight:700;font-size:1rem;transition:.3s}
-.menu a:hover{color:var(--gold)}
-.menu-dropdown{position:relative;display:flex;align-items:center}
-.menu-drop-trigger{display:flex;align-items:center;gap:7px}
-.menu-drop-trigger i{font-size:.72rem;transition:.25s}
-.menu-dropdown:hover .menu-drop-trigger i{transform:rotate(180deg)}
-.menu-submenu{position:absolute;top:calc(100% + 14px);left:0;min-width:170px;background:#fff;border:1px solid rgba(183,146,95,.18);border-radius:18px;padding:10px;box-shadow:0 18px 45px rgba(8,17,34,.18);display:grid;gap:4px;opacity:0;visibility:hidden;transform:translateY(8px);transition:.22s;z-index:1000}
-.menu-submenu:before{content:"";position:absolute;left:0;right:0;top:-16px;height:16px}
-.menu-dropdown:hover .menu-submenu{opacity:1;visibility:visible;transform:translateY(0)}
-.menu-submenu a{color:var(--navy)!important;padding:11px 12px;border-radius:12px;font-size:.92rem;font-weight:900}
-.menu-submenu a:hover{background:#f5f2ec;color:var(--gold2)!important}
-.btn-whats{
-background:linear-gradient(135deg,var(--gold),var(--gold2));
-color:var(--navy);
-padding:14px 24px;
-border-radius:999px;
-font-weight:800;
-display:flex;
-align-items:center;
-gap:10px;
-transition:.3s;
-}
-.mobile-btn{display:none;background:none;border:none;color:#fff;font-size:1.5rem}
-
-.hero{
-min-height:100vh;
-background:
-linear-gradient(rgba(8,17,34,.78),rgba(8,17,34,.78)),
-url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
-display:flex;
-align-items:center;
-padding-top:100px;
-}
-.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:50px;align-items:center}
-.hero-content h1{font-size:clamp(2.8rem,6vw,5.3rem);line-height:.95;color:#fff;margin-bottom:24px;letter-spacing:-3px}
-.hero-content h1 span{color:var(--gold)}
-.hero-content p{color:rgba(255,255,255,.85);font-size:1.05rem;line-height:1.8;margin-bottom:32px;max-width:650px}
-.hero-actions{display:flex;flex-wrap:wrap;gap:16px}
-.btn-primary{
-background:linear-gradient(135deg,var(--gold),var(--gold2));
-color:var(--navy);
-padding:16px 28px;
-border-radius:999px;
-font-weight:800;
-display:inline-flex;
-align-items:center;
-justify-content:center;
-gap:10px;
-border:none;
-cursor:pointer;
-}
-.btn-secondary{
-border:1px solid rgba(255,255,255,.2);
-background:rgba(255,255,255,.08);
-color:#fff;
-padding:16px 28px;
-border-radius:999px;
-font-weight:700;
-display:inline-flex;
-align-items:center;
-justify-content:center;
-gap:10px;
-}
-.hero-card{background:rgba(255,255,255,.08);padding:18px;border-radius:32px;backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.1)}
-.hero-card img{height:560px;width:100%;object-fit:cover;border-radius:24px}
-
-.section{padding:90px 0}
-.section-title{font-size:clamp(2rem,4vw,3.5rem);line-height:1;margin-bottom:18px;letter-spacing:-2px;color:var(--navy)}
-.section-title span{color:var(--gold2)}
-.section-text{color:var(--muted);line-height:1.8;max-width:760px}
-
-.benefits-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:50px}
-.benefit-card{background:#fff;padding:30px;border-radius:26px;box-shadow:var(--shadow);transition:.3s}
-.benefit-card:hover{transform:translateY(-6px)}
-.benefit-card i{font-size:2rem;color:var(--gold2);margin-bottom:18px}
-.benefit-card h3{margin-bottom:12px;font-size:1.1rem}
-.benefit-card p{color:var(--muted);line-height:1.7;font-size:.95rem}
-
-.property-filters{display:flex;flex-wrap:wrap;gap:12px;margin-top:35px}
-.filter-btn{
-border:1px solid rgba(183,146,95,.28);
-background:#fff;
-color:var(--navy);
-padding:13px 22px;
-border-radius:999px;
-font-weight:800;
-cursor:pointer;
-}
-.filter-btn.active{
-background:linear-gradient(135deg,var(--gold),var(--gold2));
-color:var(--navy);
-border-color:transparent;
-}
-
-.properties-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:35px}
-.property-card{background:#fff;border-radius:28px;overflow:hidden;box-shadow:var(--shadow);position:relative}
-.property-image{position:relative;overflow:hidden;height:280px}
-.property-image img{width:100%;height:100%;object-fit:cover;transition:.4s}
-.overlay{position:absolute;inset:0;background:rgba(8,17,34,.72);display:flex;align-items:center;justify-content:center;opacity:0;transition:.3s;color:#fff;font-weight:800;text-align:center;padding:20px}
-.property-card:hover .overlay{opacity:1}
-.property-card:hover img{transform:scale(1.08)}
-.property-content{padding:26px}
-.property-type{font-size:.82rem;font-weight:800;color:var(--gold2);margin-bottom:10px;text-transform:uppercase}
-.property-content h3{font-size:1.3rem;margin-bottom:12px}
-.location{color:var(--muted);font-size:.95rem;margin-bottom:18px}
-.price{font-size:1.7rem;font-weight:900;color:var(--navy);margin-bottom:18px}
-.property-info{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
-.info-box{background:#f4f4f4;padding:12px;border-radius:14px;text-align:center;font-size:.82rem;font-weight:700;color:var(--navy)}
-.info-box i{display:block;margin-bottom:8px;color:var(--gold2);font-size:1rem}
-.property-btn{width:100%;border:none;background:linear-gradient(135deg,var(--gold),var(--gold2));padding:16px;border-radius:16px;font-weight:800;cursor:pointer;font-size:1rem}
-
-.financing{background:var(--navy);color:#fff;border-radius:40px;padding:60px;display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center;margin-top:40px}
-.financing h3{font-size:2.4rem;margin-bottom:18px}
-.financing p{color:rgba(255,255,255,.8);line-height:1.8}
-
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
-.about-image img{border-radius:30px;height:550px;object-fit:cover;width:100%}
-.about-list{margin-top:30px;display:grid;gap:16px}
-.about-list div{display:flex;gap:14px;align-items:flex-start;font-weight:700;color:var(--navy)}
-.about-list i{color:var(--gold2);margin-top:3px}
-
-.map-card{margin-top:50px;background:#fff;padding:18px;border-radius:32px;box-shadow:var(--shadow)}
-.map-card iframe{width:100%;height:450px;border:none;border-radius:24px}
-
-.faq-grid{display:grid;gap:18px;margin-top:50px}
-.faq-item{background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.05)}
-.faq-question{width:100%;border:none;background:#fff;padding:24px;display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:1rem;cursor:pointer}
-.faq-answer{max-height:0;overflow:hidden;transition:.3s}
-.faq-answer p{padding:0 24px 24px;color:var(--muted);line-height:1.8}
-.faq-item.active .faq-answer{max-height:220px}
-
-.cta-final{
-background:
-linear-gradient(rgba(8,17,34,.68),rgba(8,17,34,.68)),
-url('assets/cta-final-citta.jpeg') center/cover no-repeat;
-text-align:center;
-color:#fff;
-padding:120px 0;
-}
-.cta-final h2{font-size:clamp(2.3rem,5vw,4.5rem);line-height:1;margin-bottom:22px;letter-spacing:-3px}
-.cta-final p{max-width:760px;margin:auto;line-height:1.8;color:rgba(255,255,255,.82);margin-bottom:34px}
-
-footer{background:var(--navy);color:#fff;padding:80px 0 30px}
-.footer-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:40px;margin-bottom:50px}
-.footer-title{font-size:1.2rem;margin-bottom:20px}
-.footer-grid p,.footer-grid li,.footer-grid a{color:rgba(255,255,255,.75);line-height:1.8;font-size:.95rem}
-.footer-grid ul{list-style:none;display:grid;gap:12px}
-.footer-bottom{padding-top:30px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;font-size:.9rem}
-
-.whatsapp-float{position:fixed;right:20px;bottom:20px;width:65px;height:65px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#fff;z-index:999;box-shadow:0 15px 40px rgba(37,211,102,.4)}
-.instagram-float{position:fixed;right:20px;bottom:96px;width:65px;height:65px;border-radius:50%;background:linear-gradient(135deg,#f58529,#dd2a7b,#8134af,#515bd4);display:flex;align-items:center;justify-content:center;font-size:1.9rem;color:#fff;z-index:999;box-shadow:0 15px 40px rgba(221,42,123,.32)}
-
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;padding:20px;z-index:9999}
+.hidden{display:none!important}
+.btn{min-height:46px;padding:0 18px;border:0;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;gap:9px;font-weight:900;transition:.2s;white-space:nowrap}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);box-shadow:0 12px 28px rgba(183,146,95,.25)}
+.btn-dark{background:var(--navy);color:#fff}
+.btn-light{background:#fff;color:var(--navy);border:1px solid var(--border)}
+.btn-danger{background:rgba(220,38,38,.1);color:#991b1b;border:1px solid rgba(220,38,38,.14)}
+.btn-success{background:rgba(22,163,74,.1);color:#166534;border:1px solid rgba(22,163,74,.14)}
+.login{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 20% 20%,rgba(212,180,131,.22),transparent 30%),linear-gradient(135deg,#081122,#0d1b2a)}
+.login-card{width:min(100%,460px);background:rgba(255,255,255,.96);border-radius:32px;padding:clamp(28px,5vw,42px);box-shadow:0 30px 90px rgba(0,0,0,.35)}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-mark{width:58px;height:58px;border-radius:17px;display:grid;place-items:center;background:rgba(212,180,131,.14);border:1px solid rgba(212,180,131,.22);overflow:hidden}
+.brand-mark img{width:100%;height:100%;object-fit:contain;padding:5px}
+.brand-name{font-size:1.35rem;font-weight:950;letter-spacing:-.06em;color:var(--navy);line-height:1}
+.brand-name span{color:var(--gold2)}
+.login-card .brand{margin-bottom:26px}
+.login-card h1{font-size:clamp(2rem,5vw,2.7rem);line-height:1;letter-spacing:-.07em;color:var(--navy);margin-bottom:10px}
+.login-card p{color:var(--muted);line-height:1.7;margin-bottom:24px}
+.field{display:grid;gap:8px;margin-bottom:16px}
+.field label{font-weight:800;color:var(--navy);font-size:.9rem}
+input,select,textarea{width:100%;border:1px solid var(--border);background:#fff;border-radius:16px;padding:15px;color:var(--text);outline:0;font-size:.95rem}
+textarea{min-height:130px;resize:vertical;line-height:1.6}
+input:focus,select:focus,textarea:focus{border-color:var(--gold2);box-shadow:0 0 0 4px rgba(212,180,131,.16)}
+.input-wrap{position:relative}
+.input-wrap i{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--gold2)}
+.input-wrap input{padding-left:44px}
+.alert{display:none;margin:12px 0 18px;padding:13px;border-radius:15px;background:rgba(220,38,38,.08);color:#991b1b;border:1px solid rgba(220,38,38,.16);font-weight:800;font-size:.9rem}
+.alert.show{display:block}
+.login-submit{width:100%;min-height:56px}
+.app{display:none;min-height:100vh}
+.app.active{display:block}
+.sidebar{position:fixed;inset:0 auto 0 0;width:var(--side);background:linear-gradient(180deg,#081122,#0d1b2a);color:#fff;z-index:900;padding:22px;display:flex;flex-direction:column;border-right:1px solid rgba(255,255,255,.08)}
+.sidebar .brand{margin-bottom:34px}
+.sidebar .brand-name{color:#fff}
+.nav-list{display:grid;gap:8px}
+.nav-item{width:100%;min-height:48px;border:0;border-radius:16px;padding:0 14px;background:transparent;color:rgba(255,255,255,.72);display:flex;align-items:center;gap:12px;font-weight:800;text-align:left}
+.nav-item:hover,.nav-item.active{background:rgba(212,180,131,.16);color:#fff}
+.nav-item i{width:20px;color:var(--gold)}
+.side-foot{margin-top:auto;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.64);font-size:.84rem;line-height:1.7}
+.main{margin-left:var(--side);min-height:100vh}
+.topbar{position:sticky;top:0;z-index:800;height:78px;background:rgba(244,242,238,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center}
+.topbar-inner{width:100%;padding:0 28px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.mobile-menu{display:none;width:46px;height:46px;border:0;border-radius:14px;background:#fff;color:var(--navy);box-shadow:0 10px 28px rgba(8,17,34,.08);font-size:1.25rem}
+.page-title h2{font-size:clamp(1.45rem,3vw,2rem);letter-spacing:-.055em;color:var(--navy)}
+.page-title p{color:var(--muted);font-size:.9rem;margin-top:4px}
+.content{padding:28px;max-width:1480px}
+.panel{display:none;animation:fade .25s ease both}
+.panel.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:24px}
+.summary-card{background:#fff;border-radius:24px;padding:24px;border:1px solid var(--border);box-shadow:0 12px 36px rgba(8,17,34,.08);position:relative;overflow:hidden}
+.summary-card:after{content:"";position:absolute;width:120px;height:120px;border-radius:50%;right:-48px;top:-48px;background:rgba(212,180,131,.16)}
+.summary-icon{width:52px;height:52px;display:grid;place-items:center;border-radius:18px;background:rgba(212,180,131,.16);color:var(--gold2);margin-bottom:16px;font-size:1.2rem}
+.summary-card strong{display:block;font-size:2rem;letter-spacing:-.06em;color:var(--navy)}
+.summary-card span{color:var(--muted);font-weight:700;font-size:.92rem}
+.grid-2{display:grid;grid-template-columns:1.2fr .8fr;gap:20px}
+.card{background:#fff;border-radius:24px;border:1px solid var(--border);box-shadow:0 12px 36px rgba(8,17,34,.08);padding:24px}
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:20px}
+.card-head h3{color:var(--navy);font-size:1.2rem;letter-spacing:-.035em}
+.card-head p{color:var(--muted);line-height:1.55;font-size:.92rem;margin-top:4px}
+.activity-list{display:grid;gap:12px}
+.activity{display:flex;gap:12px;padding:14px;border-radius:18px;background:#f8f7f5;border:1px solid rgba(16,24,40,.06)}
+.activity i{color:var(--gold2);margin-top:3px}
+.activity strong{display:block;color:var(--navy);font-size:.94rem;margin-bottom:4px}
+.activity span{color:var(--muted);font-size:.86rem;line-height:1.5}
+.form-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+.col-12{grid-column:span 12}.col-8{grid-column:span 8}.col-6{grid-column:span 6}.col-4{grid-column:span 4}.col-3{grid-column:span 3}
+.checks{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.check{min-height:46px;border:1px solid var(--border);border-radius:14px;padding:10px 12px;display:flex;align-items:center;gap:9px;font-weight:700;font-size:.9rem}
+.check input{width:17px;height:17px;accent-color:var(--gold2)}
+.upload{border:1.5px dashed rgba(183,146,95,.5);background:rgba(212,180,131,.08);border-radius:20px;padding:22px;display:grid;gap:14px;text-align:center}
+.upload i{font-size:2rem;color:var(--gold2)}
+.upload p{color:var(--muted);line-height:1.6;font-size:.92rem}
+.file-input{display:none}
+.preview{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:14px}
+.preview-item{position:relative;border-radius:16px;overflow:hidden;background:#eee;min-height:110px;border:2px solid transparent}
+.preview-item.cover{border-color:var(--gold2)}
+.preview-item img{width:100%;height:120px;object-fit:cover}
+.preview-actions{position:absolute;left:8px;right:8px;bottom:8px;display:flex;gap:6px;flex-wrap:wrap}
+.position-select{position:absolute;left:8px;right:8px;top:8px;border:0;border-radius:999px;padding:8px 10px;font-size:.72rem;font-weight:900;background:rgba(255,255,255,.92);color:var(--navy);box-shadow:0 8px 22px rgba(8,17,34,.16)}
+.position-label{position:absolute;left:8px;top:48px;background:rgba(8,17,34,.82);color:#fff;border-radius:999px;padding:6px 9px;font-size:.7rem;font-weight:900}
+.mini{min-height:31px;padding:0 9px;border:0;border-radius:999px;color:#fff;background:rgba(8,17,34,.82);font-weight:800;font-size:.72rem}
+.mini.remove{background:rgba(220,38,38,.84)}
+.settings-preview{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:12px}
+.preview-box{background:#f8f7f5;border:1px solid rgba(16,24,40,.08);border-radius:20px;padding:16px}
+.preview-box h4{color:var(--navy);margin-bottom:12px;font-size:.95rem}
+.logo-preview{height:120px;background:var(--navy);border-radius:16px;display:grid;place-items:center;padding:16px}
+.logo-preview img{max-height:90px;object-fit:contain}
+.banner-preview{height:160px;border-radius:16px;overflow:hidden;background:#eee}
+.banner-preview img{width:100%;height:100%;object-fit:cover}
+.banner-help{font-size:.86rem;color:var(--muted);line-height:1.6;margin-top:6px}.banner-mode-card{background:#f8f7f5;border:1px solid rgba(16,24,40,.08);border-radius:18px;padding:16px}
+.form-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end;margin-top:20px}
+.success{display:none;padding:14px 16px;border-radius:16px;background:rgba(22,163,74,.1);color:#166534;font-weight:800;border:1px solid rgba(22,163,74,.16);margin-bottom:18px}
+.success.show{display:block}
+.filters{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px;align-items:center;justify-content:space-between}
+.search{position:relative;flex:1;min-width:min(100%,270px)}
+.search i{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--gold2)}
+.search input{padding-left:42px}
+.list{display:grid;gap:14px}
+.property-row,.lead-row{display:grid;grid-template-columns:96px 1fr auto;gap:16px;align-items:center;padding:14px;border-radius:22px;border:1px solid var(--border);background:#fff;box-shadow:0 8px 24px rgba(8,17,34,.05)}
+.lead-row{grid-template-columns:1fr auto}
+.thumb{width:96px;height:82px;border-radius:16px;object-fit:cover;background:#eee}
+.row-info h4{color:var(--navy);font-size:1rem;margin-bottom:5px}
+.meta{display:flex;flex-wrap:wrap;gap:7px;color:var(--muted);font-size:.86rem;line-height:1.5}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.badge{display:inline-flex;align-items:center;gap:5px;min-height:26px;padding:0 9px;border-radius:999px;background:#f2f1ee;color:var(--navy);font-size:.74rem;font-weight:900}
+.badge.gold{background:rgba(212,180,131,.16);color:#805f2e}
+.badge.green{background:rgba(22,163,74,.1);color:#166534}
+.badge.red{background:rgba(220,38,38,.09);color:#991b1b}
+.badge.orange{background:rgba(245,158,11,.12);color:#92400e}
+.actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+.lead-status{width:180px;padding:10px;border-radius:14px;font-size:.84rem}
+.empty{padding:36px 20px;text-align:center;border:1px dashed var(--border);border-radius:22px;color:var(--muted);background:#fff}
+.empty i{font-size:2rem;color:var(--gold2);margin-bottom:12px}
+.modal{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.72);padding:20px;display:none;align-items:center;justify-content:center}
 .modal.active{display:flex}
-.modal-content{background:#fff;width:100%;max-width:520px;border-radius:30px;padding:34px;position:relative;max-height:90vh;overflow:auto}
-.close-modal{position:absolute;right:20px;top:18px;background:none;border:none;font-size:1.5rem;cursor:pointer}
-.modal h3{font-size:2rem;margin-bottom:12px;color:var(--navy)}
-.modal p{color:var(--muted);line-height:1.7;margin-bottom:24px}
-.form-group{margin-bottom:18px}
-.form-group label{display:block;margin-bottom:8px;font-weight:700}
-.form-group input,.form-group select{width:100%;padding:16px;border-radius:14px;border:1px solid #ddd;font-size:1rem}
-.modal-submit{width:100%;border:none;padding:18px;border-radius:16px;background:linear-gradient(135deg,var(--gold),var(--gold2));font-size:1rem;font-weight:800;cursor:pointer;margin-top:10px}
-
-.details-page{display:none;padding:140px 0 80px}
-.details-page.active{display:block}
-.details-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px}
-.gallery-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.gallery-grid img{height:260px;width:100%;object-fit:cover;border-radius:20px}
-.details-card{background:#fff;padding:34px;border-radius:30px;box-shadow:var(--shadow)}
-.details-card h2{font-size:2.3rem;margin-bottom:12px}
-.details-price{font-size:2.2rem;font-weight:900;margin-bottom:24px;color:var(--navy)}
-.details-desc{color:var(--muted);line-height:1.9;margin-bottom:28px}
-.details-features{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:28px}
-.feature-box{background:#f4f4f4;padding:16px;border-radius:16px;font-weight:700}
-.feature-box i{color:var(--gold2);margin-right:8px}
-.contact-buttons{display:flex;flex-wrap:wrap;gap:14px}
-
-.empty-properties{
-grid-column:1/-1;
-background:#fff;
-border-radius:24px;
-padding:34px;
-text-align:center;
-color:var(--muted);
-box-shadow:var(--shadow);
-}
-
-@media(max-width:1100px){
-.hero-grid,.about-grid,.details-grid{grid-template-columns:1fr}
-.benefits-grid{grid-template-columns:repeat(2,1fr)}
-.properties-grid{grid-template-columns:repeat(2,1fr)}
-.footer-grid{grid-template-columns:repeat(2,1fr)}
-.financing{grid-template-columns:1fr;text-align:center}
-}
-@media(max-width:860px){
-.mobile-btn{display:block}
-.menu{position:fixed;top:82px;left:16px;right:16px;background:var(--navy);border-radius:24px;padding:20px;flex-direction:column;display:none;align-items:stretch}
-.menu.active{display:flex}
-.menu-dropdown{display:grid;width:100%}
-.menu-drop-trigger{justify-content:space-between}
-.menu-submenu{position:static;opacity:1;visibility:visible;transform:none;background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.10);box-shadow:none;margin-top:8px}
-.menu-submenu a{color:#fff!important}
-.menu-submenu a:hover{background:rgba(212,180,131,.14);color:var(--gold)!important}
-.hero{padding-bottom:80px}
-.hero-card img{height:400px}
-.properties-grid,.benefits-grid,.footer-grid,.gallery-grid{grid-template-columns:1fr}
-.property-info{grid-template-columns:repeat(2,1fr)}
-.details-features{grid-template-columns:1fr}
-}
-@media(max-width:540px){
-.hero-content h1{font-size:2.8rem}
-.section-title{font-size:2.3rem}
-.hero-actions,.contact-buttons{flex-direction:column}
-.btn-primary,.btn-secondary,.btn-whats{width:100%}
-.hero-card img{height:320px}
-.financing{padding:36px 26px}
-.financing h3{font-size:2rem}
-.modal-content{padding:28px 22px}
-.details-card{padding:26px}
-.details-card h2{font-size:1.9rem}
-.details-price{font-size:1.8rem}
-.gallery-grid img{height:220px}
-.map-card iframe{height:320px}
-.brand-logo strong{font-size:1.1rem}
-}
-
-
-/* Correções finais de responsividade preservando o layout original */
-body{max-width:100vw;overflow-x:hidden}
-img{max-width:100%;height:auto;display:block}
-.properties-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))}
-.property-image{aspect-ratio:16/10;height:auto}
-.property-image img{height:100%}
-.hero-card img{height:auto;max-height:560px}
-.loading-properties{grid-column:1/-1;background:#fff;border-radius:24px;padding:34px;text-align:center;color:var(--muted);box-shadow:var(--shadow)}
-@media(max-width:768px){
-  .navbar{padding:10px 0}
-  .brand-logo{min-width:0;gap:10px}
-  .brand-logo strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:230px}
-  .hero{min-height:auto;padding:120px 0 64px}
-  .hero-grid{gap:28px}
-  .hero-content h1{letter-spacing:-1.5px}
-  .section{padding:64px 0}
-  .property-content{padding:22px}
-  .info-box{padding:10px 6px;font-size:.78rem}
-}
-@media(max-width:540px){
-  .container{width:calc(100% - 24px)}
-  .hero-card img{height:auto;max-height:320px}
-  .brand-logo img{width:48px;height:36px}
-  .brand-logo strong{font-size:1.05rem;max-width:210px}
-}
-@media(max-width:420px){
-  .container{width:calc(100% - 20px)}
-  .hero-content h1{font-size:2.35rem;line-height:1.02}
-  .hero-content p{font-size:.94rem;line-height:1.65}
-  .btn-primary,.btn-secondary,.btn-whats{padding:14px 18px;font-size:.92rem}
-  .hero-card{padding:10px;border-radius:22px}
-  .hero-card img{border-radius:16px;max-height:280px}
-  .section-title{font-size:2rem;letter-spacing:-1.4px}
-  .benefit-card{padding:22px;border-radius:22px}
-  .whatsapp-float{width:56px;height:56px;font-size:1.75rem;right:14px;bottom:14px}
-.instagram-float{width:56px;height:56px;font-size:1.65rem;right:14px;bottom:82px}
-}
-
-/* Ajustes visuais finais Città: textura de pedra + header premium */
-footer .brand-logo img{width:72px;height:52px}
-footer .brand-logo strong{font-size:1.55rem;color:var(--gold)}
-@media(max-width:1100px){
-  .brand-logo img{width:72px;height:52px}
-  .brand-logo strong{font-size:1.62rem}
-  .menu{gap:18px}
-  .menu a{font-size:.95rem}
-}
-@media(max-width:860px){
-  .brand-logo img{width:64px;height:46px}
-  .brand-logo strong{font-size:1.42rem;max-width:230px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .navbar{padding:12px 0}
-  .menu{top:82px}
-}
-@media(max-width:540px){
-  .brand-logo img{width:54px;height:40px}
-  .brand-logo strong{font-size:1.15rem;max-width:190px}
-  footer .brand-logo img{width:58px;height:42px}
-  footer .brand-logo strong{font-size:1.18rem}
-  .stone-bg:before{left:-105px;opacity:.18}
-  .stone-bg:after{right:-105px;opacity:.18}
-}
-
-/* ===== Refinamento visual premium Città — somente layout ===== */
-:root{
---cream:#f6f1e8;
---cream2:#eee3d3;
---ink:#081122;
---soft-gold:rgba(212,180,131,.22);
-}
-
-.stone-bg{
-background-color:var(--cream);
-background-image:
-linear-gradient(180deg,rgba(255,255,255,.78),rgba(246,241,232,.86)),
-radial-gradient(circle at 18% 12%,rgba(212,180,131,.12),transparent 26%),
-radial-gradient(circle at 86% 68%,rgba(8,17,34,.055),transparent 28%),
-linear-gradient(115deg,rgba(183,146,95,.055) 0 1px,transparent 1px 100%),
-linear-gradient(25deg,rgba(8,17,34,.035) 0 1px,transparent 1px 100%);
-background-size:auto,760px 760px,820px 820px,190px 190px,230px 230px;
-background-repeat:repeat;
-}
-
-.stone-bg:before,
-.stone-bg:after{
-opacity:.16;
-filter:none;
-}
-
-.hero{
-position:relative;
-background:
-linear-gradient(90deg,rgba(8,17,34,.92) 0%,rgba(8,17,34,.78) 46%,rgba(8,17,34,.52) 100%),
-url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1800&auto=format&fit=crop') center/cover no-repeat;
-overflow:hidden;
-}
-
-.hero:before{
-content:"";
-position:absolute;
-inset:0;
-background:
-radial-gradient(circle at 18% 30%,rgba(212,180,131,.18),transparent 24%),
-linear-gradient(180deg,rgba(8,17,34,0),rgba(8,17,34,.34));
-pointer-events:none;
-}
-
-.hero .container{position:relative;z-index:2}
-
-.hero-content h1{
-max-width:760px;
-font-size:clamp(3.1rem,6.4vw,5.8rem);
-line-height:.92;
-letter-spacing:-4px;
-text-shadow:0 18px 55px rgba(0,0,0,.32);
-}
-
-.hero-content p{
-max-width:620px;
-font-size:1.02rem;
-line-height:1.75;
-color:rgba(255,255,255,.80);
-}
-
-.hero-card{
-border-radius:34px;
-padding:12px;
-background:linear-gradient(135deg,rgba(212,180,131,.26),rgba(255,255,255,.07));
-box-shadow:0 35px 100px rgba(0,0,0,.34);
-}
-
-.hero-card img{
-min-height:520px;
-filter:saturate(.95) contrast(1.04);
-}
-
-.btn-primary,.property-btn{
-box-shadow:0 18px 36px rgba(183,146,95,.25);
-letter-spacing:.01em;
-}
-
-.btn-secondary{
-border-color:rgba(212,180,131,.35);
-background:rgba(8,17,34,.22);
-}
-
-.institutional-banner{
-background:
-linear-gradient(135deg,rgba(8,17,34,.98),rgba(13,27,42,.98)),
-radial-gradient(circle at 18% 20%,rgba(212,180,131,.20),transparent 28%);
-padding:84px 0;
-color:#fff;
-position:relative;
-overflow:hidden;
-}
-
-.institutional-banner:before,
-.institutional-banner:after{
-content:"";
-position:absolute;
-width:260px;
-height:420px;
-border:1px solid rgba(212,180,131,.15);
-transform:rotate(18deg);
-}
-
-.institutional-banner:before{left:-120px;top:-80px}
-.institutional-banner:after{right:-120px;bottom:-120px}
-
-.institutional-inner{
-max-width:960px;
-margin:auto;
-text-align:center;
-position:relative;
-z-index:2;
-}
-
-.premium-eyebrow{
-display:inline-flex;
-align-items:center;
-gap:10px;
-color:var(--gold);
-font-weight:900;
-letter-spacing:.22em;
-text-transform:uppercase;
-font-size:.78rem;
-margin-bottom:20px;
-}
-
-.premium-eyebrow:before,
-.premium-eyebrow:after{
-content:"";
-width:38px;
-height:1px;
-background:rgba(212,180,131,.65);
-}
-
-.institutional-inner h2{
-font-size:clamp(2.2rem,4vw,4rem);
-line-height:1.03;
-letter-spacing:-2.5px;
-max-width:900px;
-margin:auto;
-}
-
-.institutional-inner p{
-color:rgba(255,255,255,.72);
-max-width:760px;
-margin:24px auto 0;
-line-height:1.8;
-}
-
-.benefit-card,
-.property-card,
-.faq-item,
-.map-card,
-.details-card{
-border:1px solid rgba(183,146,95,.10);
-box-shadow:0 22px 60px rgba(8,17,34,.09);
-}
-
-.benefit-card{
-position:relative;
-overflow:hidden;
-}
-
-.benefit-card:after{
-content:"";
-position:absolute;
-width:110px;
-height:110px;
-right:-55px;
-top:-55px;
-border-radius:50%;
-background:rgba(212,180,131,.14);
-}
-
-.property-card{
-border-radius:30px;
-transition:transform .35s ease, box-shadow .35s ease;
-}
-
-.property-card:hover{
-transform:translateY(-10px);
-box-shadow:0 30px 80px rgba(8,17,34,.16);
-}
-
-.property-image{
-height:auto;
-aspect-ratio:16/11;
-}
-
-.property-image:before{
-content:"Seleção Città";
-position:absolute;
-left:18px;
-top:18px;
-z-index:4;
-background:linear-gradient(135deg,var(--gold),var(--gold2));
-color:var(--navy);
-padding:8px 14px;
-border-radius:999px;
-font-size:.72rem;
-font-weight:900;
-letter-spacing:.03em;
-text-transform:uppercase;
-box-shadow:0 14px 28px rgba(0,0,0,.22);
-}
-
-.property-image:after{
-content:"";
-position:absolute;
-inset:0;
-background:linear-gradient(180deg,rgba(8,17,34,.02),rgba(8,17,34,.20));
-pointer-events:none;
-}
-
-.property-content{
-padding:28px;
-}
-
-.property-content h3{
-font-size:1.42rem;
-letter-spacing:-.04em;
-}
-
-.price{
-font-size:1.95rem;
-letter-spacing:-.05em;
-}
-
-.info-box{
-background:#f7f3ed;
-border:1px solid rgba(183,146,95,.10);
-}
-
-.property-btn{
-border-radius:999px;
-min-height:52px;
-text-transform:uppercase;
-letter-spacing:.04em;
-font-size:.86rem;
-}
-
-.financing{
-background:
-linear-gradient(135deg,#081122,#0d1b2a),
-radial-gradient(circle at 18% 20%,rgba(212,180,131,.22),transparent 25%);
-box-shadow:0 30px 90px rgba(8,17,34,.24);
-}
-
-.about-stats{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:14px;
-margin:34px 0 30px;
-}
-
-.stat-card{
-background:#fff;
-border:1px solid rgba(183,146,95,.13);
-box-shadow:0 16px 45px rgba(8,17,34,.07);
-border-radius:22px;
-padding:20px;
-}
-
-.stat-card strong{
-display:block;
-color:var(--navy);
-font-size:1.15rem;
-letter-spacing:-.04em;
-margin-bottom:8px;
-}
-
-.stat-card span{
-display:block;
-color:var(--muted);
-font-size:.86rem;
-line-height:1.55;
-font-weight:600;
-}
-
-.about-list div{
-background:rgba(255,255,255,.62);
-border:1px solid rgba(183,146,95,.10);
-border-radius:16px;
-padding:13px 15px;
-}
-
-.about-image img{
-box-shadow:0 30px 90px rgba(8,17,34,.16);
-}
-
-.cta-final{
-background:
-linear-gradient(90deg,rgba(8,17,34,.88),rgba(8,17,34,.72)),
-url('https://images.unsplash.com/photo-1600607687644-c7171b42498f?q=80&w=1800&auto=format&fit=crop') center/cover no-repeat;
-}
-
-.hero-content,
-.hero-card,
-.institutional-inner,
-.benefit-card,
-.property-card,
-.about-grid,
-.financing,
-.faq-item{
-animation:fadeUp .7s ease both;
-}
-
-@keyframes fadeUp{
-from{opacity:0;transform:translateY(26px)}
-to{opacity:1;transform:none}
-}
-
-@media(max-width:1100px){
-.hero-content h1{font-size:clamp(2.8rem,8vw,4.8rem)}
-.about-stats{grid-template-columns:1fr}
-}
-
-@media(max-width:860px){
-.institutional-banner{padding:66px 0}
-.institutional-inner h2{letter-spacing:-1.8px}
-.hero-card img{min-height:0}
-}
-
-@media(max-width:540px){
-.hero-content h1{
-font-size:2.55rem;
-letter-spacing:-1.8px;
-}
-
-.hero-content p{
-font-size:.94rem;
-}
-
-.institutional-inner h2{
-font-size:2rem;
-}
-
-.institutional-inner p{
-font-size:.94rem;
-}
-
-.property-content{
-padding:22px;
-}
-
-.price{
-font-size:1.58rem;
-}
-
-.property-image:before{
-font-size:.66rem;
-left:14px;
-top:14px;
-}
-
-.about-stats{
-gap:10px;
-}
-}
-
-
-/* ===== Filtro inteligente de imóveis — estilo portal imobiliário ===== */
-.search-panel-section{
-position:relative;
-z-index:5;
-margin-top:-74px;
-padding:0 0 28px;
-}
-.search-panel{
-background:#fff;
-border-radius:28px;
-box-shadow:0 28px 80px rgba(8,17,34,.16);
-border:1px solid rgba(183,146,95,.16);
-overflow:hidden;
-}
-.search-panel-head{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:18px;
-padding:24px 26px 0;
-}
-.search-panel-title strong{
-display:block;
-color:var(--navy);
-font-size:1.28rem;
-letter-spacing:-.04em;
-}
-.search-panel-title span{
-display:block;
-color:var(--muted);
-font-size:.9rem;
-margin-top:5px;
-line-height:1.5;
-}
-.search-tabs{
-display:flex;
-gap:8px;
-background:#f5f2ec;
-padding:6px;
-border-radius:999px;
-}
-.search-tab{
-border:0;
-background:transparent;
-color:var(--navy);
-font-weight:900;
-padding:11px 18px;
-border-radius:999px;
-}
-.search-tab.active{
-background:linear-gradient(135deg,var(--gold),var(--gold2));
-box-shadow:0 12px 24px rgba(183,146,95,.22);
-}
-.search-form{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:14px;
-padding:24px 26px 26px;
-}
-.search-field{display:grid;gap:8px}
-.search-field label{
-font-size:.78rem;
-font-weight:900;
-color:var(--navy);
-text-transform:uppercase;
-letter-spacing:.06em;
-}
-.search-field select{
-width:100%;
-border:1px solid rgba(16,24,40,.12);
-background:#fff;
-border-radius:16px;
-padding:14px 13px;
-font-size:.92rem;
-font-weight:700;
-color:var(--text);
-outline:none;
-}
-.search-field select:focus{
-border-color:var(--gold2);
-box-shadow:0 0 0 4px rgba(212,180,131,.15);
-}
-.search-actions{
-display:flex;
-gap:10px;
-align-items:end;
-}
-.search-submit,.search-clear{
-width:100%;
-min-height:48px;
-border:0;
-border-radius:16px;
-font-weight:900;
-cursor:pointer;
-display:flex;
-align-items:center;
-justify-content:center;
-gap:8px;
-}
-.search-submit{
-background:linear-gradient(135deg,var(--gold),var(--gold2));
-color:var(--navy);
-box-shadow:0 14px 28px rgba(183,146,95,.22);
-}
-.search-clear{
-background:#f4f1eb;
-color:var(--navy);
-border:1px solid rgba(16,24,40,.08);
-}
-.search-result-label{
-margin-top:24px;
-color:var(--muted);
-font-weight:700;
-font-size:.95rem;
-}
-.search-result-label strong{color:var(--navy)}
-@media(max-width:980px){
-.search-panel-section{margin-top:-42px}
-.search-panel-head{flex-direction:column;align-items:flex-start}
-.search-tabs{width:100%;justify-content:space-between}
-.search-tab{flex:1}
-.search-form{grid-template-columns:repeat(2,1fr)}
-.search-actions{grid-column:1/-1}
-}
-@media(max-width:560px){
-.search-panel-section{margin-top:-20px;padding-bottom:18px}
-.search-panel{border-radius:22px}
-.search-panel-head{padding:22px 18px 0}
-.search-form{grid-template-columns:1fr;padding:20px 18px 22px}
-.search-actions{flex-direction:column}
-}
-
-
-/* ===== Banner inteligente integrado ao painel ===== */
-.smart-banner-slot{position:relative;width:100%;height:100%;min-height:520px;border-radius:24px;overflow:hidden;background:rgba(255,255,255,.08)}
-.smart-banner-slot img{width:100%;height:100%;min-height:520px;object-fit:cover;border-radius:24px}
-.smart-banner-link,.smart-banner-property{position:relative;display:block;width:100%;height:100%;min-height:520px;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer;border-radius:24px;overflow:hidden;font-family:inherit}
-.smart-banner-overlay{position:absolute;inset:auto 0 0 0;padding:34px;background:linear-gradient(180deg,rgba(8,17,34,0),rgba(8,17,34,.88));color:#fff;display:grid;gap:12px}
-.smart-banner-kicker{display:inline-flex;width:max-content;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);padding:8px 14px;border-radius:999px;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
-.smart-banner-overlay h3{font-size:clamp(1.45rem,3vw,2.35rem);line-height:1.05;letter-spacing:-.05em;color:#fff;max-width:520px}
-.smart-banner-overlay p{color:rgba(255,255,255,.84);line-height:1.55;font-size:.95rem;max-width:520px;margin:0}
-.smart-banner-cta{width:max-content;display:inline-flex;align-items:center;justify-content:center;gap:9px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border-radius:999px;padding:13px 20px;font-weight:900;margin-top:4px;box-shadow:0 14px 28px rgba(0,0,0,.2)}
-.smart-banner-property-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
-.smart-banner-property-meta span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:7px 10px;font-size:.76rem;font-weight:800;color:#fff}
-.smart-banner-empty{height:100%;min-height:520px;display:grid;place-items:center;text-align:center;color:rgba(255,255,255,.88);padding:30px;border-radius:24px;background:rgba(8,17,34,.45)}
-@media(max-width:860px){.smart-banner-slot,.smart-banner-slot img,.smart-banner-link,.smart-banner-property,.smart-banner-empty{min-height:360px}.smart-banner-overlay{padding:26px}.smart-banner-overlay h3{font-size:1.7rem}}
-@media(max-width:540px){.smart-banner-slot,.smart-banner-slot img,.smart-banner-link,.smart-banner-property,.smart-banner-empty{min-height:300px}.smart-banner-overlay{padding:20px}.smart-banner-overlay p{font-size:.86rem}.smart-banner-cta{width:100%;font-size:.88rem}.smart-banner-property-meta span{font-size:.7rem}}
-
+.modal-box{width:min(100%,790px);max-height:90vh;overflow:auto;background:#fff;border-radius:28px;box-shadow:0 30px 100px rgba(0,0,0,.35);position:relative;padding:26px}
+.modal-close{position:absolute;right:18px;top:16px;width:42px;height:42px;display:grid;place-items:center;border:0;border-radius:14px;background:#f4f2ee;color:var(--navy);font-size:1.1rem}
+.modal-box h3{color:var(--navy);font-size:clamp(1.45rem,4vw,2rem);letter-spacing:-.055em;padding-right:50px;margin-bottom:10px}
+.detail-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:18px 0}
+.detail{padding:14px;border-radius:16px;background:#f8f7f5;border:1px solid rgba(16,24,40,.06);font-weight:800;color:var(--navy);font-size:.9rem}
+.detail span{display:block;color:var(--muted);font-weight:700;margin-top:4px}
+.modal-body{color:var(--muted);line-height:1.7;margin-top:18px}
+.modal-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}
+.modal-gallery img{width:100%;height:140px;object-fit:cover;border-radius:16px}
+.mobile-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:850}
+.mobile-overlay.active{display:block}
+@media(max-width:1180px){.summary{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}.checks{grid-template-columns:repeat(3,1fr)}.preview{grid-template-columns:repeat(4,1fr)}.settings-preview{grid-template-columns:1fr}}
+@media(max-width:920px){.sidebar{transform:translateX(-105%);transition:.25s;box-shadow:20px 0 60px rgba(0,0,0,.28)}.sidebar.active{transform:translateX(0)}.main{margin-left:0}.mobile-menu{display:grid;place-items:center}.topbar-inner{padding:0 16px}.content{padding:18px 16px 90px}.form-grid{grid-template-columns:repeat(6,1fr)}.col-8,.col-6,.col-4,.col-3{grid-column:span 6}.checks{grid-template-columns:repeat(2,1fr)}.preview{grid-template-columns:repeat(3,1fr)}.property-row{grid-template-columns:82px 1fr}.thumb{width:82px;height:82px}.property-row .actions,.lead-row .actions{grid-column:1/-1;justify-content:stretch}.actions .btn{flex:1}.lead-row{grid-template-columns:1fr}.lead-status{width:100%}}
+@media(max-width:640px){.login{padding:14px}.login-card{border-radius:26px;padding:26px 20px}.brand-mark{width:46px;height:46px}.brand-name{font-size:1.18rem}.topbar{height:74px}.page-title p{display:none}.summary{grid-template-columns:1fr}.card{padding:20px;border-radius:20px}.form-grid,.checks,.preview,.detail-grid,.modal-gallery{grid-template-columns:1fr}.col-12,.col-8,.col-6,.col-4,.col-3{grid-column:span 1}.preview-item img,.modal-gallery img{height:180px}.form-actions{flex-direction:column}.form-actions .btn{width:100%}.property-row{grid-template-columns:1fr;padding:12px}.thumb{width:100%;height:190px}.actions{flex-direction:column}.actions .btn{width:100%}.modal{padding:12px;align-items:flex-end}.modal-box{max-height:92vh;border-radius:24px 24px 0 0;padding:22px 18px}.lead-status{width:100%}}
+@media(max-width:390px){.content{padding:14px 12px 88px}.topbar-inner{padding:0 12px}.page-title h2{font-size:1.25rem}.summary-card,.card{padding:18px}input,select,textarea{padding:14px;font-size:.94rem}.btn{width:100%}}
 </style>
 </head>
 
 <body>
 
-<header>
-<div class="container navbar">
-<a href="#inicio" class="brand-logo">
-<img id="siteLogo" src="assets/citta-logos.png" alt="Città Imobiliária">
-<strong>Città Imobiliária</strong>
-</a>
+<section class="login" id="loginScreen">
+<div class="login-card">
+<div class="brand">
+<div class="brand-mark"><img id="loginLogo" src="assets/citta-logos.png" alt="Città Imobiliária"></div>
+<div class="brand-name">Città <span>Imobiliária</span></div>
+</div>
+<h1>Acesso administrativo</h1>
+<p>Gerencie imóveis, acompanhe leads e organize as informações comerciais da Città Imobiliária.</p>
+<div class="alert" id="loginAlert"><i class="fa-solid fa-circle-exclamation"></i> Preencha usuário e senha para acessar.</div>
+<form id="loginForm">
+<div class="field"><label>Usuário</label><div class="input-wrap"><i class="fa-solid fa-user"></i><input id="username" placeholder="Digite seu usuário"></div></div>
+<div class="field"><label>Senha</label><div class="input-wrap"><i class="fa-solid fa-lock"></i><input id="password" type="password" placeholder="Digite sua senha"></div></div>
+<button class="btn btn-primary login-submit" type="submit"><i class="fa-solid fa-right-to-bracket"></i>Acessar painel</button>
+</form>
+</div>
+</section>
 
-<nav class="menu" id="menu">
-<a href="#inicio">Início</a>
-<div class="menu-dropdown">
-<a href="#imoveis" class="menu-drop-trigger">Imóveis <i class="fa-solid fa-chevron-down"></i></a>
-<div class="menu-submenu">
-<a href="#imoveis" data-header-filter="Aluguel">Aluguel</a>
-<a href="#imoveis" data-header-filter="Venda">Venda</a>
+<div class="app" id="app">
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<aside class="sidebar" id="sidebar">
+<div class="brand">
+<div class="brand-mark"><img id="sideLogo" src="assets/citta-logos.png" alt="Città Imobiliária"></div>
+<div class="brand-name">Città <span>Imobiliária</span></div>
 </div>
-</div>
-<a href="#sobre">Sobre</a>
-<a href="#contato">Contato</a>
-<a id="headerWhatsapp" href="https://wa.me/5562983280081" target="_blank" class="btn-whats">
-<i class="fa-brands fa-whatsapp"></i> WhatsApp
-</a>
+<nav class="nav-list">
+<button class="nav-item active" data-section="dashboard"><i class="fa-solid fa-chart-pie"></i>Dashboard</button>
+<button class="nav-item" data-section="addProperty"><i class="fa-solid fa-plus"></i>Adicionar Imóvel</button>
+<button class="nav-item" data-section="properties"><i class="fa-solid fa-building"></i>Imóveis Cadastrados</button>
+<button class="nav-item" data-section="leads"><i class="fa-solid fa-users"></i>Leads Recebidos</button>
+<button class="nav-item" data-section="settings"><i class="fa-solid fa-gear"></i>Configurações</button>
+<button class="nav-item" id="logoutBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i>Sair</button>
 </nav>
+<div class="side-foot"><strong id="sideCj">CJ: 47.645</strong><br><span id="sideRegion">Goiânia | Goianésia e região</span><br>Consultoria personalizada</div>
+</aside>
 
-<button class="mobile-btn" id="mobileBtn"><i class="fa-solid fa-bars"></i></button>
+<main class="main">
+<header class="topbar">
+<div class="topbar-inner">
+<button class="mobile-menu" id="openSidebar"><i class="fa-solid fa-bars"></i></button>
+<div class="page-title"><h2 id="pageTitle">Dashboard</h2><p id="pageSubtitle">Visão geral da operação comercial.</p></div>
+<button class="btn btn-light" id="topLogoutBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i>Sair</button>
 </div>
 </header>
 
-<section class="hero" id="inicio">
-<div class="container hero-grid">
-<div class="hero-content">
-<h1>Estratégia, <span>exclusividade</span> e valorização imobiliária.</h1>
-<p>Imóveis selecionados com inteligência de mercado, curadoria estratégica e atendimento personalizado para quem busca segurança, sofisticação e valorização patrimonial.</p>
-<div class="hero-actions">
-<a href="#imoveis" class="btn-primary"><i class="fa-solid fa-building"></i> Ver imóveis</a>
-<a id="heroWhatsapp" href="https://wa.me/5562983280081" target="_blank" class="btn-secondary"><i class="fa-brands fa-whatsapp"></i> Falar com a equipe</a>
+<div class="content">
+<section class="panel active" id="dashboard">
+<div class="summary">
+<div class="summary-card"><div class="summary-icon"><i class="fa-solid fa-building"></i></div><strong id="totalProperties">0</strong><span>Total de imóveis cadastrados</span></div>
+<div class="summary-card"><div class="summary-icon"><i class="fa-solid fa-users"></i></div><strong id="totalLeads">0</strong><span>Leads recebidos</span></div>
+<div class="summary-card"><div class="summary-icon"><i class="fa-solid fa-key"></i></div><strong id="availableProperties">0</strong><span>Imóveis disponíveis</span></div>
+<div class="summary-card"><div class="summary-icon"><i class="fa-solid fa-star"></i></div><strong id="featuredProperties">0</strong><span>Imóveis em destaque</span></div>
 </div>
+<div class="grid-2">
+<div class="card"><div class="card-head"><div><h3>Resumo comercial</h3><p>Acompanhamento visual dos imóveis e oportunidades.</p></div></div><div class="activity-list" id="dashboardProperties"></div></div>
+<div class="card"><div class="card-head"><div><h3>Últimos leads</h3><p>Leads capturados pela landing page e acompanhados pelo painel.</p></div></div><div class="activity-list" id="dashboardLeads"></div></div>
 </div>
-
-<div class="hero-card" id="smartBannerCard">
-<div id="heroBannerSlot" class="smart-banner-slot">
-<img id="heroBanner" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop" alt="Banner principal Città">
-</div>
-</div>
-</div>
-
 </section>
 
-<section class="search-panel-section" id="buscar">
-<div class="container">
-<div class="search-panel">
-<div class="search-panel-head">
-<div class="search-panel-title">
-<strong>Busque seu imóvel</strong>
-<span>Filtre os imóveis cadastrados pela Città conforme sua necessidade.</span>
+<section class="panel" id="addProperty">
+<div class="card">
+<div class="card-head"><div><h3 id="propertyFormTitle">Adicionar imóvel</h3><p>Cadastre os dados completos do imóvel para alimentar a landing page.</p></div></div>
+<div class="success" id="propertySuccess"><i class="fa-solid fa-circle-check"></i> Imóvel salvo com sucesso.</div>
+<form id="propertyForm">
+<input type="hidden" id="propertyId">
+<div class="form-grid">
+<div class="field col-8"><label>Título do imóvel *</label><input id="title" required placeholder="Ex: Residencial Alphaville"></div>
+<div class="field col-4"><label>Tipo do imóvel *</label><select id="type" required><option value="">Selecione</option><option>Casa</option><option>Apartamento</option><option>Sobrado</option><option>Lote</option><option>Comercial</option><option>Rural</option></select></div>
+<div class="field col-4"><label>Finalidade *</label><select id="purpose" required><option value="">Selecione</option><option>Venda</option><option>Aluguel</option></select></div>
+<div class="field col-4"><label>Valor do imóvel *</label><input id="price" required placeholder="Ex: R$ 1.500.000"></div>
+<div class="field col-4"><label>Status *</label><select id="status" required><option>Disponível</option><option>Reservado</option><option>Vendido</option><option>Alugado</option></select></div>
+<div class="field col-4"><label>Bairro *</label><input id="neighborhood" required placeholder="Ex: Setor Bueno"></div>
+<div class="field col-4"><label>Cidade *</label><input id="city" required placeholder="Ex: Goiânia"></div>
+<div class="field col-4"><label>Estado *</label><input id="state" required placeholder="Ex: GO"></div>
+<div class="field col-12"><label>Endereço ou localização aproximada *</label><input id="address" required placeholder="Ex: Condomínio fechado próximo ao centro"></div>
+<div class="field col-3"><label>Metragem *</label><input id="area" required placeholder="Ex: 420m²"></div>
+<div class="field col-3"><label>Quartos *</label><input id="bedrooms" type="number" min="0" required></div>
+<div class="field col-3"><label>Suítes *</label><input id="suites" type="number" min="0" required></div>
+<div class="field col-3"><label>Banheiros *</label><input id="bathrooms" type="number" min="0" required></div>
+<div class="field col-3"><label>Vagas *</label><input id="parking" type="number" min="0" required></div>
+<div class="field col-12"><label>Descrição completa *</label><textarea id="description" required placeholder="Descreva o imóvel com detalhes, localização, acabamento e diferenciais comerciais."></textarea></div>
+<div class="field col-12"><label>Diferenciais do imóvel</label><div class="checks" id="featuresGrid">
+<label class="check"><input type="checkbox" value="Piscina">Piscina</label><label class="check"><input type="checkbox" value="Área gourmet">Área gourmet</label><label class="check"><input type="checkbox" value="Churrasqueira">Churrasqueira</label><label class="check"><input type="checkbox" value="Condomínio fechado">Condomínio fechado</label><label class="check"><input type="checkbox" value="Varanda">Varanda</label><label class="check"><input type="checkbox" value="Elevador">Elevador</label><label class="check"><input type="checkbox" value="Planejados">Planejados</label><label class="check"><input type="checkbox" value="Segurança 24h">Segurança 24h</label><label class="check"><input type="checkbox" value="Academia">Academia</label><label class="check"><input type="checkbox" value="Aceita financiamento">Aceita financiamento</label><label class="check"><input type="checkbox" value="Próximo a comércios">Próximo a comércios</label><label class="check"><input type="checkbox" value="Alto padrão">Alto padrão</label>
+</div></div>
+<div class="field col-12"><label>Imagens do imóvel</label><div class="upload"><i class="fa-solid fa-cloud-arrow-up"></i><strong>Enviar fotos do imóvel</strong><p>As imagens serão enviadas para o bucket imoveis da Supabase. Depois do upload, escolha a ordem: Capa, Imagem 2, Imagem 3 e assim por diante.</p><label class="btn btn-dark" for="imageUpload"><i class="fa-solid fa-images"></i>Escolher imagens</label><input class="file-input" id="imageUpload" type="file" multiple accept="image/*"></div><div class="preview" id="imagePreview"></div></div>
+<div class="field col-12"><label class="check"><input type="checkbox" id="featured">Exibir como imóvel em destaque na landing page</label></div>
 </div>
-<div class="search-tabs" aria-label="Finalidade do imóvel">
-<button type="button" class="search-tab active" data-purpose-search="todos">Todos</button>
-<button type="button" class="search-tab" data-purpose-search="Venda">Comprar</button>
-<button type="button" class="search-tab" data-purpose-search="Aluguel">Alugar</button>
-</div>
-</div>
-<form class="search-form" id="propertySearchForm">
-<div class="search-field"><label>Tipo</label><select id="searchType"><option value="">Todos os tipos</option></select></div>
-<div class="search-field"><label>Cidade</label><select id="searchCity"><option value="">Todas as cidades</option></select></div>
-<div class="search-field"><label>Bairro</label><select id="searchNeighborhood"><option value="">Todos os bairros</option></select></div>
-<div class="search-field"><label>Quartos</label><select id="searchBedrooms"><option value="">Qualquer quantidade</option></select></div>
-<div class="search-field"><label>Suítes</label><select id="searchSuites"><option value="">Qualquer quantidade</option></select></div>
-<div class="search-field"><label>Banheiros</label><select id="searchBathrooms"><option value="">Qualquer quantidade</option></select></div>
-<div class="search-field"><label>Garagem</label><select id="searchGarage"><option value="">Todas as opções</option><option value="com">Com garagem</option><option value="sem">Sem garagem</option></select></div>
-<div class="search-actions">
-<button type="submit" class="search-submit"><i class="fa-solid fa-magnifying-glass"></i> Pesquisar</button>
-<button type="button" class="search-clear" id="clearPropertySearch"><i class="fa-solid fa-rotate-left"></i> Limpar</button>
-</div>
+<div class="form-actions"><button class="btn btn-light" type="button" id="clearForm"><i class="fa-solid fa-eraser"></i>Limpar formulário</button><button class="btn btn-primary" type="submit"><i class="fa-solid fa-floppy-disk"></i>Salvar imóvel</button></div>
 </form>
 </div>
+</section>
+
+<section class="panel" id="properties">
+<div class="card">
+<div class="card-head"><div><h3>Imóveis cadastrados</h3><p>Visualize, edite e exclua os imóveis salvos no Supabase.</p></div></div>
+<div class="filters"><div class="search"><i class="fa-solid fa-magnifying-glass"></i><input id="propertySearch" placeholder="Buscar por título, cidade, bairro, finalidade ou status"></div><button class="btn btn-primary" data-section-shortcut="addProperty"><i class="fa-solid fa-plus"></i>Novo imóvel</button></div>
+<div class="list" id="propertiesList"></div>
 </div>
 </section>
 
-<section class="institutional-banner">
-<div class="container">
-<div class="institutional-inner">
-<span class="premium-eyebrow">Città Imobiliária</span>
-<h2>A Città conecta oportunidades, estratégia e valorização patrimonial.</h2>
-<p>Uma consultoria imobiliária pensada para clientes que buscam decisões mais seguras, imóveis bem selecionados e uma experiência comercial de alto padrão.</p>
-</div>
+<section class="panel" id="leads">
+<div class="card">
+<div class="card-head"><div><h3>Leads recebidos</h3><p>Leads capturados pela landing page e oportunidades de atendimento.</p></div></div>
+<div class="filters"><div class="search"><i class="fa-solid fa-magnifying-glass"></i><input id="leadSearch" placeholder="Buscar lead, imóvel ou telefone"></div><button class="btn btn-light" id="addFakeLead"><i class="fa-solid fa-user-plus"></i>Adicionar lead teste</button></div>
+<div class="list" id="leadsList"></div>
 </div>
 </section>
 
-<section class="section stone-bg">
-<div class="container">
-<h2 class="section-title">Por que escolher a <span>Città</span></h2>
-<p class="section-text">Atendimento humanizado, imóveis selecionados e estratégia imobiliária pensada para valorizar seu investimento.</p>
-
-<div class="benefits-grid">
-<div class="benefit-card"><i class="fa-solid fa-chart-line"></i><h3>Valorização imobiliária</h3><p>Imóveis com alto potencial de valorização e análise estratégica.</p></div>
-<div class="benefit-card"><i class="fa-solid fa-location-dot"></i><h3>Regiões selecionadas</h3><p>Goiânia, Goianésia e regiões com oportunidades premium.</p></div>
-<div class="benefit-card"><i class="fa-solid fa-user-tie"></i><h3>Consultoria personalizada</h3><p>Atendimento exclusivo para entender seu perfil e necessidade.</p></div>
-<div class="benefit-card"><i class="fa-solid fa-house"></i><h3>Imóveis sofisticados</h3><p>Casas, apartamentos e empreendimentos de alto padrão.</p></div>
-</div>
-</div>
-</section>
-
-<section class="section stone-bg" id="imoveis">
-<div class="container">
-<h2 class="section-title">Imóveis em <span>destaque</span></h2>
-<p class="section-text">Selecionamos imóveis estratégicos para quem busca sofisticação, conforto e valorização.</p>
-
-<div class="property-filters">
-<button class="filter-btn active" data-filter="todos">Todos</button>
-<button class="filter-btn" data-filter="Venda">Venda</button>
-<button class="filter-btn" data-filter="Aluguel">Aluguel</button>
-</div>
-
-<p class="search-result-label" id="searchResultLabel"></p>
-<div class="properties-grid" id="propertiesGrid"></div>
-</div>
-</section>
-
-
-
-<section class="section stone-bg" id="sobre">
-<div class="container about-grid">
-<div>
-<h2 class="section-title">Sobre a <span>Città Imobiliária</span></h2>
-<p class="section-text">A Città Imobiliária atua com foco em imóveis selecionados, análise estratégica e atendimento sofisticado para clientes que buscam qualidade, valorização e segurança.<br><br>Com atuação em Goiânia, Goianésia e região, trabalhamos com consultoria personalizada e oportunidades imobiliárias alinhadas ao seu perfil.</p>
-
-<div class="about-stats">
-<div class="stat-card"><strong>Curadoria</strong><span>Imóveis selecionados com critério</span></div>
-<div class="stat-card"><strong>Estratégia</strong><span>Análise para valorização patrimonial</span></div>
-<div class="stat-card"><strong>Região</strong><span>Goiânia, Goianésia e entorno</span></div>
-</div>
-
-<div class="about-list">
-<div><i class="fa-solid fa-check"></i> Estratégia e valorização imobiliária</div>
-<div><i class="fa-solid fa-check"></i> Imóveis selecionados com análise e inteligência</div>
-<div><i class="fa-solid fa-check"></i> Goiânia | Goianésia e região</div>
-<div><i class="fa-solid fa-check"></i> Consultoria personalizada</div>
-<div><i class="fa-solid fa-check"></i> CJ: 47.645</div>
+<section class="panel" id="settings">
+<div class="card">
+<div class="card-head"><div><h3>Configurações</h3><p>Edite dados institucionais, logo oficial e banner principal da landing page.</p></div></div>
+<div class="success" id="settingsSuccess"><i class="fa-solid fa-circle-check"></i> Configurações salvas com sucesso.</div>
+<form id="settingsForm">
+<div class="form-grid">
+<div class="field col-6"><label>Nome da imobiliária</label><input id="settingName" value="Città Imobiliária"></div>
+<div class="field col-6"><label>WhatsApp</label><input id="settingWhatsapp" value="+55 62 98328-0081"></div>
+<div class="field col-6"><label>E-mail</label><input id="settingEmail" value="comercial@cittaimobiliaria.com.br"></div>
+<div class="field col-6"><label>Instagram</label><input id="settingInstagram" value="https://www.instagram.com/cittaimob?igsh=dTM2eHA1c3lyMTVj"></div>
+<div class="field col-6"><label>CRECI/CJ</label><input id="settingCj" value="CJ: 47.645"></div>
+<div class="field col-6"><label>Região de atendimento</label><input id="settingRegion" value="Goiânia | Goianésia e região"></div>
+<div class="field col-6"><label>Logo oficial da Città</label><div class="upload"><i class="fa-solid fa-image"></i><strong>Enviar logo oficial</strong><p>Upload para o bucket site da Supabase.</p><label class="btn btn-dark" for="logoUpload"><i class="fa-solid fa-upload"></i>Escolher logo</label><input class="file-input" id="logoUpload" type="file" accept="image/*"></div></div>
+<div class="field col-6">
+<label>Banner principal da landing page</label>
+<div class="upload">
+<i class="fa-solid fa-panorama"></i>
+<strong>Enviar imagem do banner</strong>
+<p>Use esta imagem para banner livre, link externo ou imóvel em destaque.</p>
+<label class="btn btn-dark" for="heroBannerUpload"><i class="fa-solid fa-upload"></i>Escolher imagem</label>
+<input class="file-input" id="heroBannerUpload" type="file" accept="image/*">
 </div>
 </div>
 
-<div class="about-image">
-<img src="https://images.unsplash.com/photo-1600585154084-4e5fe7c39198?q=80&w=1200&auto=format&fit=crop" alt="Sobre a Città">
-</div>
-</div>
-</section>
-
-<section class="section stone-bg" id="contato">
-<div class="container">
-<h2 class="section-title">Entre em <span>contato</span></h2>
-<p class="section-text">Fale diretamente com a equipe da Città Imobiliária.</p>
-
-<div class="benefits-grid">
-<div class="benefit-card">
-<i class="fa-brands fa-whatsapp"></i>
-<h3>WhatsApp</h3>
-<p><a id="contactPhone" href="https://wa.me/5562983280081" target="_blank">(62) 98328-0081</a></p>
-</div>
-
-<div class="benefit-card">
-<i class="fa-solid fa-envelope"></i>
-<h3>E-mail</h3>
-<p><a id="contactEmail" href="mailto:comercial@cittaimobiliaria.com.br">comercial@cittaimobiliaria.com.br</a></p>
-</div>
-
-<div class="benefit-card">
-<i class="fa-brands fa-instagram"></i>
-<h3>Instagram</h3>
-<p><a id="contactInstagram" href="https://www.instagram.com/cittaimob?igsh=dTM2eHA1c3lyMTVj" target="_blank">@cittaimob</a></p>
-</div>
-
-<div class="benefit-card">
-<i class="fa-solid fa-location-dot"></i>
-<h3>Atendimento</h3>
-<p id="contactRegion">Goiânia | Goianésia e região</p>
-</div>
-</div>
-
-
-</div>
-</section>
-
-<section class="section stone-bg">
-<div class="container">
-<h2 class="section-title">Perguntas <span>frequentes</span></h2>
-
-<div class="faq-grid">
-<div class="faq-item active">
-<button class="faq-question">Como funciona o atendimento da Città?<i class="fa-solid fa-plus"></i></button>
-<div class="faq-answer"><p>Nosso atendimento é personalizado para entender seu perfil e indicar imóveis alinhados aos seus objetivos.</p></div>
-</div>
-
-<div class="faq-item">
-<button class="faq-question">Atendem apenas Goiânia?<i class="fa-solid fa-plus"></i></button>
-<div class="faq-answer"><p>Atendemos Goiânia, Goianésia e região com consultoria personalizada.</p></div>
-</div>
-</div>
-</div>
-</section>
-
-<section class="cta-final">
-<div class="container">
-<h2>Encontre seu próximo imóvel com estratégia e sofisticação.</h2>
-<p>A Città Imobiliária conecta você aos melhores imóveis com análise inteligente e atendimento personalizado.</p>
-<a id="ctaWhatsapp" href="https://wa.me/5562983280081" target="_blank" class="btn-primary"><i class="fa-brands fa-whatsapp"></i> Falar com a imobiliária</a>
-</div>
-</section>
-
-<footer>
-<div class="container">
-<div class="footer-grid">
-<div>
-<a href="#inicio" class="brand-logo">
-<img id="footerLogo" src="assets/citta-logos.png" alt="Città Imobiliária">
-<strong>Città Imobiliária</strong>
-</a>
-<p>Estratégia e valorização imobiliária.<br>Imóveis selecionados com análise e inteligência.<br>Consultoria personalizada.<br>CJ: 47.645</p>
-</div>
-
-<div>
-<h3 class="footer-title">Contato</h3>
-<ul>
-<li><a id="footerWhatsapp" href="https://wa.me/5562983280081" target="_blank">WhatsApp</a></li>
-<li><a id="footerEmail" href="mailto:comercial@cittaimobiliaria.com.br">E-mail</a></li>
-<li><a id="footerInstagram" href="https://www.instagram.com/cittaimob?igsh=dTM2eHA1c3lyMTVj" target="_blank">Instagram</a></li>
-</ul>
-</div>
-
-<div>
-<h3 class="footer-title">Regiões</h3>
-<ul>
-<li>Goiânia</li>
-<li>Goianésia</li>
-<li>Região metropolitana</li>
-</ul>
-</div>
-
-<div>
-<h3 class="footer-title">Links rápidos</h3>
-<ul>
-<li><a href="#inicio">Início</a></li>
-<li><a href="#imoveis">Imóveis</a></li>
-<li><a href="#sobre">Sobre</a></li>
-<li><a href="#contato">Contato</a></li>
-</ul>
-</div>
-</div>
-
-<div class="footer-bottom">
-<span>© 2026 Città Imobiliária. Todos os direitos reservados.</span>
-<span>Desenvolvido por Pedro Paulo.</span>
-</div>
-</div>
-</footer>
-
-<div class="modal" id="leadModal">
-<div class="modal-content">
-<button class="close-modal" id="closeModal"><i class="fa-solid fa-xmark"></i></button>
-<h3>Tenho interesse</h3>
-<p>Preencha seus dados para acessar mais informações do imóvel.</p>
-
-<form id="leadForm">
-<input type="hidden" id="selectedProperty">
-<div class="form-group"><label>Nome completo</label><input id="leadName" type="text" required></div>
-<div class="form-group"><label>E-mail</label><input id="leadEmail" type="email" required></div>
-<div class="form-group"><label>Telefone / WhatsApp</label><input id="leadPhone" type="tel" required></div>
-<div class="form-group">
-<label>Em quanto tempo pretende adquirir um imóvel?</label>
-<select id="leadTimeline" required>
-<option value="">Selecione</option>
-<option>Imediatamente</option>
-<option>Daqui 3 meses</option>
-<option>Daqui 6 meses</option>
-<option>Estou apenas avaliando</option>
+<div class="field col-12">
+<label>Tipo do banner principal</label>
+<select id="bannerType">
+<option value="image">Imagem livre</option>
+<option value="link">Link externo</option>
+<option value="property">Imóvel em destaque</option>
 </select>
 </div>
-<button type="submit" class="modal-submit">Acessar detalhes do imóvel</button>
+
+<div class="field col-12" id="bannerLinkFields">
+<div class="form-grid">
+<div class="field col-6"><label>Título do banner</label><input id="bannerTitle" placeholder="Ex: Faça seu financiamento por aqui"></div>
+<div class="field col-6"><label>Texto do botão</label><input id="bannerButtonText" placeholder="Ex: Clicar aqui"></div>
+<div class="field col-12"><label>Texto/descrição do banner</label><textarea id="bannerText" placeholder="Ex: Simule seu financiamento com segurança e praticidade."></textarea></div>
+<div class="field col-12"><label>Link externo</label><input id="bannerUrl" placeholder="https://..."></div>
+</div>
+</div>
+
+<div class="field col-12 hidden" id="bannerPropertyFields">
+<label>Imóvel em destaque no banner</label>
+<select id="featuredPropertySelect">
+<option value="">Selecione um imóvel cadastrado</option>
+</select>
+</div>
+<div class="field col-12"><div class="settings-preview"><div class="preview-box"><h4>Prévia da logo</h4><div class="logo-preview"><img id="settingsLogoPreview" src="assets/citta-logos.png" alt="Prévia da logo"></div></div><div class="preview-box"><h4>Prévia do banner principal</h4><div class="banner-preview"><img id="settingsBannerPreview" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop" alt="Prévia do banner"></div></div></div></div>
+</div>
+<div class="form-actions"><button class="btn btn-danger" type="button" id="resetVisuals"><i class="fa-solid fa-rotate-left"></i>Restaurar logo/banner padrão</button><button class="btn btn-primary" type="submit"><i class="fa-solid fa-floppy-disk"></i>Salvar configurações</button></div>
 </form>
 </div>
+</section>
+</div>
+</main>
 </div>
 
-<section class="details-page stone-bg" id="detailsPage">
-<div class="container details-grid" id="detailsContent"></div>
-</section>
-
-<a id="floatInstagram" href="https://www.instagram.com/cittaimob?igsh=dTM2eHA1c3lyMTVj" target="_blank" class="instagram-float" aria-label="Instagram Città Imobiliária">
-<i class="fa-brands fa-instagram"></i>
-</a>
-
-<a id="floatWhatsapp" href="https://wa.me/5562983280081" target="_blank" class="whatsapp-float">
-<i class="fa-brands fa-whatsapp"></i>
-</a>
+<div class="modal" id="viewModal"><div class="modal-box"><button class="modal-close" id="closeViewModal"><i class="fa-solid fa-xmark"></i></button><div id="viewModalContent"></div></div></div>
 
 <script>
 const SUPABASE_URL = "https://rnmifesvznyyrxhcxcic.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_d2HM-lPtJ45sXh135vPT_A_qsqh9kLB";
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const fallbackImage = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=900&auto=format&fit=crop";
+const fallback = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=900&auto=format&fit=crop";
 const defaultLogo = "assets/citta-logos.png";
-
-let settings = {
-  name:"Città Imobiliária",
-  whatsapp:"+55 62 98328-0081",
-  email:"comercial@cittaimobiliaria.com.br",
-  instagram:"https://www.instagram.com/cittaimob?igsh=dTM2eHA1c3lyMTVj",
-  cj:"CJ: 47.645",
-  region:"Goiânia | Goianésia e região",
-  logo:defaultLogo,
-  hero_banner:fallbackImage,
-  banner_type:"image",
-  banner_title:"",
-  banner_text:"",
-  banner_button_text:"",
-  banner_url:"",
-  featured_property_id:null,
-  banner_image:""
-};
+const defaultHeroBanner = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop";
 
 let properties = [];
-let currentFilter = "todos";
-let currentProperty = null;
-let advancedFilters = {purpose:"todos", type:"", city:"", neighborhood:"", bedrooms:"", suites:"", bathrooms:"", garage:""};
+let leads = [];
+let settings = {};
+let uploadedImages = [];
+let coverIndex = 0;
+let tempLogo = "";
+let tempHeroBanner = "";
 
-function onlyNumbers(v){
-  return String(v || "").replace(/\D/g,"");
+const pageData = {
+dashboard:["Dashboard","Visão geral da operação comercial."],
+addProperty:["Adicionar Imóvel","Cadastre imóveis com fotos, status e destaque."],
+properties:["Imóveis Cadastrados","Gerencie imóveis salvos no Supabase."],
+leads:["Leads Recebidos","Acompanhe oportunidades e atendimento."],
+settings:["Configurações","Ajuste dados comerciais, logo e banner da landing."]
+};
+
+function showError(error){
+console.error(error);
+alert("Erro: " + (error?.message || error));
 }
 
-function whatsappLink(){
-  const phone = onlyNumbers(settings.whatsapp || "5562983280081");
-  const finalPhone = phone.startsWith("55") ? phone : "55" + phone;
-  return "https://wa.me/" + finalPhone;
+function defaultSettings(){
+return {
+id:1,
+name:"Città Imobiliária",
+whatsapp:"+55 62 98328-0081",
+email:"comercial@cittaimobiliaria.com.br",
+instagram:"https://www.instagram.com/cittaimob",
+cj:"CJ: 47.645",
+region:"Goiânia | Goianésia e região",
+logo:defaultLogo,
+hero_banner:defaultHeroBanner,
+banner_type:"image",
+banner_title:"",
+banner_text:"",
+banner_button_text:"Clicar aqui",
+banner_url:"",
+featured_property_id:null,
+banner_image:defaultHeroBanner
+};
 }
 
-function safeJsonArray(value){
-  if(Array.isArray(value)) return value;
-  if(typeof value === "string" && value.trim()){
-    try{
-      const parsed = JSON.parse(value);
-      return Array.isArray(parsed) ? parsed : [];
-    }catch(e){
-      return value.startsWith("http") ? [value] : [];
-    }
-  }
-  return [];
+function sanitizeFileName(name){
+return name.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-zA-Z0-9._-]/g,"-").toLowerCase();
 }
 
-function normalizeProperty(p){
-  const images = safeJsonArray(p.images).filter(Boolean);
-  const features = safeJsonArray(p.features).filter(Boolean);
-  const coverIndex = Number.isFinite(Number(p.cover_index)) ? Number(p.cover_index) : 0;
-  return {
-    ...p,
-    images: images.length ? images : [fallbackImage],
-    features,
-    cover_index: coverIndex
-  };
+async function uploadToBucket(bucket,file,folder){
+const ext = file.name.split(".").pop();
+const path = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+const { error } = await db.storage.from(bucket).upload(path,file,{cacheControl:"3600",upsert:true});
+if(error) throw error;
+const { data } = db.storage.from(bucket).getPublicUrl(path);
+return data.publicUrl;
 }
 
-function escapeHtml(value){
-  return String(value ?? "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+async function load(){
+await fetchSettings();
+await fetchProperties();
+await fetchLeads();
+applyBrand();
 }
 
-function getPropertyCover(p){
-  if(!p) return fallbackImage;
-  const images = Array.isArray(p.images) && p.images.length ? p.images : [fallbackImage];
-  const idx = Number.isInteger(Number(p.cover_index)) ? Number(p.cover_index) : 0;
-  return images[idx] || images[0] || fallbackImage;
+async function fetchSettings(){
+const { data, error } = await db.from("site_settings").select("*").eq("id",1).maybeSingle();
+if(error){showError(error);settings = defaultSettings();return}
+settings = data || defaultSettings();
 }
 
-function renderSmartBanner(){
-  const slot = document.getElementById("heroBannerSlot");
-  if(!slot) return;
-
-  const type = String(settings.banner_type || "image").toLowerCase();
-  const bannerImage = settings.banner_image || settings.hero_banner || fallbackImage;
-  const title = String(settings.banner_title || "").trim();
-  const text = String(settings.banner_text || "").trim();
-  const buttonText = String(settings.banner_button_text || "").trim();
-  const url = String(settings.banner_url || "").trim();
-
-  if(type === "property"){
-    const selectedId = Number(settings.featured_property_id);
-    const p = properties.find(item => Number(item.id) === selectedId) || properties.find(item => item.featured && isAvailable(item)) || properties.find(isAvailable);
-
-    if(!p){
-      slot.innerHTML = `<div class="smart-banner-empty">Nenhum imóvel em destaque selecionado no painel.</div>`;
-      return;
-    }
-
-    const img = getPropertyCover(p);
-    slot.innerHTML = `
-<button type="button" class="smart-banner-property" onclick="openLeadModal(${Number(p.id)})" aria-label="Tenho interesse no imóvel ${escapeHtml(p.title || 'Città')}">
-  <img id="heroBanner" src="${img}" alt="${escapeHtml(p.title || 'Imóvel em destaque Città')}">
-  <div class="smart-banner-overlay">
-    <span class="smart-banner-kicker">Imóvel em destaque</span>
-    <h3>${escapeHtml(p.title || 'Imóvel selecionado pela Città')}</h3>
-    <p>${escapeHtml(p.neighborhood || '')}${p.neighborhood ? ', ' : ''}${escapeHtml(p.city || '')}${p.state ? ' - ' + escapeHtml(p.state) : ''}</p>
-    <div class="smart-banner-property-meta">
-      <span>${escapeHtml(p.price || 'Consulte')}</span>
-      <span>${escapeHtml(p.bedrooms || '0')} quartos</span>
-      <span>${escapeHtml(p.bathrooms || '0')} banheiros</span>
-      <span>${escapeHtml(p.parking || '0')} vagas</span>
-    </div>
-    <span class="smart-banner-cta"><i class="fa-solid fa-arrow-right"></i> Tenho interesse</span>
-  </div>
-</button>`;
-    return;
-  }
-
-  if(type === "link"){
-    const hasTextContent = Boolean(title || text || buttonText);
-    const safeUrl = url || "#";
-    const targetAttrs = url ? `target="_blank" rel="noopener"` : "";
-    slot.innerHTML = `
-<a class="smart-banner-link" href="${escapeHtml(safeUrl)}" ${targetAttrs} aria-label="${escapeHtml(title || buttonText || 'Banner Città')}">
-  <img id="heroBanner" src="${bannerImage}" alt="${escapeHtml(title || 'Banner principal Città')}">
-  ${hasTextContent ? `
-  <div class="smart-banner-overlay">
-    <span class="smart-banner-kicker">Città Imobiliária</span>
-    ${title ? `<h3>${escapeHtml(title)}</h3>` : ""}
-    ${text ? `<p>${escapeHtml(text)}</p>` : ""}
-    <span class="smart-banner-cta"><i class="fa-solid fa-arrow-up-right-from-square"></i> ${escapeHtml(buttonText || 'Clique aqui')}</span>
-  </div>` : ""}
-</a>`;
-    return;
-  }
-
-  slot.innerHTML = `<img id="heroBanner" src="${bannerImage}" alt="Banner principal Città">`;
+async function fetchProperties(){
+const { data, error } = await db.from("properties").select("*").order("created_at",{ascending:false});
+if(error){showError(error);properties=[];return}
+properties = data || [];
 }
 
-async function loadSettings(){
-  const { data, error } = await db
-    .from("site_settings")
-    .select("*")
-    .order("id", { ascending:true })
-    .limit(1)
-    .maybeSingle();
-
-  if(error){
-    console.warn("Configurações não carregadas, usando padrão:", error.message);
-    return;
-  }
-
-  if(data){
-    settings = {
-      ...settings,
-      ...data,
-      logo: data.logo || defaultLogo,
-      hero_banner: data.hero_banner || data.heroBanner || settings.hero_banner,
-      banner_type: data.banner_type || data.bannerType || data.banner_type || settings.banner_type || "image",
-      banner_image: data.banner_image || data.bannerImage || data.hero_banner || settings.hero_banner,
-      banner_title: data.banner_title || data.bannerTitle || "",
-      banner_text: data.banner_text || data.bannerText || "",
-      banner_button_text: data.banner_button_text || data.bannerButtonText || "",
-      banner_url: data.banner_url || data.bannerUrl || "",
-      featured_property_id: data.featured_property_id || data.featuredPropertyId || null
-    };
-  }
+async function fetchLeads(){
+const { data, error } = await db.from("leads").select("*").order("created_at",{ascending:false});
+if(error){showError(error);leads=[];return}
+leads = data || [];
 }
 
-async function loadProperties(){
-  const grid = document.getElementById("propertiesGrid");
-  if(grid){
-    grid.innerHTML = `<div class="loading-properties">Carregando imóveis...</div>`;
-  }
-
-  const { data, error } = await db
-    .from("properties")
-    .select("*")
-    .order("created_at", { ascending:false });
-
-  if(error){
-    console.error("Erro ao carregar imóveis:", error);
-    properties = [];
-    if(grid){
-      grid.innerHTML = `<div class="empty-properties">Não foi possível carregar os imóveis agora. Tente novamente em alguns instantes.</div>`;
-    }
-    return;
-  }
-
-  properties = (data || []).map(normalizeProperty);
-  populatePropertySearchOptions();
+function applyBrand(){
+const logo = settings.logo || defaultLogo;
+loginLogo.src = logo;
+sideLogo.src = logo;
+settingsLogoPreview.src = tempLogo || logo;
+settingsBannerPreview.src = tempHeroBanner || settings.banner_image || settings.hero_banner || defaultHeroBanner;
+sideCj.textContent = settings.cj || "CJ: 47.645";
+sideRegion.textContent = settings.region || "Goiânia | Goianésia e região";
 }
 
-function applySettings(){
-  const logo = settings.logo || defaultLogo;
-  if(window.siteLogo) siteLogo.src = logo;
-  if(window.footerLogo) footerLogo.src = logo;
-  renderSmartBanner();
-
-  const whats = whatsappLink();
-  [headerWhatsapp, heroWhatsapp, ctaWhatsapp, floatWhatsapp, contactPhone, footerWhatsapp].forEach(el => {
-    if(el) el.href = whats;
-  });
-
-  if(window.contactPhone) contactPhone.textContent = settings.whatsapp || "(62) 98328-0081";
-  if(window.contactEmail){
-    contactEmail.textContent = settings.email || "comercial@cittaimobiliaria.com.br";
-    contactEmail.href = "mailto:" + (settings.email || "comercial@cittaimobiliaria.com.br");
-  }
-  if(window.footerEmail) footerEmail.href = contactEmail?.href || "mailto:comercial@cittaimobiliaria.com.br";
-  if(window.contactInstagram) contactInstagram.href = settings.instagram || "#";
-  if(window.footerInstagram) footerInstagram.href = settings.instagram || "#";
-  if(window.floatInstagram) floatInstagram.href = settings.instagram || "#";
-  if(window.contactRegion) contactRegion.textContent = settings.region || "Goiânia | Goianésia e região";
+async function openAdminPanel(){
+loginAlert.classList.remove("show");
+loginScreen.classList.add("hidden");
+app.classList.add("active");
+await load();
+renderAll();
 }
 
-function isAvailable(p){
-  const status = String(p.status || "Disponível").toLowerCase();
-  return status === "disponível" || status === "disponivel" || status === "available" || status === "ativo";
+function showLoginError(message){
+loginAlert.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${message}`;
+loginAlert.classList.add("show");
 }
 
+loginForm.addEventListener("submit",async e=>{
+e.preventDefault();
+const email = username.value.trim();
+const pass = password.value;
+const submitBtn = loginForm.querySelector("button[type='submit']");
 
-function numericValue(v){
-  const n = parseInt(String(v ?? "").replace(/\D/g,""),10);
-  return Number.isFinite(n) ? n : 0;
+if(!email || !pass){
+showLoginError("Preencha usuário e senha para acessar.");
+return;
 }
 
-function uniqueSortedValues(field){
-  return [...new Set(properties.map(p => String(p[field] || "").trim()).filter(Boolean))]
-    .sort((a,b)=>a.localeCompare(b,"pt-BR",{numeric:true,sensitivity:"base"}));
+loginAlert.classList.remove("show");
+submitBtn.disabled = true;
+submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>Validando acesso...`;
+
+const { data, error } = await db.auth.signInWithPassword({
+email,
+password: pass
+});
+
+submitBtn.disabled = false;
+submitBtn.innerHTML = `<i class="fa-solid fa-right-to-bracket"></i>Acessar painel`;
+
+if(error || !data?.session){
+console.error("Erro no login:", error);
+showLoginError("Usuário ou senha inválidos.");
+return;
 }
 
-function uniqueSortedNumbers(field){
-  return [...new Set(properties.map(p => numericValue(p[field])).filter(n => n >= 0))]
-    .sort((a,b)=>a-b);
+username.value = "";
+password.value = "";
+await openAdminPanel();
+});
+
+function renderAll(){
+renderDashboard();
+renderProperties();
+renderLeads();
+renderSettings();
+applyBrand();
 }
 
-function fillSelectOptions(selectId, values, defaultLabel, labelFn){
-  const el = document.getElementById(selectId);
-  if(!el) return;
-  const current = el.value;
-  el.innerHTML = `<option value="">${defaultLabel}</option>` + values.map(value => {
-    const label = labelFn ? labelFn(value) : value;
-    return `<option value="${value}">${label}</option>`;
-  }).join("");
-  if(values.map(String).includes(String(current))) el.value = current;
+function setPage(id){
+document.querySelectorAll(".panel").forEach(section=>section.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+document.querySelectorAll(".nav-item").forEach(btn=>btn.classList.toggle("active",btn.dataset.section === id));
+pageTitle.textContent = pageData[id][0];
+pageSubtitle.textContent = pageData[id][1];
+closeSide();
+scrollTo({top:0,behavior:"smooth"});
 }
 
-function pluralLabel(value, singular, plural){
-  const n = Number(value);
-  return n === 1 ? `1 ${singular}` : `${n} ${plural}`;
+document.querySelectorAll("[data-section]").forEach(btn=>btn.onclick=()=>setPage(btn.dataset.section));
+document.querySelectorAll("[data-section-shortcut]").forEach(btn=>btn.onclick=()=>setPage(btn.dataset.sectionShortcut));
+
+function closeSide(){
+sidebar.classList.remove("active");
+mobileOverlay.classList.remove("active");
 }
 
-function populatePropertySearchOptions(){
-  fillSelectOptions("searchType", uniqueSortedValues("type"), "Todos os tipos");
-  fillSelectOptions("searchCity", uniqueSortedValues("city"), "Todas as cidades");
-  fillSelectOptions("searchNeighborhood", uniqueSortedValues("neighborhood"), "Todos os bairros");
-  fillSelectOptions("searchBedrooms", uniqueSortedNumbers("bedrooms"), "Qualquer quantidade", v => pluralLabel(v,"quarto","quartos"));
-  fillSelectOptions("searchSuites", uniqueSortedNumbers("suites"), "Qualquer quantidade", v => pluralLabel(v,"suíte","suítes"));
-  fillSelectOptions("searchBathrooms", uniqueSortedNumbers("bathrooms"), "Qualquer quantidade", v => pluralLabel(v,"banheiro","banheiros"));
+openSidebar.onclick=()=>{sidebar.classList.add("active");mobileOverlay.classList.add("active")};
+mobileOverlay.onclick=closeSide;
+
+async function logout(){
+await db.auth.signOut();
+app.classList.remove("active");
+loginScreen.classList.remove("hidden");
+username.value="";
+password.value="";
+setPage("dashboard");
 }
 
-function readAdvancedFilters(){
-  advancedFilters = {
-    purpose: advancedFilters.purpose || "todos",
-    type: document.getElementById("searchType")?.value || "",
-    city: document.getElementById("searchCity")?.value || "",
-    neighborhood: document.getElementById("searchNeighborhood")?.value || "",
-    bedrooms: document.getElementById("searchBedrooms")?.value || "",
-    suites: document.getElementById("searchSuites")?.value || "",
-    bathrooms: document.getElementById("searchBathrooms")?.value || "",
-    garage: document.getElementById("searchGarage")?.value || ""
-  };
+logoutBtn.onclick=logout;
+topLogoutBtn.onclick=logout;
+
+function renderDashboard(){
+totalProperties.textContent = properties.length;
+totalLeads.textContent = leads.length;
+availableProperties.textContent = properties.filter(p=>p.status==="Disponível").length;
+featuredProperties.textContent = properties.filter(p=>p.featured).length;
+
+dashboardProperties.innerHTML = properties.slice(0,4).map(p=>`
+<div class="activity"><i class="fa-solid fa-building"></i><div><strong>${p.title}</strong><span>${p.city || ""}/${p.state || ""} • ${p.price} • ${p.purpose} • ${p.status}</span></div></div>
+`).join("") || `<div class="empty"><i class="fa-solid fa-building"></i><p>Nenhum imóvel cadastrado.</p></div>`;
+
+dashboardLeads.innerHTML = leads.slice(0,4).map(l=>`
+<div class="activity"><i class="fa-solid fa-user"></i><div><strong>${l.name}</strong><span>${l.property || "Sem imóvel informado"} • ${l.status}</span></div></div>
+`).join("") || `<div class="empty"><i class="fa-solid fa-users"></i><p>Nenhum lead recebido.</p></div>`;
 }
 
-function propertyMatchesAdvancedFilters(p){
-  if(advancedFilters.purpose && advancedFilters.purpose !== "todos" && p.purpose !== advancedFilters.purpose) return false;
-  if(advancedFilters.type && p.type !== advancedFilters.type) return false;
-  if(advancedFilters.city && p.city !== advancedFilters.city) return false;
-  if(advancedFilters.neighborhood && p.neighborhood !== advancedFilters.neighborhood) return false;
-  if(advancedFilters.bedrooms && numericValue(p.bedrooms) < numericValue(advancedFilters.bedrooms)) return false;
-  if(advancedFilters.suites && numericValue(p.suites) < numericValue(advancedFilters.suites)) return false;
-  if(advancedFilters.bathrooms && numericValue(p.bathrooms) < numericValue(advancedFilters.bathrooms)) return false;
-  if(advancedFilters.garage === "com" && numericValue(p.parking) < 1) return false;
-  if(advancedFilters.garage === "sem" && numericValue(p.parking) > 0) return false;
-  return true;
+imageUpload.onchange = async e => {
+try{
+for(const file of Array.from(e.target.files)){
+const url = await uploadToBucket("imoveis",file,"imoveis");
+uploadedImages.push(url);
+}
+renderPreview();
+imageUpload.value="";
+}catch(error){showError(error)}
+};
+
+function renderPreview(){
+imagePreview.innerHTML = uploadedImages.map((img,i)=>{
+const label = i === 0 ? "Capa" : `Imagem ${i + 1}`;
+const options = uploadedImages.map((_,pos)=>`<option value="${pos}" ${pos===i ? "selected" : ""}>${pos===0 ? "Capa" : "Imagem " + (pos + 1)}</option>`).join("");
+
+return `
+<div class="preview-item ${i===0 ? "cover" : ""}">
+<img src="${img}">
+<select class="position-select" onchange="changeImagePosition(${i},Number(this.value))">
+${options}
+</select>
+<div class="position-label">${label}</div>
+<div class="preview-actions">
+<button type="button" class="mini" onclick="setCover(${i})">Capa</button>
+<button type="button" class="mini remove" onclick="removeImage(${i})">Remover</button>
+</div>
+</div>
+`;
+}).join("");
+coverIndex = 0;
 }
 
-function updatePurposeButtons(purpose){
-  currentFilter = purpose || "todos";
-  advancedFilters.purpose = currentFilter;
-  document.querySelectorAll(".search-tab").forEach(btn => btn.classList.toggle("active", btn.dataset.purposeSearch === currentFilter));
-  document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.toggle("active", btn.dataset.filter === currentFilter));
+function reorderImage(from,to){
+if(from === to) return;
+const item = uploadedImages.splice(from,1)[0];
+uploadedImages.splice(to,0,item);
+coverIndex = 0;
+renderPreview();
+}
+
+window.changeImagePosition = (from,to) => reorderImage(from,to);
+window.setCover = i => reorderImage(i,0);
+window.removeImage = i => {
+uploadedImages.splice(i,1);
+coverIndex=0;
+renderPreview();
+};
+
+propertyForm.onsubmit = async e => {
+e.preventDefault();
+
+const id = propertyId.value;
+const features = Array.from(document.querySelectorAll("#featuresGrid input:checked")).map(input=>input.value);
+
+const prop = {
+title:title.value,
+type:type.value,
+purpose:purpose.value,
+price:price.value,
+neighborhood:neighborhood.value,
+city:city.value,
+state:state.value,
+address:address.value,
+area:area.value,
+bedrooms:bedrooms.value,
+suites:suites.value,
+bathrooms:bathrooms.value,
+parking:parking.value,
+description:description.value,
+features,
+images:uploadedImages.length ? uploadedImages : [fallback],
+cover_index:0,
+status:status.value,
+featured:featured.checked
+};
+
+let result;
+if(id){
+result = await db.from("properties").update(prop).eq("id",Number(id)).select().single();
+}else{
+result = await db.from("properties").insert(prop).select().single();
+}
+
+if(result.error){showError(result.error);return}
+
+await fetchProperties();
+renderAll();
+resetForm();
+
+propertySuccess.classList.add("show");
+setTimeout(()=>propertySuccess.classList.remove("show"),2500);
+setPage("properties");
+};
+
+clearForm.onclick=resetForm;
+
+function resetForm(){
+propertyForm.reset();
+propertyId.value="";
+uploadedImages=[];
+coverIndex=0;
+renderPreview();
+propertyFormTitle.textContent="Adicionar imóvel";
 }
 
 function renderProperties(){
-  const grid = document.getElementById("propertiesGrid");
-  if(!grid) return;
+const q = (propertySearch.value || "").toLowerCase();
+const arr = properties.filter(p=>[p.title,p.city,p.neighborhood,p.type,p.status,p.purpose].join(" ").toLowerCase().includes(q));
 
-  const availableByFilter = properties.filter(p => isAvailable(p) && propertyMatchesAdvancedFilters(p));
+propertiesList.innerHTML = arr.length ? arr.map(p=>{
+const cls = p.status==="Disponível" ? "green" : p.status==="Vendido" || p.status==="Alugado" ? "red" : "orange";
+const img = p.images?.[p.cover_index] || p.images?.[0] || fallback;
 
-  const featured = availableByFilter.filter(p => p.featured === true);
-  const filtered = featured.length ? featured : availableByFilter;
-
-  if(window.searchResultLabel){
-    const total = filtered.length;
-    searchResultLabel.innerHTML = total === 1
-      ? `<strong>1 imóvel</strong> encontrado com os filtros selecionados.`
-      : `<strong>${total} imóveis</strong> encontrados com os filtros selecionados.`;
-  }
-
-  grid.innerHTML = filtered.length ? filtered.map(p => {
-    const coverIndex = Number.isInteger(p.cover_index) ? p.cover_index : 0;
-    const img = p.images?.[coverIndex] || p.images?.[0] || fallbackImage;
-    return `
-<div class="property-card" data-purpose="${p.purpose || ''}">
-  <div class="property-image">
-    <img src="${img}" alt="${p.title || 'Imóvel Città'}" loading="lazy">
-    <div class="overlay">Clique para acessar mais informações</div>
-  </div>
-  <div class="property-content">
-    <div class="property-type">${p.type || 'Imóvel'} • ${p.purpose || ''}</div>
-    <h3>${p.title || 'Imóvel Città'}</h3>
-    <div class="location">${p.neighborhood || ''}${p.neighborhood ? ', ' : ''}${p.city || ''}${p.state ? ' - ' + p.state : ''}</div>
-    <div class="price">${p.price || 'Consulte'}</div>
-    <div class="property-info">
-      <div class="info-box"><i class="fa-solid fa-ruler-combined"></i>${p.area || '-'}</div>
-      <div class="info-box"><i class="fa-solid fa-bed"></i>${p.bedrooms || '0'} quartos</div>
-      <div class="info-box"><i class="fa-solid fa-bath"></i>${p.bathrooms || '0'} banheiros</div>
-      <div class="info-box"><i class="fa-solid fa-car"></i>${p.parking || '0'} vagas</div>
-    </div>
-    <button class="property-btn" type="button" onclick="openLeadModal(${Number(p.id)})">Tenho interesse</button>
-  </div>
-</div>`;
-  }).join("") : `<div class="empty-properties">Nenhum imóvel disponível nessa categoria no momento.</div>`;
-}
-
-function openLeadModal(id){
-  currentProperty = properties.find(p => Number(p.id) === Number(id));
-  if(window.selectedProperty) selectedProperty.value = currentProperty?.title || "Imóvel não informado";
-  if(window.leadModal) leadModal.classList.add("active");
-}
-
-function renderDetails(p){
-  const images = Array.isArray(p.images) && p.images.length ? p.images : [fallbackImage];
-  detailsContent.innerHTML = `
-<div>
-  <div class="gallery-grid">
-    ${images.slice(0,4).map(img => `<img src="${img}" alt="${p.title || 'Imóvel Città'}" loading="lazy">`).join("")}
-  </div>
+return `
+<div class="property-row">
+<img class="thumb" src="${img}">
+<div class="row-info">
+<h4>${p.title}</h4>
+<div class="meta"><span>${p.type}</span><span>•</span><span>${p.purpose}</span><span>•</span><span>${p.neighborhood || ""}, ${p.city || ""}/${p.state || ""}</span><span>•</span><span>${p.price}</span></div>
+<div class="badges"><span class="badge ${cls}">${p.status}</span>${p.featured ? `<span class="badge gold"><i class="fa-solid fa-star"></i>Destaque</span>` : ""}<span class="badge">${p.area || ""}</span></div>
 </div>
-<div class="details-card">
-  <h2>${p.title || 'Imóvel Città'}</h2>
-  <div class="location">${p.neighborhood || ''}${p.neighborhood ? ', ' : ''}${p.city || ''}${p.state ? ' - ' + p.state : ''}</div>
-  <div class="details-price">${p.price || 'Consulte'}</div>
-  <p class="details-desc">${p.description || 'Entre em contato para mais informações sobre este imóvel.'}</p>
-  <div class="details-features">
-    <div class="feature-box"><i class="fa-solid fa-ruler-combined"></i>${p.area || '-'}</div>
-    <div class="feature-box"><i class="fa-solid fa-bed"></i>${p.bedrooms || '0'} quartos</div>
-    <div class="feature-box"><i class="fa-solid fa-bath"></i>${p.bathrooms || '0'} banheiros</div>
-    <div class="feature-box"><i class="fa-solid fa-car"></i>${p.parking || '0'} vagas</div>
-    ${(p.features || []).slice(0,4).map(f => `<div class="feature-box"><i class="fa-solid fa-check"></i>${f}</div>`).join("")}
-  </div>
-  <div class="contact-buttons">
-    <a href="${whatsappLink()}" target="_blank" class="btn-primary"><i class="fa-brands fa-whatsapp"></i>Falar no WhatsApp</a>
-    <a href="#contato" class="btn-secondary" style="color:#081122;border-color:#ccc;">Entrar em contato</a>
-  </div>
+<div class="actions">
+<button class="btn btn-light" onclick="viewProperty(${p.id})"><i class="fa-solid fa-eye"></i>Visualizar</button>
+<button class="btn btn-success" onclick="editProperty(${p.id})"><i class="fa-solid fa-pen"></i>Editar</button>
+<button class="btn btn-danger" onclick="deleteProperty(${p.id})"><i class="fa-solid fa-trash"></i>Excluir</button>
+</div>
 </div>`;
-  detailsPage.classList.add("active");
-  window.scrollTo({ top: detailsPage.offsetTop - 80, behavior:"smooth" });
+}).join("") : `<div class="empty"><i class="fa-solid fa-building"></i><p>Nenhum imóvel encontrado.</p></div>`;
 }
 
-if(window.mobileBtn){
-  mobileBtn.addEventListener("click", () => menu.classList.toggle("active"));
+propertySearch.oninput = renderProperties;
+
+window.viewProperty = id => {
+const p = properties.find(item=>item.id===id);
+if(!p) return;
+
+viewModalContent.innerHTML = `
+<h3>${p.title}</h3>
+<div class="badges"><span class="badge gold">${p.type}</span><span class="badge">${p.purpose}</span><span class="badge">${p.status}</span>${p.featured ? `<span class="badge gold"><i class="fa-solid fa-star"></i>Destaque</span>` : ""}</div>
+<div class="modal-gallery">${(p.images || [fallback]).map(img=>`<img src="${img}">`).join("")}</div>
+<div class="detail-grid">
+<div class="detail">Valor<span>${p.price}</span></div><div class="detail">Finalidade<span>${p.purpose}</span></div>
+<div class="detail">Localização<span>${p.neighborhood || ""}, ${p.city || ""}/${p.state || ""}</span></div><div class="detail">Metragem<span>${p.area || ""}</span></div>
+<div class="detail">Quartos<span>${p.bedrooms || ""}</span></div><div class="detail">Suítes<span>${p.suites || ""}</span></div>
+<div class="detail">Banheiros<span>${p.bathrooms || ""}</span></div><div class="detail">Vagas<span>${p.parking || ""}</span></div>
+<div class="detail">Endereço<span>${p.address || ""}</span></div>
+</div>
+<div class="modal-body"><strong>Descrição completa</strong><br>${p.description || ""}<br><br><strong>Diferenciais</strong><br>${(p.features || []).join(", ") || "Nenhum diferencial marcado."}</div>
+`;
+openModal();
+};
+
+window.editProperty = id => {
+const p = properties.find(item=>item.id===id);
+if(!p) return;
+
+setPage("addProperty");
+propertyFormTitle.textContent="Editar imóvel";
+propertyId.value=p.id;
+title.value=p.title || "";
+type.value=p.type || "";
+purpose.value=p.purpose || "";
+price.value=p.price || "";
+neighborhood.value=p.neighborhood || "";
+city.value=p.city || "";
+state.value=p.state || "";
+address.value=p.address || "";
+area.value=p.area || "";
+bedrooms.value=p.bedrooms || "";
+suites.value=p.suites || "";
+bathrooms.value=p.bathrooms || "";
+parking.value=p.parking || "";
+description.value=p.description || "";
+status.value=p.status || "Disponível";
+featured.checked=!!p.featured;
+
+document.querySelectorAll("#featuresGrid input").forEach(input=>input.checked=p.features?.includes(input.value));
+uploadedImages=[...(p.images || [])];
+coverIndex=Number(p.cover_index || 0);
+if(coverIndex > 0 && uploadedImages[coverIndex]){
+const coverImage = uploadedImages.splice(coverIndex,1)[0];
+uploadedImages.unshift(coverImage);
+}
+coverIndex=0;
+renderPreview();
+};
+
+window.deleteProperty = async id => {
+const p = properties.find(item=>item.id===id);
+if(!p || !confirm(`Deseja excluir o imóvel "${p.title}"?`)) return;
+
+const { error } = await db.from("properties").delete().eq("id",id);
+if(error){showError(error);return}
+
+await fetchProperties();
+renderAll();
+};
+
+function renderLeads(){
+const q = (leadSearch.value || "").toLowerCase();
+const arr = leads.filter(l=>[l.name,l.email,l.phone,l.property,l.status].join(" ").toLowerCase().includes(q));
+
+leadsList.innerHTML = arr.length ? arr.map(l=>{
+const phone = String(l.phone || "").replace(/\D/g,"");
+const msg = encodeURIComponent(`Olá ${l.name}, tudo bem? Aqui é da Città Imobiliária. Vi seu interesse no imóvel "${l.property}" e gostaria de te passar mais informações.`);
+const subj = encodeURIComponent("Interesse em imóvel - Città Imobiliária");
+const body = encodeURIComponent(`Olá ${l.name}, tudo bem?\n\nRecebemos seu interesse no imóvel "${l.property}" e gostaríamos de conversar sobre as melhores opções para você.\n\nAtenciosamente,\nCittà Imobiliária`);
+
+return `
+<div class="lead-row">
+<div class="row-info"><h4>${l.name}</h4><div class="meta"><span>${l.email || ""}</span><span>•</span><span>${l.phone || ""}</span><span>•</span><span>${l.property || ""}</span></div><div class="badges"><span class="badge gold">${l.timeline || ""}</span><span class="badge">${new Date(l.created_at).toLocaleDateString("pt-BR")}</span><span class="badge green">${l.status || "Novo"}</span></div></div>
+<div class="actions">
+<select class="lead-status" onchange="changeLeadStatus(${l.id},this.value)">
+<option ${l.status==="Novo" ? "selected" : ""}>Novo</option>
+<option ${l.status==="Em contato" ? "selected" : ""}>Em contato</option>
+<option ${l.status==="Em negociação" ? "selected" : ""}>Em negociação</option>
+<option ${l.status==="Finalizado" ? "selected" : ""}>Finalizado</option>
+</select>
+<button class="btn btn-light" onclick="viewLead(${l.id})"><i class="fa-solid fa-eye"></i>Detalhes</button>
+<a class="btn btn-success" href="https://wa.me/55${phone}?text=${msg}" target="_blank"><i class="fa-brands fa-whatsapp"></i>WhatsApp</a>
+<a class="btn btn-light" href="mailto:${l.email}?subject=${subj}&body=${body}"><i class="fa-solid fa-envelope"></i>E-mail</a>
+<button class="btn btn-danger" onclick="deleteLead(${l.id})"><i class="fa-solid fa-trash"></i>Excluir</button>
+</div>
+</div>`;
+}).join("") : `<div class="empty"><i class="fa-solid fa-users"></i><p>Nenhum lead encontrado.</p></div>`;
 }
 
-document.querySelectorAll(".faq-question").forEach(q => {
-  q.addEventListener("click", () => q.closest(".faq-item").classList.toggle("active"));
+leadSearch.oninput = renderLeads;
+
+window.changeLeadStatus = async (id,status) => {
+const { error } = await db.from("leads").update({status}).eq("id",id);
+if(error){showError(error);return}
+await fetchLeads();
+renderAll();
+};
+
+window.viewLead = id => {
+const l = leads.find(item=>item.id===id);
+if(!l) return;
+viewModalContent.innerHTML = `
+<h3>${l.name}</h3>
+<div class="badges"><span class="badge green">${l.status || "Novo"}</span><span class="badge gold">${l.timeline || ""}</span><span class="badge">${new Date(l.created_at).toLocaleDateString("pt-BR")}</span></div>
+<div class="detail-grid"><div class="detail">E-mail<span>${l.email || ""}</span></div><div class="detail">Telefone/WhatsApp<span>${l.phone || ""}</span></div><div class="detail">Imóvel de interesse<span>${l.property || ""}</span></div><div class="detail">Prazo de compra<span>${l.timeline || ""}</span></div></div>
+<div class="modal-body"><strong>Observações</strong><br>${l.notes || "Sem observações adicionais."}</div>`;
+openModal();
+};
+
+window.deleteLead = async id => {
+const l = leads.find(item=>item.id===id);
+if(!l || !confirm(`Deseja excluir o lead "${l.name}"?`)) return;
+
+const { error } = await db.from("leads").delete().eq("id",id);
+if(error){showError(error);return}
+
+await fetchLeads();
+renderAll();
+};
+
+addFakeLead.onclick = async () => {
+const names = ["João Pedro Silva","Fernanda Castro","Lucas Almeida","Patrícia Nunes"];
+const name = names[Math.floor(Math.random()*names.length)];
+
+const { error } = await db.from("leads").insert({
+name,
+email:name.toLowerCase().replaceAll(" ",".") + "@email.com",
+phone:"6299" + Math.floor(1000000 + Math.random()*8999999),
+property:properties[0]?.title || "Imóvel em destaque",
+timeline:"Daqui 3 meses",
+status:"Novo",
+notes:"Lead fictício adicionado para demonstração."
 });
 
-document.querySelectorAll(".filter-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    updatePurposeButtons(btn.dataset.filter || "todos");
-    renderProperties();
-  });
-});
+if(error){showError(error);return}
 
-document.querySelectorAll(".search-tab").forEach(btn => {
-  btn.addEventListener("click", () => {
-    updatePurposeButtons(btn.dataset.purposeSearch || "todos");
-  });
-});
+await fetchLeads();
+renderAll();
+};
 
-document.querySelectorAll("[data-header-filter]").forEach(link => {
-  link.addEventListener("click", () => {
-    const purpose = link.dataset.headerFilter || "todos";
-    updatePurposeButtons(purpose);
-    readAdvancedFilters();
-    renderProperties();
-    if(window.menu) menu.classList.remove("active");
-  });
-});
+function populateFeaturedPropertyOptions(){
+if(!window.featuredPropertySelect) return;
 
-if(window.propertySearchForm){
-  propertySearchForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    readAdvancedFilters();
-    renderProperties();
-    document.getElementById("imoveis")?.scrollIntoView({behavior:"smooth", block:"start"});
-  });
+const currentValue = String(settings.featured_property_id || "");
+featuredPropertySelect.innerHTML = `<option value="">Selecione um imóvel cadastrado</option>` + properties.map(p => {
+const selected = String(p.id) === currentValue ? "selected" : "";
+return `<option value="${p.id}" ${selected}>${p.title || "Imóvel sem título"} • ${p.purpose || ""} • ${p.city || ""}</option>`;
+}).join("");
 }
 
-if(window.clearPropertySearch){
-  clearPropertySearch.addEventListener("click", () => {
-    ["searchType","searchCity","searchNeighborhood","searchBedrooms","searchSuites","searchBathrooms","searchGarage"].forEach(id => {
-      const el = document.getElementById(id);
-      if(el) el.value = "";
-    });
-    updatePurposeButtons("todos");
-    readAdvancedFilters();
-    renderProperties();
-  });
+function updateBannerFieldsVisibility(){
+if(!window.bannerType) return;
+
+const type = bannerType.value || "image";
+
+if(window.bannerLinkFields){
+bannerLinkFields.classList.toggle("hidden", type !== "link");
 }
 
-if(window.closeModal){
-  closeModal.addEventListener("click", () => leadModal.classList.remove("active"));
+if(window.bannerPropertyFields){
+bannerPropertyFields.classList.toggle("hidden", type !== "property");
+}
 }
 
-window.addEventListener("click", (e) => {
-  if(e.target === leadModal) leadModal.classList.remove("active");
-});
+function renderSettings(){
+settingName.value=settings.name || "";
+settingWhatsapp.value=settings.whatsapp || "";
+settingEmail.value=settings.email || "";
+settingInstagram.value=settings.instagram || "";
+settingCj.value=settings.cj || "";
+settingRegion.value=settings.region || "";
 
-leadForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
+if(window.bannerType) bannerType.value = settings.banner_type || "image";
+if(window.bannerTitle) bannerTitle.value = settings.banner_title || "";
+if(window.bannerText) bannerText.value = settings.banner_text || "";
+if(window.bannerButtonText) bannerButtonText.value = settings.banner_button_text || "Clicar aqui";
+if(window.bannerUrl) bannerUrl.value = settings.banner_url || "";
 
-  const btn = leadForm.querySelector("button[type='submit']");
-  const originalText = btn.textContent;
-  btn.disabled = true;
-  btn.textContent = "Enviando...";
+populateFeaturedPropertyOptions();
 
-  const leadPayload = {
-    name: leadName.value.trim(),
-    email: leadEmail.value.trim(),
-    phone: leadPhone.value.trim(),
-    property: selectedProperty.value || currentProperty?.title || "Imóvel não informado",
-    timeline: leadTimeline.value,
-    status: "Novo",
-    notes: "Lead capturado pela landing page."
-  };
+settingsLogoPreview.src=tempLogo || settings.logo || defaultLogo;
+settingsBannerPreview.src=tempHeroBanner || settings.banner_image || settings.hero_banner || defaultHeroBanner;
 
-  const { data, error } = await db
-    .from("leads")
-    .insert([leadPayload])
-    .select();
-
-  btn.disabled = false;
-  btn.textContent = originalText;
-
-  if(error){
-    console.error("Erro ao salvar lead:", error);
-    alert("Erro ao salvar lead: " + (error.message || "verifique a conexão com o banco."));
-    return;
-  }
-
-  console.log("Lead salvo com sucesso:", data);
-  leadModal.classList.remove("active");
-
-  if(currentProperty){
-    renderDetails(currentProperty);
-  }
-
-  leadForm.reset();
-});
-
-async function init(){
-  await loadSettings();
-  await loadProperties();
-  applySettings();
-  updatePurposeButtons("todos");
-  readAdvancedFilters();
-  renderProperties();
+updateBannerFieldsVisibility();
 }
 
-init();
+if(window.bannerType){
+bannerType.addEventListener("change", updateBannerFieldsVisibility);
+}
+
+
+logoUpload.onchange = async e => {
+try{
+const file = e.target.files[0];
+if(!file) return;
+tempLogo = await uploadToBucket("site",file,"branding");
+settingsLogoPreview.src=tempLogo;
+loginLogo.src=tempLogo;
+sideLogo.src=tempLogo;
+logoUpload.value="";
+}catch(error){showError(error)}
+};
+
+heroBannerUpload.onchange = async e => {
+try{
+const file = e.target.files[0];
+if(!file) return;
+tempHeroBanner = await uploadToBucket("site",file,"banner");
+settingsBannerPreview.src=tempHeroBanner;
+heroBannerUpload.value="";
+}catch(error){showError(error)}
+};
+
+resetVisuals.onclick = async () => {
+if(!confirm("Deseja restaurar a logo e o banner principal para os padrões?")) return;
+
+const { error } = await db.from("site_settings").update({
+logo:defaultLogo,
+hero_banner:defaultHeroBanner,
+banner_image:defaultHeroBanner,
+banner_type:"image",
+banner_title:"",
+banner_text:"",
+banner_button_text:"Clicar aqui",
+banner_url:"",
+featured_property_id:null,
+updated_at:new Date().toISOString()
+}).eq("id",1);
+
+if(error){showError(error);return}
+
+tempLogo="";
+tempHeroBanner="";
+await fetchSettings();
+renderSettings();
+applyBrand();
+};
+
+settingsForm.onsubmit = async e => {
+e.preventDefault();
+
+const selectedBannerType = window.bannerType ? bannerType.value : "image";
+const selectedFeaturedProperty = window.featuredPropertySelect && featuredPropertySelect.value ? Number(featuredPropertySelect.value) : null;
+const finalBannerImage = tempHeroBanner || settings.banner_image || settings.hero_banner || defaultHeroBanner;
+
+const payload = {
+name:settingName.value,
+whatsapp:settingWhatsapp.value,
+email:settingEmail.value,
+instagram:settingInstagram.value,
+cj:settingCj.value,
+region:settingRegion.value,
+logo:tempLogo || settings.logo || defaultLogo,
+hero_banner:finalBannerImage,
+banner_image:finalBannerImage,
+banner_type:selectedBannerType,
+banner_title:window.bannerTitle ? bannerTitle.value : "",
+banner_text:window.bannerText ? bannerText.value : "",
+banner_button_text:window.bannerButtonText ? (bannerButtonText.value || "Clicar aqui") : "Clicar aqui",
+banner_url:window.bannerUrl ? bannerUrl.value : "",
+featured_property_id:selectedBannerType === "property" ? selectedFeaturedProperty : null,
+updated_at:new Date().toISOString()
+};
+
+const { error } = await db.from("site_settings").update(payload).eq("id",1);
+if(error){showError(error);return}
+
+tempLogo="";
+tempHeroBanner="";
+await fetchSettings();
+renderSettings();
+applyBrand();
+
+settingsSuccess.classList.add("show");
+setTimeout(()=>settingsSuccess.classList.remove("show"),2500);
+};
+
+function openModal(){viewModal.classList.add("active")}
+function closeModal(){viewModal.classList.remove("active")}
+closeViewModal.onclick=closeModal;
+viewModal.onclick=e=>{if(e.target.id==="viewModal")closeModal()};
+
+async function bootstrapAuth(){
+const { data, error } = await db.auth.getSession();
+if(error){
+console.warn("Não foi possível verificar sessão:", error.message);
+}
+if(data?.session){
+await openAdminPanel();
+}else{
+loginScreen.classList.remove("hidden");
+app.classList.remove("active");
+}
+}
+
+bootstrapAuth();
 </script>
-
 </body>
 </html>
