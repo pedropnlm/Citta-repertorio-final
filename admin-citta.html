@@ -110,6 +110,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold2);box-shadow:0 0
 .logo-preview img{max-height:90px;object-fit:contain}
 .banner-preview{height:160px;border-radius:16px;overflow:hidden;background:#eee}
 .banner-preview img{width:100%;height:100%;object-fit:cover}
+.banner-help{font-size:.86rem;color:var(--muted);line-height:1.6;margin-top:6px}.banner-mode-card{background:#f8f7f5;border:1px solid rgba(16,24,40,.08);border-radius:18px;padding:16px}
 .form-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end;margin-top:20px}
 .success{display:none;padding:14px 16px;border-radius:16px;background:rgba(22,163,74,.1);color:#166534;font-weight:800;border:1px solid rgba(22,163,74,.16);margin-bottom:18px}
 .success.show{display:block}
@@ -275,7 +276,41 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold2);box-shadow:0 0
 <div class="field col-6"><label>CRECI/CJ</label><input id="settingCj" value="CJ: 47.645"></div>
 <div class="field col-6"><label>Região de atendimento</label><input id="settingRegion" value="Goiânia | Goianésia e região"></div>
 <div class="field col-6"><label>Logo oficial da Città</label><div class="upload"><i class="fa-solid fa-image"></i><strong>Enviar logo oficial</strong><p>Upload para o bucket site da Supabase.</p><label class="btn btn-dark" for="logoUpload"><i class="fa-solid fa-upload"></i>Escolher logo</label><input class="file-input" id="logoUpload" type="file" accept="image/*"></div></div>
-<div class="field col-6"><label>Banner principal da landing page</label><div class="upload"><i class="fa-solid fa-panorama"></i><strong>Enviar banner principal</strong><p>Upload para o bucket site da Supabase.</p><label class="btn btn-dark" for="heroBannerUpload"><i class="fa-solid fa-upload"></i>Escolher banner</label><input class="file-input" id="heroBannerUpload" type="file" accept="image/*"></div></div>
+<div class="field col-6">
+<label>Banner principal da landing page</label>
+<div class="upload">
+<i class="fa-solid fa-panorama"></i>
+<strong>Enviar imagem do banner</strong>
+<p>Use esta imagem para banner livre, link externo ou imóvel em destaque.</p>
+<label class="btn btn-dark" for="heroBannerUpload"><i class="fa-solid fa-upload"></i>Escolher imagem</label>
+<input class="file-input" id="heroBannerUpload" type="file" accept="image/*">
+</div>
+</div>
+
+<div class="field col-12">
+<label>Tipo do banner principal</label>
+<select id="bannerType">
+<option value="image">Imagem livre</option>
+<option value="link">Link externo</option>
+<option value="property">Imóvel em destaque</option>
+</select>
+</div>
+
+<div class="field col-12" id="bannerLinkFields">
+<div class="form-grid">
+<div class="field col-6"><label>Título do banner</label><input id="bannerTitle" placeholder="Ex: Faça seu financiamento por aqui"></div>
+<div class="field col-6"><label>Texto do botão</label><input id="bannerButtonText" placeholder="Ex: Clicar aqui"></div>
+<div class="field col-12"><label>Texto/descrição do banner</label><textarea id="bannerText" placeholder="Ex: Simule seu financiamento com segurança e praticidade."></textarea></div>
+<div class="field col-12"><label>Link externo</label><input id="bannerUrl" placeholder="https://..."></div>
+</div>
+</div>
+
+<div class="field col-12 hidden" id="bannerPropertyFields">
+<label>Imóvel em destaque no banner</label>
+<select id="featuredPropertySelect">
+<option value="">Selecione um imóvel cadastrado</option>
+</select>
+</div>
 <div class="field col-12"><div class="settings-preview"><div class="preview-box"><h4>Prévia da logo</h4><div class="logo-preview"><img id="settingsLogoPreview" src="assets/citta-logos.png" alt="Prévia da logo"></div></div><div class="preview-box"><h4>Prévia do banner principal</h4><div class="banner-preview"><img id="settingsBannerPreview" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop" alt="Prévia do banner"></div></div></div></div>
 </div>
 <div class="form-actions"><button class="btn btn-danger" type="button" id="resetVisuals"><i class="fa-solid fa-rotate-left"></i>Restaurar logo/banner padrão</button><button class="btn btn-primary" type="submit"><i class="fa-solid fa-floppy-disk"></i>Salvar configurações</button></div>
@@ -328,7 +363,14 @@ instagram:"https://www.instagram.com/cittaimob",
 cj:"CJ: 47.645",
 region:"Goiânia | Goianésia e região",
 logo:defaultLogo,
-hero_banner:defaultHeroBanner
+hero_banner:defaultHeroBanner,
+banner_type:"image",
+banner_title:"",
+banner_text:"",
+banner_button_text:"Clicar aqui",
+banner_url:"",
+featured_property_id:null,
+banner_image:defaultHeroBanner
 };
 }
 
@@ -375,7 +417,7 @@ const logo = settings.logo || defaultLogo;
 loginLogo.src = logo;
 sideLogo.src = logo;
 settingsLogoPreview.src = tempLogo || logo;
-settingsBannerPreview.src = tempHeroBanner || settings.hero_banner || defaultHeroBanner;
+settingsBannerPreview.src = tempHeroBanner || settings.banner_image || settings.hero_banner || defaultHeroBanner;
 sideCj.textContent = settings.cj || "CJ: 47.645";
 sideRegion.textContent = settings.region || "Goiânia | Goianésia e região";
 }
@@ -762,6 +804,30 @@ await fetchLeads();
 renderAll();
 };
 
+function populateFeaturedPropertyOptions(){
+if(!window.featuredPropertySelect) return;
+
+const currentValue = String(settings.featured_property_id || "");
+featuredPropertySelect.innerHTML = `<option value="">Selecione um imóvel cadastrado</option>` + properties.map(p => {
+const selected = String(p.id) === currentValue ? "selected" : "";
+return `<option value="${p.id}" ${selected}>${p.title || "Imóvel sem título"} • ${p.purpose || ""} • ${p.city || ""}</option>`;
+}).join("");
+}
+
+function updateBannerFieldsVisibility(){
+if(!window.bannerType) return;
+
+const type = bannerType.value || "image";
+
+if(window.bannerLinkFields){
+bannerLinkFields.classList.toggle("hidden", type !== "link");
+}
+
+if(window.bannerPropertyFields){
+bannerPropertyFields.classList.toggle("hidden", type !== "property");
+}
+}
+
 function renderSettings(){
 settingName.value=settings.name || "";
 settingWhatsapp.value=settings.whatsapp || "";
@@ -769,9 +835,25 @@ settingEmail.value=settings.email || "";
 settingInstagram.value=settings.instagram || "";
 settingCj.value=settings.cj || "";
 settingRegion.value=settings.region || "";
+
+if(window.bannerType) bannerType.value = settings.banner_type || "image";
+if(window.bannerTitle) bannerTitle.value = settings.banner_title || "";
+if(window.bannerText) bannerText.value = settings.banner_text || "";
+if(window.bannerButtonText) bannerButtonText.value = settings.banner_button_text || "Clicar aqui";
+if(window.bannerUrl) bannerUrl.value = settings.banner_url || "";
+
+populateFeaturedPropertyOptions();
+
 settingsLogoPreview.src=tempLogo || settings.logo || defaultLogo;
-settingsBannerPreview.src=tempHeroBanner || settings.hero_banner || defaultHeroBanner;
+settingsBannerPreview.src=tempHeroBanner || settings.banner_image || settings.hero_banner || defaultHeroBanner;
+
+updateBannerFieldsVisibility();
 }
+
+if(window.bannerType){
+bannerType.addEventListener("change", updateBannerFieldsVisibility);
+}
+
 
 logoUpload.onchange = async e => {
 try{
@@ -801,6 +883,13 @@ if(!confirm("Deseja restaurar a logo e o banner principal para os padrões?")) r
 const { error } = await db.from("site_settings").update({
 logo:defaultLogo,
 hero_banner:defaultHeroBanner,
+banner_image:defaultHeroBanner,
+banner_type:"image",
+banner_title:"",
+banner_text:"",
+banner_button_text:"Clicar aqui",
+banner_url:"",
+featured_property_id:null,
 updated_at:new Date().toISOString()
 }).eq("id",1);
 
@@ -816,6 +905,10 @@ applyBrand();
 settingsForm.onsubmit = async e => {
 e.preventDefault();
 
+const selectedBannerType = window.bannerType ? bannerType.value : "image";
+const selectedFeaturedProperty = window.featuredPropertySelect && featuredPropertySelect.value ? Number(featuredPropertySelect.value) : null;
+const finalBannerImage = tempHeroBanner || settings.banner_image || settings.hero_banner || defaultHeroBanner;
+
 const payload = {
 name:settingName.value,
 whatsapp:settingWhatsapp.value,
@@ -824,7 +917,14 @@ instagram:settingInstagram.value,
 cj:settingCj.value,
 region:settingRegion.value,
 logo:tempLogo || settings.logo || defaultLogo,
-hero_banner:tempHeroBanner || settings.hero_banner || defaultHeroBanner,
+hero_banner:finalBannerImage,
+banner_image:finalBannerImage,
+banner_type:selectedBannerType,
+banner_title:window.bannerTitle ? bannerTitle.value : "",
+banner_text:window.bannerText ? bannerText.value : "",
+banner_button_text:window.bannerButtonText ? (bannerButtonText.value || "Clicar aqui") : "Clicar aqui",
+banner_url:window.bannerUrl ? bannerUrl.value : "",
+featured_property_id:selectedBannerType === "property" ? selectedFeaturedProperty : null,
 updated_at:new Date().toISOString()
 };
 
