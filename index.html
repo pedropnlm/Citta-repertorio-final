@@ -96,6 +96,15 @@ color:var(--gold);
 .menu{display:flex;gap:24px;align-items:center}
 .menu a{color:#fff;font-weight:700;font-size:1rem;transition:.3s}
 .menu a:hover{color:var(--gold)}
+.menu-dropdown{position:relative;display:flex;align-items:center}
+.menu-drop-trigger{display:flex;align-items:center;gap:7px}
+.menu-drop-trigger i{font-size:.72rem;transition:.25s}
+.menu-dropdown:hover .menu-drop-trigger i{transform:rotate(180deg)}
+.menu-submenu{position:absolute;top:calc(100% + 14px);left:0;min-width:170px;background:#fff;border:1px solid rgba(183,146,95,.18);border-radius:18px;padding:10px;box-shadow:0 18px 45px rgba(8,17,34,.18);display:grid;gap:4px;opacity:0;visibility:hidden;transform:translateY(8px);transition:.22s;z-index:1000}
+.menu-submenu:before{content:"";position:absolute;left:0;right:0;top:-16px;height:16px}
+.menu-dropdown:hover .menu-submenu{opacity:1;visibility:visible;transform:translateY(0)}
+.menu-submenu a{color:var(--navy)!important;padding:11px 12px;border-radius:12px;font-size:.92rem;font-weight:900}
+.menu-submenu a:hover{background:#f5f2ec;color:var(--gold2)!important}
 .btn-whats{
 background:linear-gradient(135deg,var(--gold),var(--gold2));
 color:var(--navy);
@@ -235,6 +244,7 @@ footer{background:var(--navy);color:#fff;padding:80px 0 30px}
 .footer-bottom{padding-top:30px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;font-size:.9rem}
 
 .whatsapp-float{position:fixed;right:20px;bottom:20px;width:65px;height:65px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#fff;z-index:999;box-shadow:0 15px 40px rgba(37,211,102,.4)}
+.instagram-float{position:fixed;right:20px;bottom:96px;width:65px;height:65px;border-radius:50%;background:linear-gradient(135deg,#f58529,#dd2a7b,#8134af,#515bd4);display:flex;align-items:center;justify-content:center;font-size:1.9rem;color:#fff;z-index:999;box-shadow:0 15px 40px rgba(221,42,123,.32)}
 
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;padding:20px;z-index:9999}
 .modal.active{display:flex}
@@ -282,6 +292,11 @@ box-shadow:var(--shadow);
 .mobile-btn{display:block}
 .menu{position:fixed;top:82px;left:16px;right:16px;background:var(--navy);border-radius:24px;padding:20px;flex-direction:column;display:none;align-items:stretch}
 .menu.active{display:flex}
+.menu-dropdown{display:grid;width:100%}
+.menu-drop-trigger{justify-content:space-between}
+.menu-submenu{position:static;opacity:1;visibility:visible;transform:none;background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.10);box-shadow:none;margin-top:8px}
+.menu-submenu a{color:#fff!important}
+.menu-submenu a:hover{background:rgba(212,180,131,.14);color:var(--gold)!important}
 .hero{padding-bottom:80px}
 .hero-card img{height:400px}
 .properties-grid,.benefits-grid,.footer-grid,.gallery-grid{grid-template-columns:1fr}
@@ -341,6 +356,7 @@ img{max-width:100%;height:auto;display:block}
   .section-title{font-size:2rem;letter-spacing:-1.4px}
   .benefit-card{padding:22px;border-radius:22px}
   .whatsapp-float{width:56px;height:56px;font-size:1.75rem;right:14px;bottom:14px}
+.instagram-float{width:56px;height:56px;font-size:1.65rem;right:14px;bottom:82px}
 }
 
 /* Ajustes visuais finais Città: textura de pedra + header premium */
@@ -860,6 +876,22 @@ font-size:.95rem;
 .search-actions{flex-direction:column}
 }
 
+
+/* ===== Banner inteligente integrado ao painel ===== */
+.smart-banner-slot{position:relative;width:100%;height:100%;min-height:520px;border-radius:24px;overflow:hidden;background:rgba(255,255,255,.08)}
+.smart-banner-slot img{width:100%;height:100%;min-height:520px;object-fit:cover;border-radius:24px}
+.smart-banner-link,.smart-banner-property{position:relative;display:block;width:100%;height:100%;min-height:520px;border:0;background:transparent;color:inherit;text-align:left;cursor:pointer;border-radius:24px;overflow:hidden;font-family:inherit}
+.smart-banner-overlay{position:absolute;inset:auto 0 0 0;padding:34px;background:linear-gradient(180deg,rgba(8,17,34,0),rgba(8,17,34,.88));color:#fff;display:grid;gap:12px}
+.smart-banner-kicker{display:inline-flex;width:max-content;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);padding:8px 14px;border-radius:999px;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+.smart-banner-overlay h3{font-size:clamp(1.45rem,3vw,2.35rem);line-height:1.05;letter-spacing:-.05em;color:#fff;max-width:520px}
+.smart-banner-overlay p{color:rgba(255,255,255,.84);line-height:1.55;font-size:.95rem;max-width:520px;margin:0}
+.smart-banner-cta{width:max-content;display:inline-flex;align-items:center;justify-content:center;gap:9px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border-radius:999px;padding:13px 20px;font-weight:900;margin-top:4px;box-shadow:0 14px 28px rgba(0,0,0,.2)}
+.smart-banner-property-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+.smart-banner-property-meta span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:7px 10px;font-size:.76rem;font-weight:800;color:#fff}
+.smart-banner-empty{height:100%;min-height:520px;display:grid;place-items:center;text-align:center;color:rgba(255,255,255,.88);padding:30px;border-radius:24px;background:rgba(8,17,34,.45)}
+@media(max-width:860px){.smart-banner-slot,.smart-banner-slot img,.smart-banner-link,.smart-banner-property,.smart-banner-empty{min-height:360px}.smart-banner-overlay{padding:26px}.smart-banner-overlay h3{font-size:1.7rem}}
+@media(max-width:540px){.smart-banner-slot,.smart-banner-slot img,.smart-banner-link,.smart-banner-property,.smart-banner-empty{min-height:300px}.smart-banner-overlay{padding:20px}.smart-banner-overlay p{font-size:.86rem}.smart-banner-cta{width:100%;font-size:.88rem}.smart-banner-property-meta span{font-size:.7rem}}
+
 </style>
 </head>
 
@@ -874,9 +906,14 @@ font-size:.95rem;
 
 <nav class="menu" id="menu">
 <a href="#inicio">Início</a>
-<a href="#imoveis">Imóveis</a>
+<div class="menu-dropdown">
+<a href="#imoveis" class="menu-drop-trigger">Imóveis <i class="fa-solid fa-chevron-down"></i></a>
+<div class="menu-submenu">
+<a href="#imoveis" data-header-filter="Aluguel">Aluguel</a>
+<a href="#imoveis" data-header-filter="Venda">Venda</a>
+</div>
+</div>
 <a href="#sobre">Sobre</a>
-<a href="#financiamento">Financiamento</a>
 <a href="#contato">Contato</a>
 <a id="headerWhatsapp" href="https://wa.me/5562983280081" target="_blank" class="btn-whats">
 <i class="fa-brands fa-whatsapp"></i> WhatsApp
@@ -898,8 +935,10 @@ font-size:.95rem;
 </div>
 </div>
 
-<div class="hero-card">
+<div class="hero-card" id="smartBannerCard">
+<div id="heroBannerSlot" class="smart-banner-slot">
 <img id="heroBanner" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop" alt="Banner principal Città">
+</div>
 </div>
 </div>
 
@@ -976,19 +1015,7 @@ font-size:.95rem;
 </div>
 </section>
 
-<section class="section stone-bg" id="financiamento">
-<div class="container">
-<div class="financing">
-<div>
-<h3>Consulte seu financiamento</h3>
-<p>Simule possibilidades de financiamento e refinanciamento imobiliário de forma prática e segura.</p>
-</div>
-<a href="https://imovelcashme.com.br/tk-seguros/" target="_blank" class="btn-primary">
-<i class="fa-solid fa-calculator"></i> Consultar financiamento
-</a>
-</div>
-</div>
-</section>
+
 
 <section class="section stone-bg" id="sobre">
 <div class="container about-grid">
@@ -1048,9 +1075,7 @@ font-size:.95rem;
 </div>
 </div>
 
-<div class="map-card">
-<iframe src="https://www.google.com/maps?q=Goi%C3%A2nia,GO&output=embed"></iframe>
-</div>
+
 </div>
 </section>
 
@@ -1062,11 +1087,6 @@ font-size:.95rem;
 <div class="faq-item active">
 <button class="faq-question">Como funciona o atendimento da Città?<i class="fa-solid fa-plus"></i></button>
 <div class="faq-answer"><p>Nosso atendimento é personalizado para entender seu perfil e indicar imóveis alinhados aos seus objetivos.</p></div>
-</div>
-
-<div class="faq-item">
-<button class="faq-question">Vocês auxiliam no financiamento?<i class="fa-solid fa-plus"></i></button>
-<div class="faq-answer"><p>Sim. Também oferecemos direcionamento para consulta de financiamento e refinanciamento imobiliário.</p></div>
 </div>
 
 <div class="faq-item">
@@ -1162,6 +1182,10 @@ font-size:.95rem;
 <div class="container details-grid" id="detailsContent"></div>
 </section>
 
+<a id="floatInstagram" href="https://www.instagram.com/cittaimob?igsh=dTM2eHA1c3lyMTVj" target="_blank" class="instagram-float" aria-label="Instagram Città Imobiliária">
+<i class="fa-brands fa-instagram"></i>
+</a>
+
 <a id="floatWhatsapp" href="https://wa.me/5562983280081" target="_blank" class="whatsapp-float">
 <i class="fa-brands fa-whatsapp"></i>
 </a>
@@ -1182,7 +1206,14 @@ let settings = {
   cj:"CJ: 47.645",
   region:"Goiânia | Goianésia e região",
   logo:defaultLogo,
-  hero_banner:fallbackImage
+  hero_banner:fallbackImage,
+  banner_type:"image",
+  banner_title:"",
+  banner_text:"",
+  banner_button_text:"",
+  banner_url:"",
+  featured_property_id:null,
+  banner_image:""
 };
 
 let properties = [];
@@ -1225,6 +1256,83 @@ function normalizeProperty(p){
   };
 }
 
+function escapeHtml(value){
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function getPropertyCover(p){
+  if(!p) return fallbackImage;
+  const images = Array.isArray(p.images) && p.images.length ? p.images : [fallbackImage];
+  const idx = Number.isInteger(Number(p.cover_index)) ? Number(p.cover_index) : 0;
+  return images[idx] || images[0] || fallbackImage;
+}
+
+function renderSmartBanner(){
+  const slot = document.getElementById("heroBannerSlot");
+  if(!slot) return;
+
+  const type = String(settings.banner_type || "image").toLowerCase();
+  const bannerImage = settings.banner_image || settings.hero_banner || fallbackImage;
+  const title = String(settings.banner_title || "").trim();
+  const text = String(settings.banner_text || "").trim();
+  const buttonText = String(settings.banner_button_text || "").trim();
+  const url = String(settings.banner_url || "").trim();
+
+  if(type === "property"){
+    const selectedId = Number(settings.featured_property_id);
+    const p = properties.find(item => Number(item.id) === selectedId) || properties.find(item => item.featured && isAvailable(item)) || properties.find(isAvailable);
+
+    if(!p){
+      slot.innerHTML = `<div class="smart-banner-empty">Nenhum imóvel em destaque selecionado no painel.</div>`;
+      return;
+    }
+
+    const img = getPropertyCover(p);
+    slot.innerHTML = `
+<button type="button" class="smart-banner-property" onclick="openLeadModal(${Number(p.id)})" aria-label="Tenho interesse no imóvel ${escapeHtml(p.title || 'Città')}">
+  <img id="heroBanner" src="${img}" alt="${escapeHtml(p.title || 'Imóvel em destaque Città')}">
+  <div class="smart-banner-overlay">
+    <span class="smart-banner-kicker">Imóvel em destaque</span>
+    <h3>${escapeHtml(p.title || 'Imóvel selecionado pela Città')}</h3>
+    <p>${escapeHtml(p.neighborhood || '')}${p.neighborhood ? ', ' : ''}${escapeHtml(p.city || '')}${p.state ? ' - ' + escapeHtml(p.state) : ''}</p>
+    <div class="smart-banner-property-meta">
+      <span>${escapeHtml(p.price || 'Consulte')}</span>
+      <span>${escapeHtml(p.bedrooms || '0')} quartos</span>
+      <span>${escapeHtml(p.bathrooms || '0')} banheiros</span>
+      <span>${escapeHtml(p.parking || '0')} vagas</span>
+    </div>
+    <span class="smart-banner-cta"><i class="fa-solid fa-arrow-right"></i> Tenho interesse</span>
+  </div>
+</button>`;
+    return;
+  }
+
+  if(type === "link"){
+    const hasTextContent = Boolean(title || text || buttonText);
+    const safeUrl = url || "#";
+    const targetAttrs = url ? `target="_blank" rel="noopener"` : "";
+    slot.innerHTML = `
+<a class="smart-banner-link" href="${escapeHtml(safeUrl)}" ${targetAttrs} aria-label="${escapeHtml(title || buttonText || 'Banner Città')}">
+  <img id="heroBanner" src="${bannerImage}" alt="${escapeHtml(title || 'Banner principal Città')}">
+  ${hasTextContent ? `
+  <div class="smart-banner-overlay">
+    <span class="smart-banner-kicker">Città Imobiliária</span>
+    ${title ? `<h3>${escapeHtml(title)}</h3>` : ""}
+    ${text ? `<p>${escapeHtml(text)}</p>` : ""}
+    <span class="smart-banner-cta"><i class="fa-solid fa-arrow-up-right-from-square"></i> ${escapeHtml(buttonText || 'Clique aqui')}</span>
+  </div>` : ""}
+</a>`;
+    return;
+  }
+
+  slot.innerHTML = `<img id="heroBanner" src="${bannerImage}" alt="Banner principal Città">`;
+}
+
 async function loadSettings(){
   const { data, error } = await db
     .from("site_settings")
@@ -1243,7 +1351,14 @@ async function loadSettings(){
       ...settings,
       ...data,
       logo: data.logo || defaultLogo,
-      hero_banner: data.hero_banner || data.heroBanner || settings.hero_banner
+      hero_banner: data.hero_banner || data.heroBanner || settings.hero_banner,
+      banner_type: data.banner_type || data.bannerType || data.banner_type || settings.banner_type || "image",
+      banner_image: data.banner_image || data.bannerImage || data.hero_banner || settings.hero_banner,
+      banner_title: data.banner_title || data.bannerTitle || "",
+      banner_text: data.banner_text || data.bannerText || "",
+      banner_button_text: data.banner_button_text || data.bannerButtonText || "",
+      banner_url: data.banner_url || data.bannerUrl || "",
+      featured_property_id: data.featured_property_id || data.featuredPropertyId || null
     };
   }
 }
@@ -1276,7 +1391,7 @@ function applySettings(){
   const logo = settings.logo || defaultLogo;
   if(window.siteLogo) siteLogo.src = logo;
   if(window.footerLogo) footerLogo.src = logo;
-  if(window.heroBanner && settings.hero_banner) heroBanner.src = settings.hero_banner;
+  renderSmartBanner();
 
   const whats = whatsappLink();
   [headerWhatsapp, heroWhatsapp, ctaWhatsapp, floatWhatsapp, contactPhone, footerWhatsapp].forEach(el => {
@@ -1291,6 +1406,7 @@ function applySettings(){
   if(window.footerEmail) footerEmail.href = contactEmail?.href || "mailto:comercial@cittaimobiliaria.com.br";
   if(window.contactInstagram) contactInstagram.href = settings.instagram || "#";
   if(window.footerInstagram) footerInstagram.href = settings.instagram || "#";
+  if(window.floatInstagram) floatInstagram.href = settings.instagram || "#";
   if(window.contactRegion) contactRegion.textContent = settings.region || "Goiânia | Goianésia e região";
 }
 
@@ -1468,6 +1584,16 @@ document.querySelectorAll(".filter-btn").forEach(btn => {
 document.querySelectorAll(".search-tab").forEach(btn => {
   btn.addEventListener("click", () => {
     updatePurposeButtons(btn.dataset.purposeSearch || "todos");
+  });
+});
+
+document.querySelectorAll("[data-header-filter]").forEach(link => {
+  link.addEventListener("click", () => {
+    const purpose = link.dataset.headerFilter || "todos";
+    updatePurposeButtons(purpose);
+    readAdvancedFilters();
+    renderProperties();
+    if(window.menu) menu.classList.remove("active");
   });
 });
 
