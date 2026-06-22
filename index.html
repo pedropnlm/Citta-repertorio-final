@@ -727,6 +727,139 @@ gap:10px;
 }
 }
 
+
+/* ===== Filtro inteligente de imóveis — estilo portal imobiliário ===== */
+.search-panel-section{
+position:relative;
+z-index:5;
+margin-top:-74px;
+padding:0 0 28px;
+}
+.search-panel{
+background:#fff;
+border-radius:28px;
+box-shadow:0 28px 80px rgba(8,17,34,.16);
+border:1px solid rgba(183,146,95,.16);
+overflow:hidden;
+}
+.search-panel-head{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:18px;
+padding:24px 26px 0;
+}
+.search-panel-title strong{
+display:block;
+color:var(--navy);
+font-size:1.28rem;
+letter-spacing:-.04em;
+}
+.search-panel-title span{
+display:block;
+color:var(--muted);
+font-size:.9rem;
+margin-top:5px;
+line-height:1.5;
+}
+.search-tabs{
+display:flex;
+gap:8px;
+background:#f5f2ec;
+padding:6px;
+border-radius:999px;
+}
+.search-tab{
+border:0;
+background:transparent;
+color:var(--navy);
+font-weight:900;
+padding:11px 18px;
+border-radius:999px;
+}
+.search-tab.active{
+background:linear-gradient(135deg,var(--gold),var(--gold2));
+box-shadow:0 12px 24px rgba(183,146,95,.22);
+}
+.search-form{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:14px;
+padding:24px 26px 26px;
+}
+.search-field{display:grid;gap:8px}
+.search-field label{
+font-size:.78rem;
+font-weight:900;
+color:var(--navy);
+text-transform:uppercase;
+letter-spacing:.06em;
+}
+.search-field select{
+width:100%;
+border:1px solid rgba(16,24,40,.12);
+background:#fff;
+border-radius:16px;
+padding:14px 13px;
+font-size:.92rem;
+font-weight:700;
+color:var(--text);
+outline:none;
+}
+.search-field select:focus{
+border-color:var(--gold2);
+box-shadow:0 0 0 4px rgba(212,180,131,.15);
+}
+.search-actions{
+display:flex;
+gap:10px;
+align-items:end;
+}
+.search-submit,.search-clear{
+width:100%;
+min-height:48px;
+border:0;
+border-radius:16px;
+font-weight:900;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+}
+.search-submit{
+background:linear-gradient(135deg,var(--gold),var(--gold2));
+color:var(--navy);
+box-shadow:0 14px 28px rgba(183,146,95,.22);
+}
+.search-clear{
+background:#f4f1eb;
+color:var(--navy);
+border:1px solid rgba(16,24,40,.08);
+}
+.search-result-label{
+margin-top:24px;
+color:var(--muted);
+font-weight:700;
+font-size:.95rem;
+}
+.search-result-label strong{color:var(--navy)}
+@media(max-width:980px){
+.search-panel-section{margin-top:-42px}
+.search-panel-head{flex-direction:column;align-items:flex-start}
+.search-tabs{width:100%;justify-content:space-between}
+.search-tab{flex:1}
+.search-form{grid-template-columns:repeat(2,1fr)}
+.search-actions{grid-column:1/-1}
+}
+@media(max-width:560px){
+.search-panel-section{margin-top:-20px;padding-bottom:18px}
+.search-panel{border-radius:22px}
+.search-panel-head{padding:22px 18px 0}
+.search-form{grid-template-columns:1fr;padding:20px 18px 22px}
+.search-actions{flex-direction:column}
+}
+
 </style>
 </head>
 
@@ -769,6 +902,38 @@ gap:10px;
 <img id="heroBanner" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop" alt="Banner principal Città">
 </div>
 </div>
+
+</section>
+
+<section class="search-panel-section" id="buscar">
+<div class="container">
+<div class="search-panel">
+<div class="search-panel-head">
+<div class="search-panel-title">
+<strong>Busque seu imóvel</strong>
+<span>Filtre os imóveis cadastrados pela Città conforme sua necessidade.</span>
+</div>
+<div class="search-tabs" aria-label="Finalidade do imóvel">
+<button type="button" class="search-tab active" data-purpose-search="todos">Todos</button>
+<button type="button" class="search-tab" data-purpose-search="Venda">Comprar</button>
+<button type="button" class="search-tab" data-purpose-search="Aluguel">Alugar</button>
+</div>
+</div>
+<form class="search-form" id="propertySearchForm">
+<div class="search-field"><label>Tipo</label><select id="searchType"><option value="">Todos os tipos</option></select></div>
+<div class="search-field"><label>Cidade</label><select id="searchCity"><option value="">Todas as cidades</option></select></div>
+<div class="search-field"><label>Bairro</label><select id="searchNeighborhood"><option value="">Todos os bairros</option></select></div>
+<div class="search-field"><label>Quartos</label><select id="searchBedrooms"><option value="">Qualquer quantidade</option></select></div>
+<div class="search-field"><label>Suítes</label><select id="searchSuites"><option value="">Qualquer quantidade</option></select></div>
+<div class="search-field"><label>Banheiros</label><select id="searchBathrooms"><option value="">Qualquer quantidade</option></select></div>
+<div class="search-field"><label>Garagem</label><select id="searchGarage"><option value="">Todas as opções</option><option value="com">Com garagem</option><option value="sem">Sem garagem</option></select></div>
+<div class="search-actions">
+<button type="submit" class="search-submit"><i class="fa-solid fa-magnifying-glass"></i> Pesquisar</button>
+<button type="button" class="search-clear" id="clearPropertySearch"><i class="fa-solid fa-rotate-left"></i> Limpar</button>
+</div>
+</form>
+</div>
+</div>
 </section>
 
 <section class="institutional-banner">
@@ -806,6 +971,7 @@ gap:10px;
 <button class="filter-btn" data-filter="Aluguel">Aluguel</button>
 </div>
 
+<p class="search-result-label" id="searchResultLabel"></p>
 <div class="properties-grid" id="propertiesGrid"></div>
 </div>
 </section>
@@ -1022,6 +1188,7 @@ let settings = {
 let properties = [];
 let currentFilter = "todos";
 let currentProperty = null;
+let advancedFilters = {purpose:"todos", type:"", city:"", neighborhood:"", bedrooms:"", suites:"", bathrooms:"", garage:""};
 
 function onlyNumbers(v){
   return String(v || "").replace(/\D/g,"");
@@ -1102,6 +1269,7 @@ async function loadProperties(){
   }
 
   properties = (data || []).map(normalizeProperty);
+  populatePropertySearchOptions();
 }
 
 function applySettings(){
@@ -1131,17 +1299,95 @@ function isAvailable(p){
   return status === "disponível" || status === "disponivel" || status === "available" || status === "ativo";
 }
 
+
+function numericValue(v){
+  const n = parseInt(String(v ?? "").replace(/\D/g,""),10);
+  return Number.isFinite(n) ? n : 0;
+}
+
+function uniqueSortedValues(field){
+  return [...new Set(properties.map(p => String(p[field] || "").trim()).filter(Boolean))]
+    .sort((a,b)=>a.localeCompare(b,"pt-BR",{numeric:true,sensitivity:"base"}));
+}
+
+function uniqueSortedNumbers(field){
+  return [...new Set(properties.map(p => numericValue(p[field])).filter(n => n >= 0))]
+    .sort((a,b)=>a-b);
+}
+
+function fillSelectOptions(selectId, values, defaultLabel, labelFn){
+  const el = document.getElementById(selectId);
+  if(!el) return;
+  const current = el.value;
+  el.innerHTML = `<option value="">${defaultLabel}</option>` + values.map(value => {
+    const label = labelFn ? labelFn(value) : value;
+    return `<option value="${value}">${label}</option>`;
+  }).join("");
+  if(values.map(String).includes(String(current))) el.value = current;
+}
+
+function pluralLabel(value, singular, plural){
+  const n = Number(value);
+  return n === 1 ? `1 ${singular}` : `${n} ${plural}`;
+}
+
+function populatePropertySearchOptions(){
+  fillSelectOptions("searchType", uniqueSortedValues("type"), "Todos os tipos");
+  fillSelectOptions("searchCity", uniqueSortedValues("city"), "Todas as cidades");
+  fillSelectOptions("searchNeighborhood", uniqueSortedValues("neighborhood"), "Todos os bairros");
+  fillSelectOptions("searchBedrooms", uniqueSortedNumbers("bedrooms"), "Qualquer quantidade", v => pluralLabel(v,"quarto","quartos"));
+  fillSelectOptions("searchSuites", uniqueSortedNumbers("suites"), "Qualquer quantidade", v => pluralLabel(v,"suíte","suítes"));
+  fillSelectOptions("searchBathrooms", uniqueSortedNumbers("bathrooms"), "Qualquer quantidade", v => pluralLabel(v,"banheiro","banheiros"));
+}
+
+function readAdvancedFilters(){
+  advancedFilters = {
+    purpose: advancedFilters.purpose || "todos",
+    type: document.getElementById("searchType")?.value || "",
+    city: document.getElementById("searchCity")?.value || "",
+    neighborhood: document.getElementById("searchNeighborhood")?.value || "",
+    bedrooms: document.getElementById("searchBedrooms")?.value || "",
+    suites: document.getElementById("searchSuites")?.value || "",
+    bathrooms: document.getElementById("searchBathrooms")?.value || "",
+    garage: document.getElementById("searchGarage")?.value || ""
+  };
+}
+
+function propertyMatchesAdvancedFilters(p){
+  if(advancedFilters.purpose && advancedFilters.purpose !== "todos" && p.purpose !== advancedFilters.purpose) return false;
+  if(advancedFilters.type && p.type !== advancedFilters.type) return false;
+  if(advancedFilters.city && p.city !== advancedFilters.city) return false;
+  if(advancedFilters.neighborhood && p.neighborhood !== advancedFilters.neighborhood) return false;
+  if(advancedFilters.bedrooms && numericValue(p.bedrooms) < numericValue(advancedFilters.bedrooms)) return false;
+  if(advancedFilters.suites && numericValue(p.suites) < numericValue(advancedFilters.suites)) return false;
+  if(advancedFilters.bathrooms && numericValue(p.bathrooms) < numericValue(advancedFilters.bathrooms)) return false;
+  if(advancedFilters.garage === "com" && numericValue(p.parking) < 1) return false;
+  if(advancedFilters.garage === "sem" && numericValue(p.parking) > 0) return false;
+  return true;
+}
+
+function updatePurposeButtons(purpose){
+  currentFilter = purpose || "todos";
+  advancedFilters.purpose = currentFilter;
+  document.querySelectorAll(".search-tab").forEach(btn => btn.classList.toggle("active", btn.dataset.purposeSearch === currentFilter));
+  document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.toggle("active", btn.dataset.filter === currentFilter));
+}
+
 function renderProperties(){
   const grid = document.getElementById("propertiesGrid");
   if(!grid) return;
 
-  const availableByFilter = properties.filter(p => {
-    const purposeOk = currentFilter === "todos" || p.purpose === currentFilter;
-    return isAvailable(p) && purposeOk;
-  });
+  const availableByFilter = properties.filter(p => isAvailable(p) && propertyMatchesAdvancedFilters(p));
 
   const featured = availableByFilter.filter(p => p.featured === true);
   const filtered = featured.length ? featured : availableByFilter;
+
+  if(window.searchResultLabel){
+    const total = filtered.length;
+    searchResultLabel.innerHTML = total === 1
+      ? `<strong>1 imóvel</strong> encontrado com os filtros selecionados.`
+      : `<strong>${total} imóveis</strong> encontrados com os filtros selecionados.`;
+  }
 
   grid.innerHTML = filtered.length ? filtered.map(p => {
     const coverIndex = Number.isInteger(p.cover_index) ? p.cover_index : 0;
@@ -1214,12 +1460,37 @@ document.querySelectorAll(".faq-question").forEach(q => {
 
 document.querySelectorAll(".filter-btn").forEach(btn => {
   btn.addEventListener("click", () => {
-    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    currentFilter = btn.dataset.filter;
+    updatePurposeButtons(btn.dataset.filter || "todos");
     renderProperties();
   });
 });
+
+document.querySelectorAll(".search-tab").forEach(btn => {
+  btn.addEventListener("click", () => {
+    updatePurposeButtons(btn.dataset.purposeSearch || "todos");
+  });
+});
+
+if(window.propertySearchForm){
+  propertySearchForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    readAdvancedFilters();
+    renderProperties();
+    document.getElementById("imoveis")?.scrollIntoView({behavior:"smooth", block:"start"});
+  });
+}
+
+if(window.clearPropertySearch){
+  clearPropertySearch.addEventListener("click", () => {
+    ["searchType","searchCity","searchNeighborhood","searchBedrooms","searchSuites","searchBathrooms","searchGarage"].forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.value = "";
+    });
+    updatePurposeButtons("todos");
+    readAdvancedFilters();
+    renderProperties();
+  });
+}
 
 if(window.closeModal){
   closeModal.addEventListener("click", () => leadModal.classList.remove("active"));
@@ -1275,6 +1546,8 @@ async function init(){
   await loadSettings();
   await loadProperties();
   applySettings();
+  updatePurposeButtons("todos");
+  readAdvancedFilters();
   renderProperties();
 }
 
